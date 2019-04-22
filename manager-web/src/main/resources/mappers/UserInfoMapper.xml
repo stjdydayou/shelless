@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.axungu.platform.core.mappers.UserInfoMapper">
+    <resultMap id="LoginAccountResultMap" type="com.axungu.platform.core.model.UserLoginAccount">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="uid" property="uid" jdbcType="BIGINT"/>
+        <result column="login_account" property="loginAccount" jdbcType="VARCHAR"/>
+        <result column="account_type" property="accountType"
+                typeHandler="com.axungu.platform.core.typehandler.AccountTypeTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="BaseUserInfoResultMap" type="com.axungu.platform.core.model.UserBaseInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+        <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
+        <result column="gender" property="gender" typeHandler="com.axungu.platform.core.typehandler.GenderTypeHandler"/>
+        <result column="state" property="state"
+                typeHandler="com.axungu.platform.core.typehandler.UserStateTypeHandler"/>
+        <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
+        <result column="register_ip" property="registerIp" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="UserPasswordResultMap" type="com.axungu.platform.core.model.UserPassword">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="uid" property="uid" jdbcType="BIGINT"/>
+        <result column="passwd" property="passwd" jdbcType="VARCHAR"/>
+        <result column="salt" property="salt" jdbcType="VARCHAR"/>
+        <result column="type" property="type"
+                typeHandler="com.axungu.platform.core.typehandler.UserPasswordTypeHandler"/>
+    </resultMap>
+
+    <resultMap id="UserLoginLogResultMap" type="com.axungu.platform.core.model.UserLoginLog">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="uid" property="uid" jdbcType="BIGINT"/>
+        <result column="login_ip" property="loginIp" jdbcType="VARCHAR"/>
+        <result column="country" property="country" jdbcType="VARCHAR"/>
+        <result column="country_id" property="countryId" jdbcType="VARCHAR"/>
+        <result column="area" property="area" jdbcType="VARCHAR"/>
+        <result column="area_id" property="areaId" jdbcType="VARCHAR"/>
+        <result column="region" property="region" jdbcType="VARCHAR"/>
+        <result column="region_id" property="regionId" jdbcType="VARCHAR"/>
+        <result column="city" property="city" jdbcType="VARCHAR"/>
+        <result column="city_id" property="cityId" jdbcType="VARCHAR"/>
+        <result column="county" property="county" jdbcType="VARCHAR"/>
+        <result column="county_id" property="countyId" jdbcType="VARCHAR"/>
+        <result column="login_time" property="loginTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+    <sql id="UserLoginLog_Column_List">
+        id, uid, login_ip, country, country_id, area, area_id, region, region_id, city, city_id, county, county_id, login_time
+    </sql>
+    <sql id="UserBaseInfo_Column_List">
+        `id`, `nick_name`, `avatar`, `gender`, `state`, `register_time`, `register_ip`
+    </sql>
+    <sql id="UserPassword_Column_List">
+        id, uid, passwd, salt, type
+    </sql>
+
+    <select id="findLoginAccount" resultMap="LoginAccountResultMap" parameterType="java.lang.Object">
+        select id,uid,login_account,account_type from user_login_account t where
+        t.login_account=#{loginAccount,jdbcType=VARCHAR} and
+        account_type=#{accountType,typeHandler=com.axungu.platform.core.typehandler.AccountTypeTypeHandler}
+    </select>
+
+    <select id="findUserBaseInfoById" resultMap="BaseUserInfoResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="UserBaseInfo_Column_List"/>
+        from user_base_info t where
+        t.id=#{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="findUserPasswd" resultMap="UserPasswordResultMap">
+        select
+        <include refid="UserPassword_Column_List"/>
+        from user_password
+        where uid = #{uid,jdbcType=BIGINT} and
+        type=#{type,typeHandler=com.axungu.platform.core.typehandler.UserPasswordTypeHandler}
+        limit 1
+    </select>
+    <select id="findLastLogin" resultMap="UserLoginLogResultMap">
+        select
+        <include refid="UserLoginLog_Column_List"/>
+        from user_login_log
+        where uid = #{uid,jdbcType=BIGINT}
+        order by id desc
+        limit 1
+    </select>
+
+
+    <insert id="insertLoginLog" parameterType="com.axungu.platform.core.model.UserLoginLog">
+        insert into user_login_log (uid, login_ip, country, country_id,area, area_id, region,
+        region_id, city, city_id, county, county_id, login_time)
+        values (#{uid,jdbcType=BIGINT}, #{loginIp,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR},
+        #{countryId,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},
+        #{region,jdbcType=VARCHAR}, #{regionId,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+        #{cityId,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{countyId,jdbcType=VARCHAR},
+        #{loginTime,jdbcType=TIMESTAMP})
+    </insert>
+</mapper>
