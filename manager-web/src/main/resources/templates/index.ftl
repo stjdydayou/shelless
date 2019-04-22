@@ -235,10 +235,12 @@
 
                                     <ul class="menu-items" data-faicon="${module.faicon}" data-tit="${module.name}">
                                     <#list module.listMenus as menu>
+                                        <@s.oauth pluginKey=plugin.key moduleKey=module.key authorities=menu.authority>
                                         <li>
                                             <a href="${menu.url}"
                                                data-options="{id:'${plugin.key}_${module.key}_${menu.key}', faicon:'caret-right'}">${menu.name}</a>
                                         </li>
+                                        </@s.oauth>
                                     </#list>
                                     </ul>
                                 </#list>

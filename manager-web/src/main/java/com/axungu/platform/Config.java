@@ -146,8 +146,8 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         PluginModuleInfo userModuleInfo = new PluginModuleInfo("oauth", "用户管理", "users");
 
         //注册菜单
-        userModuleInfo.add(new PluginMenu("user", "用户管理", "/system/oauth/user/index.htm"));
-        userModuleInfo.add(new PluginMenu("role", "角色管理", "/system/oauth/role/index.htm"));
+        userModuleInfo.add(new PluginMenu("user", "用户管理", "/system/oauth/user/index.htm", "user.find"));
+        userModuleInfo.add(new PluginMenu("role", "角色管理", "/system/oauth/role/index.htm", "role.find"));
 
         //注册权限
         userModuleInfo.add(new PluginAuthority("user.find", "查询用户"));

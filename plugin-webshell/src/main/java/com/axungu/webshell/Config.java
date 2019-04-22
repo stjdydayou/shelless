@@ -45,9 +45,9 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
         PluginModuleInfo moduleInfo = new PluginModuleInfo("hostManager", "服务器管理", "globe");
 
         //注册菜单
-        moduleInfo.add(new PluginMenu("host-group", "分组管理", "/host/group/index.htm"));
-        moduleInfo.add(new PluginMenu("host-auth", "密钥管理", "/host/auth/index.htm"));
-        moduleInfo.add(new PluginMenu("host-info", "主机管理", "/webshell/hostInfo/index.htm"));
+        moduleInfo.add(new PluginMenu("host-group", "分组管理", "/host/group/index.htm", "group.find"));
+        moduleInfo.add(new PluginMenu("host-auth", "密钥管理", "/host/auth/index.htm", "auth.find"));
+        moduleInfo.add(new PluginMenu("host-info", "主机管理", "/webshell/hostInfo/index.htm", "host.find"));
 
         //注册权限
         moduleInfo.add(new PluginAuthority("group.find", "查询分组"));

@@ -10,11 +10,20 @@ public class PluginMenu {
     private String key;
     private String url;
     private String name;
+    private String authority;
 
     public PluginMenu(String key, String name, String url) {
         this.key = key;
         this.name = name;
         this.url = url;
+        this.authority = "";
+    }
+
+    public PluginMenu(String key, String name, String url, String authority) {
+        this.key = key;
+        this.name = name;
+        this.url = url;
+        this.authority = authority;
     }
 
     public String getUrl() {
@@ -39,5 +48,13 @@ public class PluginMenu {
 
     public void setKey(String key) {
         this.key = key;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
     }
 }
