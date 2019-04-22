@@ -233,11 +233,11 @@
                             <div class="items hide" data-noinit="true">
                                 <#list plugin.listModules as module>
 
-                                    <ul class="menu-items" data-faicon="${module.faicon}" data-tit="${module.title}">
+                                    <ul class="menu-items" data-faicon="${module.faicon}" data-tit="${module.name}">
                                     <#list module.listMenus as menu>
                                         <li>
                                             <a href="${menu.url}"
-                                               data-options="{id:'${menu.tabid}', faicon:'caret-right'}">${menu.title}</a>
+                                               data-options="{id:'${plugin.key}_${module.key}_${menu.key}', faicon:'caret-right'}">${menu.name}</a>
                                         </li>
                                     </#list>
                                     </ul>
@@ -245,21 +245,6 @@
                             </div>
                         </li>
                     </#list>
-
-                    <li>
-                        <a href="javascript:;" data-toggle="slidebar">
-                            <i class="fa fa-cogs"></i>
-                            系统设置
-                        </a>
-                        <div class="items hide" data-noinit="true">
-
-                            <ul class="menu-items" data-faicon="users" data-tit="用户管理">
-                                <li>
-                                    <a href="/" data-options="{id:'system-oauth-users', faicon:'caret-right'}">用户管理</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
                 </ul>
             </div>
         </div>

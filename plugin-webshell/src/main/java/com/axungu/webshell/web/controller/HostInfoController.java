@@ -5,7 +5,6 @@ import com.axungu.common.ServletContext;
 import com.axungu.common.exception.NoFoundException;
 import com.axungu.common.exception.NoLoginException;
 import com.axungu.common.oauth.OauthService;
-import com.axungu.common.oauth.Permission;
 import com.axungu.common.paginator.domain.PageResult;
 import com.axungu.webshell.core.model.HostAuth;
 import com.axungu.webshell.core.model.HostGroup;
@@ -18,7 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -46,7 +44,6 @@ public class HostInfoController {
     @Autowired
     private OauthService oauthService;
 
-    @Permission
     @RequestMapping("/index.htm")
     public String index(ModelMap modelMap, DwzPageInfo dwzPageInfo, HostInfoVO vo) {
 
@@ -70,14 +67,12 @@ public class HostInfoController {
         return "webshell/hostInfo/index";
     }
 
-    @Permission
     @RequestMapping("/terminal/{hostId:[0-9]+}.htm")
     public String terminal(@PathVariable Long hostId, ModelMap modelMap) throws NoLoginException, NoFoundException {
         modelMap.addAttribute("hostId", hostId);
         return "webshell/hostInfo/terminal";
     }
 
-    @Permission
     @RequestMapping("/terminal/iframe/{hostId:[0-9]+}.htm")
     public String terminalIframe(@PathVariable Long hostId, ModelMap modelMap) throws NoLoginException, NoFoundException {
         HostInfo hostInfo = this.hostInfoService.findById(hostId);

@@ -15,4 +15,6 @@ public @interface Permission {
     // 所在模块
     @AliasFor("value")
     String[] authority() default {};
+
+    String pluginKey();
 }

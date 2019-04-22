@@ -2,6 +2,7 @@ package com.axungu.platform;
 
 import com.axungu.common.plugin.PluginModuleInfo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -18,7 +19,7 @@ public class PluginInfo {
     private String key;
     private String faicon;
     private String name;
-    private List<PluginModuleInfo> listModules;
+    private List<PluginModuleInfo> listModules = new ArrayList<>();
 
 
     public String getKey() {
@@ -50,7 +51,13 @@ public class PluginInfo {
         return listModules;
     }
 
-    public void setListModules(List<PluginModuleInfo> listModules) {
-        this.listModules = listModules;
+    public PluginInfo addModule(PluginModuleInfo moduleInfo) {
+        this.listModules.add(moduleInfo);
+        return this;
+    }
+
+    public PluginInfo addModules(List<PluginModuleInfo> listModules) {
+        this.listModules.addAll(listModules);
+        return this;
     }
 }

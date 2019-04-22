@@ -1,5 +1,6 @@
 package com.axungu.common.plugin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,29 +10,22 @@ import java.util.List;
  */
 public class PluginModuleInfo {
 
-    private String title;
+    private String key;
+    private String name;
     private String faicon;
 
-    private List<PluginAuthority> listAuthorities;
-    private List<PluginMenu> listMenus;
-    private List<PluginConfig> listConfigs;
+    private List<PluginAuthority> listAuthorities = new ArrayList<>();
+    private List<PluginMenu> listMenus = new ArrayList<>();
+    private List<PluginConfig> listConfigs = new ArrayList<>();
 
     public PluginModuleInfo() {
         super();
     }
 
-    public PluginModuleInfo(String title, String faicon) {
-        this.title = title;
+    public PluginModuleInfo(String key, String name, String faicon) {
+        this.key = key;
+        this.name = name;
         this.faicon = faicon;
-    }
-
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getFaicon() {
@@ -46,23 +40,42 @@ public class PluginModuleInfo {
         return listAuthorities;
     }
 
-    public void setListAuthorities(List<PluginAuthority> listAuthorities) {
-        this.listAuthorities = listAuthorities;
-    }
-
     public List<PluginMenu> getListMenus() {
         return listMenus;
-    }
-
-    public void setListMenus(List<PluginMenu> listMenus) {
-        this.listMenus = listMenus;
     }
 
     public List<PluginConfig> getListConfigs() {
         return listConfigs;
     }
 
-    public void setListConfigs(List<PluginConfig> listConfigs) {
-        this.listConfigs = listConfigs;
+    public PluginModuleInfo add(PluginMenu menu) {
+        this.listMenus.add(menu);
+        return this;
+    }
+
+    public PluginModuleInfo add(PluginAuthority authority) {
+        this.listAuthorities.add(authority);
+        return this;
+    }
+
+    public PluginModuleInfo add(PluginConfig config) {
+        this.listConfigs.add(config);
+        return this;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }

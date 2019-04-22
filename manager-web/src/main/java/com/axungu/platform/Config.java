@@ -6,9 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.axungu.common.ServletContext;
-import com.axungu.common.plugin.Plugin;
-import com.axungu.common.plugin.PluginModuleInfo;
-import com.axungu.common.plugin.RegisterPlugin;
+import com.axungu.common.plugin.*;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.HostInfoUtil;
 import com.axungu.platform.core.oauth.OauthInterceptor;
@@ -109,7 +107,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
                     pluginInfo.setKey(pluginAnnotation.key());
                     pluginInfo.setFaicon(pluginAnnotation.faicon());
                     pluginInfo.setName(pluginAnnotation.name());
-                    pluginInfo.setListModules(listModules);
+                    pluginInfo.addModules(listModules);
 
                     PluginInfo.REGISTERED_PLUGINS.put(pluginAnnotation.key(), pluginInfo);
 
@@ -120,6 +118,42 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
                 log.warn(String.format("%s 插件注册失败，@Plugin注解必要实现com.axungu.common.plugin.RegisterPlugin", pluginName));
             }
         }
+
+        //注册系统配置模块
+        this.registerSystemPlugins();
+    }
+
+    private void registerSystemPlugins() {
+
+
+        PluginModuleInfo userModuleInfo = new PluginModuleInfo("oauth", "用户管理", "users");
+
+        //注册菜单
+        userModuleInfo.add(new PluginMenu("user", "用户管理", "/system/oauth/user/index.htm"));
+        userModuleInfo.add(new PluginMenu("role", "角色管理", "/system/oauth/role/index.htm"));
+
+        //注册权限
+        userModuleInfo.add(new PluginAuthority("group.find", "查询分组"));
+
+
+
+        /*------------------*/
+        PluginModuleInfo settingModuleInfo = new PluginModuleInfo("config", "系统设置", "cog");
+
+        //注册菜单
+        settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm"));
+
+        //注册权限
+        settingModuleInfo.add(new PluginAuthority("config.find", "查询分组"));
+
+
+        PluginInfo pluginInfo = new PluginInfo();
+        pluginInfo.setKey("system");
+        pluginInfo.setFaicon("cogs");
+        pluginInfo.setName("系统设置");
+        pluginInfo.addModule(userModuleInfo).addModule(settingModuleInfo);
+        PluginInfo.REGISTERED_PLUGINS.put(pluginInfo.getKey(), pluginInfo);
+
     }
 
     @Bean

@@ -1,5 +1,8 @@
 package com.axungu.common.plugin;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
+
 /**
  * @author jtoms.shen
  * @version 1.0
@@ -9,13 +12,13 @@ public class PluginConfig {
 
     private String key;
 
-    private String name;
+    private String desc;
 
     private ConfigType type;
 
-    public PluginConfig(String key, String name, ConfigType type) {
+    public PluginConfig(String key, String desc, ConfigType type) {
         this.key = key;
-        this.name = name;
+        this.desc = desc;
         this.type = type;
     }
 
@@ -27,20 +30,20 @@ public class PluginConfig {
         this.key = key;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public ConfigType getType() {
         return type;
     }
 
     public void setType(ConfigType type) {
         this.type = type;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 
     public enum ConfigType {

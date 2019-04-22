@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.axungu.platform.core.mappers.OauthRoleInfoMapper">
+    <resultMap id="BaseResultMap" type="com.axungu.platform.core.model.OauthRoleInfo">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, `name`, remark
+  </sql>
+    <select id="findAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from oauth_role_info
+        ORDER BY id DESC
+    </select>
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from oauth_role_info
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Long">
+    delete from oauth_role_info
+    where id = #{id,jdbcType=BIGINT}
+  	</delete>
+    <insert id="insert" parameterType="com.axungu.platform.core.model.OauthRoleInfo">
+    insert into oauth_role_info (id, `name`,remark)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
+  	</insert>
+    <update id="updateById" parameterType="com.axungu.platform.core.model.OauthRoleInfo">
+        update oauth_role_info
+        <set>
+            <if test="name != null and name != ''">
+                `name` = #{name,jdbcType=VARCHAR},
+            </if>
+
+            <if test="remark != null">
+                remark = #{remark,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <delete id="deleteAuthorities" parameterType="java.lang.Long">
+		delete FROM oauth_role_authorities WHERE role_id = #{roleId,jdbcType=BIGINT}
+	</delete>
+    <insert id="insertAuthorities" parameterType="java.lang.Long">
+        insert into oauth_role_authorities (authority, role_id)
+        values
+        <foreach collection="authorities" item="authority" separator=",">
+            (#{authority,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
+    <select id="findAuthorities" resultType="java.lang.String" parameterType="java.lang.Long">
+		select authority from oauth_role_authorities WHERE role_id = #{roleId,jdbcType=BIGINT}
+	</select>
+</mapper>

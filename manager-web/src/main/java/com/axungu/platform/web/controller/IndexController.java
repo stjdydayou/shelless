@@ -1,6 +1,5 @@
 package com.axungu.platform.web.controller;
 
-import com.axungu.platform.web.AjaxResult;
 import com.axungu.common.ServletContext;
 import com.axungu.common.oauth.OauthInfo;
 import com.axungu.common.oauth.OauthService;
@@ -16,6 +15,7 @@ import com.axungu.platform.core.model.UserLoginAccount;
 import com.axungu.platform.core.model.UserLoginLog;
 import com.axungu.platform.core.model.UserPassword;
 import com.axungu.platform.core.service.UserInfoService;
+import com.axungu.platform.web.AjaxResult;
 import com.axungu.platform.web.params.LoginParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -44,14 +44,14 @@ public class IndexController {
     @Autowired
     private OauthService oauthService;
 
-    @Permission
+//    @Permission(pluginKey = "system")
     @GetMapping({"/index.htm", "/"})
     public String index(ModelMap modelMap) {
         modelMap.addAttribute("registeredPlugins", PluginInfo.REGISTERED_PLUGINS.values());
         return "index";
     }
 
-    @Permission
+//    @Permission(pluginKey = "system")
     @GetMapping("/index_body.htm")
     public String indexBody() {
         return "index_body";

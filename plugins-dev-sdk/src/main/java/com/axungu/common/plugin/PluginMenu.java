@@ -7,30 +7,14 @@ package com.axungu.common.plugin;
  */
 public class PluginMenu {
 
-    private String tabid;
+    private String key;
     private String url;
-    private String title;
+    private String name;
 
-    public PluginMenu(String tabid, String title, String url) {
-        this.tabid = tabid;
-        this.title = title;
+    public PluginMenu(String key, String name, String url) {
+        this.key = key;
+        this.name = name;
         this.url = url;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTabid() {
-        return tabid;
-    }
-
-    public void setTabid(String tabid) {
-        this.tabid = tabid;
     }
 
     public String getUrl() {
@@ -39,5 +23,21 @@ public class PluginMenu {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
     }
 }
