@@ -84,7 +84,11 @@
         order by id desc
         limit 1
     </select>
-
+    <select id="findAuthorities" resultType="java.lang.String">
+      	  select authority from oauth_role_authorities WHERE role_id IN (
+      		select role_id from oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
+      		)
+    </select>
 
     <insert id="insertLoginLog" parameterType="com.axungu.platform.core.model.UserLoginLog">
         insert into user_login_log (uid, login_ip, country, country_id,area, area_id, region,

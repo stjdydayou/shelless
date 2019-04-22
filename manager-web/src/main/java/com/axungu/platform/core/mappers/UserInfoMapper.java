@@ -8,6 +8,8 @@ import com.axungu.platform.core.model.UserLoginLog;
 import com.axungu.platform.core.model.UserPassword;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2017-6-7.
  */
@@ -53,4 +55,11 @@ public interface UserInfoMapper {
      */
     UserLoginLog findLastLogin(Long uid);
 
+    /**
+     * 查询用户所拥有的权限
+     *
+     * @param uid
+     * @return
+     */
+    List<String> findAuthorities(Long uid);
 }

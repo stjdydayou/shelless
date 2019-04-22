@@ -7,6 +7,8 @@ import com.axungu.platform.core.model.UserLoginAccount;
 import com.axungu.platform.core.model.UserLoginLog;
 import com.axungu.platform.core.model.UserPassword;
 
+import java.util.List;
+
 /**
  * @author Administrator
  * @date 2017-6-5
@@ -54,5 +56,15 @@ public interface UserInfoService {
      * @return
      */
     UserLoginLog findLastLogin(Long uid);
+
+
+    /**
+     * 查询用户所拥有的权限
+     *
+     * @param uid
+     * @return
+     */
+    List<String> findAuthorities(Long uid);
+
 
 }

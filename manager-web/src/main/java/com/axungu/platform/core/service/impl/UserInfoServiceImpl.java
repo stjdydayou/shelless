@@ -15,6 +15,8 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import java.util.List;
+
 /**
  * @author jtoms
  */
@@ -78,5 +80,10 @@ public class UserInfoServiceImpl implements UserInfoService {
     @Override
     public UserLoginLog findLastLogin(Long uid) {
         return this.userInfoMapper.findLastLogin(uid);
+    }
+
+    @Override
+    public List<String> findAuthorities(Long uid) {
+        return this.userInfoMapper.findAuthorities(uid);
     }
 }

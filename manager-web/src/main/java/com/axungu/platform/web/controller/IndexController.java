@@ -3,7 +3,6 @@ package com.axungu.platform.web.controller;
 import com.axungu.common.ServletContext;
 import com.axungu.common.oauth.OauthInfo;
 import com.axungu.common.oauth.OauthService;
-import com.axungu.common.oauth.Permission;
 import com.axungu.common.service.SimpleCaptchaService;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.PatternUtils;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -44,14 +42,14 @@ public class IndexController {
     @Autowired
     private OauthService oauthService;
 
-//    @Permission(pluginKey = "system")
+    //    @Permission(pluginKey = "system")
     @GetMapping({"/index.htm", "/"})
     public String index(ModelMap modelMap) {
         modelMap.addAttribute("registeredPlugins", PluginInfo.REGISTERED_PLUGINS.values());
         return "index";
     }
 
-//    @Permission(pluginKey = "system")
+    //    @Permission(pluginKey = "system")
     @GetMapping("/index_body.htm")
     public String indexBody() {
         return "index_body";
@@ -97,7 +95,7 @@ public class IndexController {
                 UserLoginLog lastLoginLog = this.userInfoService.findLastLogin(userBaseInfo.getId());
                 Date lastLoginTime = lastLoginLog == null ? DateUtil.current() : lastLoginLog.getLoginTime();
 
-                List<String> listAuthorities = new ArrayList<>();
+                List<String> listAuthorities = this.userInfoService.findAuthorities(userBaseInfo.getId());
 
                 OauthInfo oauthInfo = new OauthInfo(userBaseInfo.getId(), userBaseInfo.getNickName(), userBaseInfo.getAvatar(), lastLoginTime, accessToken, listAuthorities);
                 this.oauthService.setAuth(oauthInfo);
