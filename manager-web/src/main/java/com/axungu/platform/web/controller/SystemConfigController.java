@@ -14,8 +14,17 @@ import java.util.Collection;
 public class SystemConfigController {
 
     @RequestMapping("/index.htm")
-    @Permission(authority = "config.find", pluginKey = "system")
+    @Permission(pluginKey = "system", moduleKey = "setting", authority = "config.find")
     public String index(ModelMap modelMap) {
+        Collection<PluginInfo> listPlugins = PluginInfo.REGISTERED_PLUGINS.values();
+
+        modelMap.addAttribute("listPlugins", listPlugins);
+        return "/system/config/index";
+    }
+
+    @RequestMapping("/edit.htm")
+    @Permission(pluginKey = "system", moduleKey = "setting", authority = "config.edit")
+    public String edit(ModelMap modelMap) {
         Collection<PluginInfo> listPlugins = PluginInfo.REGISTERED_PLUGINS.values();
 
         modelMap.addAttribute("listPlugins", listPlugins);

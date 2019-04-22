@@ -4,6 +4,8 @@
 <@s.auth />
 -->
 
-<#macro oauth authorities=''>
-    <#nested/>
+<#macro oauth pluginKey='' moduleKey='' authorities=''>
+    <@authorityDirective pluginKey=pluginKey moduleKey=moduleKey authorities=authorities>
+        <#if hasAuthority><#nested/></#if>
+    </@authorityDirective>
 </#macro>

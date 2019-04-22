@@ -12,9 +12,25 @@ public @interface Permission {
     @AliasFor("authority")
     String[] value() default {};
 
-    // 所在模块
+    /**
+     * 权限
+     *
+     * @return
+     */
     @AliasFor("value")
     String[] authority() default {};
 
+    /**
+     * 所在插件
+     *
+     * @return
+     */
     String pluginKey();
+
+    /**
+     * 所在模块
+     *
+     * @return
+     */
+    String moduleKey();
 }

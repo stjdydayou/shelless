@@ -54,7 +54,7 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
         moduleInfo.add(new PluginAuthority("group.add", "添加分组"));
         moduleInfo.add(new PluginAuthority("group.edit", "修改分组"));
         moduleInfo.add(new PluginAuthority("group.delete", "删除分组"));
-        moduleInfo.add(new PluginAuthority("group.delete", "分配分组用户"));
+        moduleInfo.add(new PluginAuthority("group.authority", "分配分组用户"));
 
         moduleInfo.add(new PluginAuthority("auth.find", "查询密钥"));
         moduleInfo.add(new PluginAuthority("auth.add", "添加密钥"));
@@ -65,7 +65,7 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
         moduleInfo.add(new PluginAuthority("host.add", "添加主机"));
         moduleInfo.add(new PluginAuthority("host.edit", "修改主机"));
         moduleInfo.add(new PluginAuthority("host.delete", "删除主机"));
-        moduleInfo.add(new PluginAuthority("host.delete", "打开主机终端"));
+        moduleInfo.add(new PluginAuthority("host.terminal", "打开主机终端"));
 
 
         //注册参数配置

@@ -3,6 +3,7 @@ package com.axungu.platform.web.controller;
 import com.axungu.common.ServletContext;
 import com.axungu.common.oauth.OauthInfo;
 import com.axungu.common.oauth.OauthService;
+import com.axungu.common.oauth.Permission;
 import com.axungu.common.service.SimpleCaptchaService;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.PatternUtils;
@@ -42,14 +43,14 @@ public class IndexController {
     @Autowired
     private OauthService oauthService;
 
-    //    @Permission(pluginKey = "system")
+    @Permission(pluginKey = "system", moduleKey = "index")
     @GetMapping({"/index.htm", "/"})
     public String index(ModelMap modelMap) {
         modelMap.addAttribute("registeredPlugins", PluginInfo.REGISTERED_PLUGINS.values());
         return "index";
     }
 
-    //    @Permission(pluginKey = "system")
+    @Permission(pluginKey = "system", moduleKey = "index")
     @GetMapping("/index_body.htm")
     public String indexBody() {
         return "index_body";

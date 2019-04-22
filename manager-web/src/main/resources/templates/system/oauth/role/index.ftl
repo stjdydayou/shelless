@@ -3,7 +3,7 @@
         <a class="btn btn-orange" href="${__url__}" data-toggle="navtab" data-title="角色管理" data-icon="undo">刷新</a>
     </div>
     <div class="pull-right">
-    <@s.oauth "oauth/role/add">
+    <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.add">
         <a href="/system/oauth/role/add.htm"
            data-mask="true"
            data-toggle="dialog"
@@ -13,7 +13,7 @@
             添加
         </a>
     </@s.oauth>
-    <@s.oauth "oauth/role/delete">
+    <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.delete">
         <a type="button" class="btn btn-danger" href="/system/oauth/role/delete.ajax" data-icon="remove"
            data-toggle="doajaxchecked" data-confirm-msg="确定要删除选中项吗？" data-idname="ids"
            data-group="roles">
@@ -42,15 +42,15 @@
                 <input type="checkbox" name="roles" data-toggle="icheck" value="${row.id}">
             </td>
             <td>
-                <@s.oauth "oauth/role/edit">
+                    <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.edit">
                     <a href="/system/oauth/role/edit.htm?id=${row.id}"
                        data-mask="true" data-width="600" data-toggle="dialog"
                        class="btn btn-info" data-icon="edit" title="修改">
                         修改
                     </a>
                 </@s.oauth>
-                <@s.oauth "oauth/role/set_resource">
-                    <a href="/system/oauth/role/authority.htm?id=${row.id}"
+                    <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.authority">
+                    <a href="/system/oauth/role/authority.htm?id=${row.id}" data-width="800" data-height="400"
                        data-mask="true" data-toggle="dialog" class="btn btn-warning" data-title="设置[${row.name}]权限"
                        data-icon="cog">
                         设置权限

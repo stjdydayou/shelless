@@ -64,8 +64,8 @@ public class DwzJSON {
         return tabid;
     }
 
-    public DwzJSON setTabid(String pluginKey, String moduleKey, String tabid) {
-        this.tabid = String.format("%s_%s_%s", pluginKey, moduleKey, tabid);
+    public DwzJSON setTabid(String pluginKey, String moduleKey, String menuKey) {
+        this.tabid = String.format("%s_%s_%s", pluginKey, moduleKey, menuKey);
         return this;
     }
 

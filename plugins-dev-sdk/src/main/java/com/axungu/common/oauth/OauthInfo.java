@@ -1,5 +1,7 @@
 package com.axungu.common.oauth;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -99,5 +101,14 @@ public class OauthInfo implements Serializable {
 
     public void setAuthorities(List<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public boolean hasAuthority(String pluginKey, String moduleKey, String authority) {
+        if (StringUtils.isBlank(authority)) {
+            return true;
+        } else {
+            String fullAuthority = String.format("%s.%s.%s", pluginKey, moduleKey, authority);
+            return this.authorities != null && this.authorities.contains(fullAuthority);
+        }
     }
 }

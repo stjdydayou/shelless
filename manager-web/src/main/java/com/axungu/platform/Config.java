@@ -6,6 +6,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.axungu.common.ServletContext;
+import com.axungu.common.freemarker.FreemarkerComponent;
 import com.axungu.common.plugin.*;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.HostInfoUtil;
@@ -36,6 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
@@ -85,19 +87,23 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
     private OauthInterceptor oauthInterceptor;
 
     private ApplicationContext applicationContext;
+    @Autowired
+    private FreeMarkerConfigurer freeMarkerConfigurer;
 
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
-
     @PostConstruct
-    public void registerPlugins() {
+    public void registerPlugins() throws Exception {
+        //注册系统配置模块
+        this.registerSystemPlugins();
 
-        Map<String, Object> map = applicationContext.getBeansWithAnnotation(Plugin.class);
-        for (String pluginName : map.keySet()) {
-            Object o = map.get(pluginName);
+        //注册用户插件
+        Map<String, Object> pluginsMap = applicationContext.getBeansWithAnnotation(Plugin.class);
+        for (String pluginName : pluginsMap.keySet()) {
+            Object o = pluginsMap.get(pluginName);
             if (o instanceof RegisterPlugin) {
                 Plugin pluginAnnotation = AnnotationUtils.findAnnotation(o.getClass(), Plugin.class);
                 if (pluginAnnotation != null) {
@@ -109,6 +115,10 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
                     pluginInfo.setName(pluginAnnotation.name());
                     pluginInfo.addModules(listModules);
 
+                    if (PluginInfo.REGISTERED_PLUGINS.containsKey(pluginInfo.getKey())) {
+                        log.warn(String.format("注册插件[%s,%s]失败，插件{PluginInfo.key}在系统中必需唯一", pluginAnnotation.name(), pluginName));
+                        continue;
+                    }
                     PluginInfo.REGISTERED_PLUGINS.put(pluginAnnotation.key(), pluginInfo);
 
                     log.info(String.format("注册插件[%s,%s]成功", pluginAnnotation.name(), pluginName));
@@ -119,8 +129,15 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
             }
         }
 
-        //注册系统配置模块
-        this.registerSystemPlugins();
+
+        //注册Freemark自定义方法
+        Map<String, Object> freemarkersMap = applicationContext.getBeansWithAnnotation(FreemarkerComponent.class);
+        freemarker.template.Configuration configuration = this.freeMarkerConfigurer.getConfiguration();
+        for (String key : freemarkersMap.keySet()) {
+            configuration.setSharedVariable(key, freemarkersMap.get(key));
+        }
+        this.freeMarkerConfigurer.setConfiguration(configuration);
+
     }
 
     private void registerSystemPlugins() {
@@ -133,18 +150,28 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         userModuleInfo.add(new PluginMenu("role", "角色管理", "/system/oauth/role/index.htm"));
 
         //注册权限
-        userModuleInfo.add(new PluginAuthority("group.find", "查询分组"));
-
+        userModuleInfo.add(new PluginAuthority("user.find", "查询用户"));
+        userModuleInfo.add(new PluginAuthority("user.add", "添加用户"));
+        userModuleInfo.add(new PluginAuthority("user.enable", "启用用户"));
+        userModuleInfo.add(new PluginAuthority("user.disable", "禁用用户"));
+        userModuleInfo.add(new PluginAuthority("user.resetPassword", "重置用户密码"));
+        userModuleInfo.add(new PluginAuthority("user.roles", "设置用户角色"));
+        userModuleInfo.add(new PluginAuthority("role.find", "查询角色"));
+        userModuleInfo.add(new PluginAuthority("role.add", "添加角色"));
+        userModuleInfo.add(new PluginAuthority("role.edit", "编辑角色"));
+        userModuleInfo.add(new PluginAuthority("role.delete", "删除角色"));
+        userModuleInfo.add(new PluginAuthority("role.authority", "设置角色权限"));
 
 
         /*------------------*/
-        PluginModuleInfo settingModuleInfo = new PluginModuleInfo("config", "系统设置", "cog");
+        PluginModuleInfo settingModuleInfo = new PluginModuleInfo("setting", "系统设置", "cog");
 
         //注册菜单
         settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm"));
 
         //注册权限
-        settingModuleInfo.add(new PluginAuthority("config.find", "查询分组"));
+        settingModuleInfo.add(new PluginAuthority("config.find", "查询系统参数"));
+        settingModuleInfo.add(new PluginAuthority("config.edit", "编辑系统参数"));
 
 
         PluginInfo pluginInfo = new PluginInfo();

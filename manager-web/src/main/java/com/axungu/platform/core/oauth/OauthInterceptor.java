@@ -38,22 +38,22 @@ public class OauthInterceptor extends HandlerInterceptorAdapter {
                 }
 
                 String[] arrayAuthorities = permission.value();
-//                if (arrayAuthorities.length > 0) {
-//                    if (oauthInfo.getAuthorities() == null || oauthInfo.getAuthorities().isEmpty()) {
-//                        throw new PermissionDeniedException();
-//                    }
-//
-//                    boolean hasAuthority = false;
-//                    for (String authority : arrayAuthorities) {
-//                        if (oauthInfo.getAuthorities().contains(authority.trim())) {
-//                            hasAuthority = true;
-//                            break;
-//                        }
-//                    }
-//                    if (!hasAuthority) {
-//                        throw new PermissionDeniedException();
-//                    }
-//                }
+                if (arrayAuthorities.length > 0) {
+                    if (oauthInfo.getAuthorities() == null || oauthInfo.getAuthorities().isEmpty()) {
+                        throw new PermissionDeniedException();
+                    }
+
+                    boolean hasAuthority = false;
+                    for (String authority : arrayAuthorities) {
+                        if (oauthInfo.hasAuthority(permission.pluginKey(), permission.moduleKey(), authority)) {
+                            hasAuthority = true;
+                            break;
+                        }
+                    }
+                    if (!hasAuthority) {
+                        throw new PermissionDeniedException();
+                    }
+                }
             }
         }
         return true;
