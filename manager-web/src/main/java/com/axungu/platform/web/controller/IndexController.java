@@ -4,6 +4,8 @@ import com.axungu.common.ServletContext;
 import com.axungu.common.oauth.OauthInfo;
 import com.axungu.common.oauth.OauthService;
 import com.axungu.common.oauth.Permission;
+import com.axungu.common.plugin.PluginMenu;
+import com.axungu.common.plugin.PluginModuleInfo;
 import com.axungu.common.service.SimpleCaptchaService;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.PatternUtils;
@@ -27,6 +29,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -46,7 +50,32 @@ public class IndexController {
     @Permission(pluginKey = "system", moduleKey = "index")
     @GetMapping({"/index.htm", "/"})
     public String index(ModelMap modelMap) {
-        modelMap.addAttribute("registeredPlugins", PluginInfo.REGISTERED_PLUGINS.values());
+        Collection<PluginInfo> plugins = PluginInfo.REGISTERED_PLUGINS.values();
+
+        List<PluginInfo> registeredPlugins = new ArrayList<>();
+        OauthInfo oauthInfo = this.oauthService.getOAuth();
+
+        for (PluginInfo pluginInfo : plugins) {
+            boolean hasModule = false;
+            for (PluginModuleInfo moduleInfo : pluginInfo.getListModules()) {
+                boolean hasMenu = false;
+                for (PluginMenu menu : moduleInfo.getListMenus()) {
+                    if (oauthInfo.hasAuthority(pluginInfo.getKey(), moduleInfo.getKey(), menu.getAuthority())) {
+                        hasMenu = true;
+                        break;
+                    }
+                }
+                if (hasMenu) {
+                    hasModule = true;
+                    break;
+                }
+            }
+            if (hasModule) {
+                registeredPlugins.add(pluginInfo);
+            }
+        }
+        modelMap.addAttribute("registeredPlugins", registeredPlugins);
+
         return "index";
     }
 
