@@ -137,7 +137,7 @@
                 e.preventDefault()
             });
 
-            $("#bjui-hnav-navbar").find('.plugin').each(function(){
+            $("#bjui-hnav-navbar").find('.plugin').each(function () {
                 console.log(this);
             });
 
@@ -168,7 +168,7 @@
                     data-target="#bjui-navbar-collapse">
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="bjui-navbar-logo" href="#"><img src="/logo.png"></a>
+            <a class="bjui-navbar-logo" href="/" style="font-size: 18px;color: #333;line-height: 45px;margin-left: 20px;">运营管理平台</a>
         </div>
         <nav id="bjui-navbar-collapse">
             <ul class="bjui-navbar-right">

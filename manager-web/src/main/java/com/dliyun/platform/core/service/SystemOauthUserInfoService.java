@@ -1,5 +1,6 @@
 package com.dliyun.platform.core.service;
 
+import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.paginator.domain.PageBounds;
 import com.dliyun.platform.common.paginator.domain.PageResult;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
@@ -109,4 +110,13 @@ public interface SystemOauthUserInfoService {
      * @param type
      */
     void insertOrUpdateUserPassword(Long uid, String passwd, String salt, SystemOauthUserPassword.UserPasswordType type);
+
+    /**
+     * 保存用户角色
+     *
+     * @param uid
+     * @param roleIds
+     * @throws ServiceException
+     */
+    void saveRoles(Long uid, Long[] roleIds) throws ServiceException;
 }

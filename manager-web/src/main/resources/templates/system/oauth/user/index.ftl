@@ -69,7 +69,7 @@
             </td>
             <td>
                 <@s.oauth pluginKey="system" moduleKey="oauth" authorities="user.roles">
-                    <a href="/oauth/user/set_role.htm?id=${row.userBaseInfo.id}" data-icon="cog"
+                    <a href="/system/oauth/user/roles.htm?id=${row.userBaseInfo.id}" data-icon="cog"
                        data-mask="true" data-toggle="dialog" class="btn btn-default" title="设置用户角色">设置角色</a>
                 </@s.oauth>
             </td>

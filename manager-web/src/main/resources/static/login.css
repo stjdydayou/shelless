@@ -1,0 +1,102 @@
+* {
+    font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
+}
+
+body {
+    background: url(loginbg.jpg) no-repeat center center fixed;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+a:link {
+    color: #285e8e;
+}
+
+.main_box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -260px;
+    margin-left: -300px;
+    padding: 30px;
+    width: 600px;
+    height: 460px;
+    background: #FAFAFA;
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px #DDD solid;
+    border-radius: 5px;
+    -webkit-box-shadow: 1px 5px 8px #888888;
+    -moz-box-shadow: 1px 5px 8px #888888;
+    box-shadow: 1px 5px 8px #888888;
+}
+
+.login_logo {
+    margin-bottom: 20px;
+    height: 45px;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 45px;
+}
+
+.login_logo img {
+    height: 45px;
+}
+
+.login_msg {
+    text-align: center;
+    font-size: 16px;
+}
+
+.login_form {
+    padding-top: 20px;
+    font-size: 16px;
+}
+
+.login_box .form-control {
+    display: inline-block;
+    *display: inline;
+    zoom: 1;
+    width: auto;
+    font-size: 18px;
+}
+
+.login_box .form-control.x319 {
+    width: 319px;
+}
+
+.login_box .form-control.x164 {
+    width: 164px;
+}
+
+.login_box .form-group {
+    margin-bottom: 20px;
+}
+
+.login_box .form-group label.t {
+    width: 120px;
+    text-align: right;
+    cursor: pointer;
+}
+
+.login_box .form-group.space {
+    padding-top: 15px;
+    border-top: 1px #FFF dotted;
+}
+
+.login_box .form-group img {
+    margin-top: 1px;
+    height: 32px;
+    vertical-align: top;
+}
+
+.login_box .m {
+    cursor: pointer;
+}
+
+.bottom {
+    text-align: center;
+    font-size: 12px;
+}

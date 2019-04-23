@@ -1,5 +1,7 @@
 package com.dliyun.platform.core.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.io.Serializable;
 
 /**
@@ -19,20 +21,19 @@ public class SystemOauthUserPassword implements Serializable {
 
     private UserPasswordType type;
 
-    public SystemOauthUserPassword() {
+    public static SystemOauthUserPassword instance(Long uid, String passwd, String salt, UserPasswordType type) {
+        SystemOauthUserPassword systemOauthUserPassword = new SystemOauthUserPassword();
+        systemOauthUserPassword.setUid(uid);
+        systemOauthUserPassword.setPasswd(passwd);
+        systemOauthUserPassword.setSalt(salt);
+        systemOauthUserPassword.setType(type);
 
-    }
-
-    public SystemOauthUserPassword(Long uid, String passwd, String salt, UserPasswordType type) {
-        this.uid = uid;
-        this.passwd = passwd;
-        this.salt = salt;
-        this.type = type;
+        return systemOauthUserPassword;
     }
 
     public String getId() {
         if (id == null) {
-            id = String.format("%s@%s", uid, type.getCode());
+            id = DigestUtils.md5Hex(String.format("%s@%s", uid, type.getCode()));
         }
         return id;
     }

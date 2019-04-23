@@ -2,127 +2,12 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>系统登录</title>
+    <title>运维管理系统登录</title>
     <script src="/js/jquery-1.7.2.min.js"></script>
     <script src="/js/jquery.cookie.js"></script>
     <link href="/BJUI/themes/css/bootstrap.min.css" rel="stylesheet">
-    <style type="text/css">
-        * {
-            font-family: "Verdana", "Tahoma", "Lucida Grande", "Microsoft YaHei", "Hiragino Sans GB", sans-serif;
-        }
+    <link href="/login.css" rel="stylesheet">
 
-        body {
-            background: url(images/loginbg_01.jpg) no-repeat center center fixed;
-            -webkit-background-size: cover;
-            -moz-background-size: cover;
-            -o-background-size: cover;
-            background-size: cover;
-        }
-
-        a:link {
-            color: #285e8e;
-        }
-
-        .main_box {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            margin-top: -260px;
-            margin-left: -300px;
-            padding: 30px;
-            width: 600px;
-            height: 460px;
-            background: #FAFAFA;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px #DDD solid;
-            border-radius: 5px;
-            -webkit-box-shadow: 1px 5px 8px #888888;
-            -moz-box-shadow: 1px 5px 8px #888888;
-            box-shadow: 1px 5px 8px #888888;
-        }
-
-        .main_box .setting {
-            position: absolute;
-            top: 5px;
-            right: 10px;
-            width: 10px;
-            height: 10px;
-        }
-
-        .main_box .setting a {
-            color: #FF6600;
-        }
-
-        .main_box .setting a:hover {
-            color: #555;
-        }
-
-        .login_logo {
-            margin-bottom: 20px;
-            height: 45px;
-            text-align: center;
-        }
-
-        .login_logo img {
-            height: 45px;
-        }
-
-        .login_msg {
-            text-align: center;
-            font-size: 16px;
-        }
-
-        .login_form {
-            padding-top: 20px;
-            font-size: 16px;
-        }
-
-        .login_box .form-control {
-            display: inline-block;
-            *display: inline;
-            zoom: 1;
-            width: auto;
-            font-size: 18px;
-        }
-
-        .login_box .form-control.x319 {
-            width: 319px;
-        }
-
-        .login_box .form-control.x164 {
-            width: 164px;
-        }
-
-        .login_box .form-group {
-            margin-bottom: 20px;
-        }
-
-        .login_box .form-group label.t {
-            width: 120px;
-            text-align: right;
-            cursor: pointer;
-        }
-
-        .login_box .form-group.space {
-            padding-top: 15px;
-            border-top: 1px #FFF dotted;
-        }
-
-        .login_box .form-group img {
-            margin-top: 1px;
-            height: 32px;
-            vertical-align: top;
-        }
-
-        .login_box .m {
-            cursor: pointer;
-        }
-
-        .bottom {
-            text-align: center;
-            font-size: 12px;
-        }
-    </style>
     <script type="text/javascript">
 
         $(document).ready(function () {
@@ -164,7 +49,7 @@
         });
     </script>
 </head>
-<body style="background: url('/loginbg.jpg')">
+<body>
 <!--[if lte IE 7]>
 <style type="text/css">
     #errorie {
@@ -204,13 +89,13 @@
 <div class="main_box">
     <div class="login_box">
         <div class="login_logo">
-            <img src="images/logo.png">
+            管理系统登录
         </div>
         <div class="login_msg">
             <font color="red" id="loginMsg"></font>
         </div>
         <div class="login_form">
-            <form action="index.html" id="loginForm" method="post">
+            <form action="/index.htm" id="loginForm" method="post">
                 <div class="form-group">
                     <label for="loginAccount" class="t">用户名：</label>
                     <input id="loginAccount" name="loginAccount" type="text" class="form-control x319 in"
@@ -224,16 +109,15 @@
                 <div class="form-group">
                     <label for="captcha" class="t">验证码：</label>
                     <input id="captcha" name="captcha" type="text" class="form-control x164 in">
-                    <img id="captchaImage" alt="点击更换" title="点击更换" src="images/captcha.jpeg" class="m">
+                    <img id="captchaImage" alt="点击更换" title="点击更换" src="" class="m">
                 </div>
-                <div class="form-group space">
-                    <label class="t"></label>　　　
+                <div class="form-group space" style="text-align: center">
                     <input type="submit" id="loginSubmitBtn" value="立即登录" class="btn btn-primary btn-lg">
                 </div>
             </form>
         </div>
     </div>
-    <div class="bottom">Copyright &copy; 2013 - 2014 <a href="#">B-JUI 前端框架 - 系统登陆</a></div>
+    <div class="bottom">Copyright &copy; 2019 <a href="http://www.dliyun.com">dliyun.com</a></div>
 </div>
 </body>
 </html>

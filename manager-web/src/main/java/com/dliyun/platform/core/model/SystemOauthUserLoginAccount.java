@@ -1,5 +1,7 @@
 package com.dliyun.platform.core.model;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import java.io.Serializable;
 
 /**
@@ -27,7 +29,7 @@ public class SystemOauthUserLoginAccount implements Serializable {
 
     public String getId() {
         if (id == null) {
-            id = String.format("%s%010d", accountType.getCode(), uid);
+            id = DigestUtils.md5Hex(String.format("%s%010d", uid, accountType.getCode()));
         }
         return id;
     }

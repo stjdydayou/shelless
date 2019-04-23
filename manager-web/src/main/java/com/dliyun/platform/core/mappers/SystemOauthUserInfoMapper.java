@@ -65,7 +65,7 @@ public interface SystemOauthUserInfoMapper {
      * @param uid
      * @return
      */
-    SystemOauthUserLoginLog findLastLogin(Long uid);
+    SystemOauthUserLoginLog findLastLogin(@Param("uid") Long uid);
 
     /**
      * 查询用户所拥有的权限
@@ -73,7 +73,7 @@ public interface SystemOauthUserInfoMapper {
      * @param uid
      * @return
      */
-    List<String> findAuthorities(Long uid);
+    List<String> findAuthorities(@Param("uid") Long uid);
 
     /**
      * 查询用户所有登录账号
@@ -81,7 +81,7 @@ public interface SystemOauthUserInfoMapper {
      * @param uid
      * @return
      */
-    List<Long> findRolesIdByUserId(Long uid);
+    List<Long> findRolesIdByUserId(@Param("uid") Long uid);
 
 
     /**
@@ -90,7 +90,7 @@ public interface SystemOauthUserInfoMapper {
      * @param uid
      * @return
      */
-    List<SystemOauthUserLoginAccount> findLoginAccountsByUid(Long uid);
+    List<SystemOauthUserLoginAccount> findLoginAccountsByUid(@Param("uid") Long uid);
 
     /**
      * 保存用户基本信息
@@ -105,4 +105,19 @@ public interface SystemOauthUserInfoMapper {
      * @param userPassword
      */
     void insertOrUpdateUserPassword(SystemOauthUserPassword userPassword);
+
+    /**
+     * 删除用户下的角色
+     *
+     * @param uid
+     */
+    void deleteRoles(@Param("uid") Long uid);
+
+    /**
+     * 保存用户角色
+     *
+     * @param uid
+     * @param roleIds
+     */
+    void insertRoles(@Param("uid") Long uid, @Param("roleIds") Long[] roleIds);
 }

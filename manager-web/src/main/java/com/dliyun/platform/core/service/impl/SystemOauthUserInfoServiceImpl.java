@@ -1,5 +1,6 @@
 package com.dliyun.platform.core.service.impl;
 
+import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.paginator.domain.PageBounds;
 import com.dliyun.platform.common.paginator.domain.PageResult;
 import com.dliyun.platform.common.utils.DateUtil;
@@ -109,12 +110,29 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     }
 
     @Override
-    public void insertOrUpdateUserPassword(Long uid, String passwd, String salt, SystemOauthUserPassword.UserPasswordType type) {
-        SystemOauthUserPassword userPassword = new SystemOauthUserPassword();
-        userPassword.setUid(uid);
-        userPassword.setPasswd(passwd);
-        userPassword.setSalt(salt);
-        userPassword.setType(type);
+    public void insertOrUpdateUserPassword(Long uid, String password, String salt, SystemOauthUserPassword.UserPasswordType type) {
+        SystemOauthUserPassword userPassword = SystemOauthUserPassword.instance(uid, password, salt, type);
         this.systemOauthUserInfoMapper.insertOrUpdateUserPassword(userPassword);
+    }
+
+    @Override
+    public void saveRoles(Long uid, Long[] roleIds) throws ServiceException {
+        Exception exp = this.transactionTemplate.execute(status -> {
+            try {
+                systemOauthUserInfoMapper.deleteRoles(uid);
+                if (roleIds != null && roleIds.length > 0) {
+                    systemOauthUserInfoMapper.insertRoles(uid, roleIds);
+                }
+                return null;
+            } catch (Exception e) {
+                status.setRollbackOnly();
+                return e;
+            }
+
+        });
+
+        if (exp != null) {
+            throw new ServiceException(exp);
+        }
     }
 }

@@ -1,9 +1,10 @@
 package com.dliyun.platform.web.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.dliyun.platform.web.AjaxResult;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.exception.NoLoginException;
+import com.dliyun.platform.common.exception.PermissionDeniedException;
+import com.dliyun.platform.web.AjaxResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -42,6 +43,11 @@ public class FundaErrorController implements ErrorController {
     @ExceptionHandler(NoLoginException.class)
     public String bindExceptionHnadler(NoLoginException exp, HandlerMethod handlerMethod) {
         return returnString(handlerMethod, "您还没有登录", "redirect:" + exp.getLoginUrl());
+    }
+
+    @ExceptionHandler(PermissionDeniedException.class)
+    public String permissionDeniedExceptionHnadler(PermissionDeniedException exp, HandlerMethod handlerMethod) {
+        return returnString(handlerMethod, "你没有权限访问此页面", "error/403");
     }
 
     /**

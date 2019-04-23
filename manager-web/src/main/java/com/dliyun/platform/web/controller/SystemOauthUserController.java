@@ -3,7 +3,10 @@ package com.dliyun.platform.web.controller;
 
 import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.DwzPageInfo;
+import com.dliyun.platform.common.exception.NoFoundException;
+import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.oauth.OauthService;
+import com.dliyun.platform.common.oauth.Permission;
 import com.dliyun.platform.common.paginator.domain.PageResult;
 import com.dliyun.platform.common.utils.RandCodeUtil;
 import com.dliyun.platform.core.model.SystemOauthRoleInfo;
@@ -41,6 +44,7 @@ public class SystemOauthUserController {
     @Autowired
     private OauthService oauthService;
 
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.find")
     @RequestMapping("/index.htm")
     public String user(ModelMap modelMap, DwzPageInfo dwzPageInfo, SystemOauthUserInfoVO vo) {
         PageResult<SystemOauthUserBaseInfo> pageResult = this.systemOauthUserInfoService.findPage(dwzPageInfo.getPageBounds(), vo);
@@ -66,6 +70,7 @@ public class SystemOauthUserController {
     }
 
 
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.disable")
     @ResponseBody
     @RequestMapping("/disable.ajax")
     public DwzJSON disable(Long[] ids) {
@@ -83,6 +88,7 @@ public class SystemOauthUserController {
         return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("禁用成功");
     }
 
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.enable")
     @ResponseBody
     @RequestMapping("/enable.ajax")
     public DwzJSON enable(Long[] ids) {
@@ -97,6 +103,7 @@ public class SystemOauthUserController {
         return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("启用成功");
     }
 
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.resetPassword")
     @ResponseBody
     @RequestMapping("/resetPassword.ajax")
     public DwzJSON resetPassword(Long[] ids) {
@@ -112,6 +119,35 @@ public class SystemOauthUserController {
                 this.systemOauthUserInfoService.insertOrUpdateUserPassword(id, loginPasswd, salt, SystemOauthUserPassword.UserPasswordType.login);
             }
         }
-        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("用户密码已经成功被重置为111111").setTabid("system", "oauth", "oauth-user");
+        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("用户密码已经成功被重置为111111").setTabid("system", "oauth", "user");
+    }
+
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.roles")
+    @RequestMapping("/roles.htm")
+    public String userSetRole(ModelMap modelMap, Long id) throws NoFoundException {
+        SystemOauthUserBaseInfo userBaseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(id);
+        if (userBaseInfo == null) {
+            throw new NoFoundException();
+        }
+
+        modelMap.addAttribute("userBaseInfo", userBaseInfo);
+
+        modelMap.addAttribute("loginAccounts", this.systemOauthUserInfoService.findLoginAccountsByUid(userBaseInfo.getId()));
+
+
+        List<SystemOauthRoleInfo> listAllRoles = this.systemOauthRoleInfoService.findAll();
+        modelMap.addAttribute("listAllRoles", listAllRoles);
+
+        List<Long> listRoles = this.systemOauthUserInfoService.findRolesIdByUserId(userBaseInfo.getId());
+        modelMap.addAttribute("listRoles", listRoles);
+        return "/system/oauth/user/roles";
+    }
+
+    @ResponseBody
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.roles")
+    @RequestMapping("/roles.ajax")
+    public DwzJSON userSetRole(Long uid, Long[] roleIds) throws ServiceException {
+        this.systemOauthUserInfoService.saveRoles(uid, roleIds);
+        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("设置成功").setCloseCurrent(true).setTabid("system", "oauth", "user");
     }
 }

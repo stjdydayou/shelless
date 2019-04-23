@@ -116,7 +116,7 @@ public class ShellWebSocketHandler implements WebSocketHandler, ApplicationConte
     private StringBuilder getBanner() {
         StringBuilder buffer = new StringBuilder();
         buffer.append("\u001b[32mWelcome to WebSSH.\r\n");
-        buffer.append("Copyright © 2019 http://www.axungu.com.\r\n");
+        buffer.append("Copyright © 2019 http://www.dliyun.com.\r\n");
         buffer.append("\u001b[31m-----------------------------------------------------\r\n");
         buffer.append("\u001b[0m");
         return buffer;

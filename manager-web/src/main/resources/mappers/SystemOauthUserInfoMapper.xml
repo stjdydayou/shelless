@@ -149,4 +149,15 @@
         #{cityId,jdbcType=VARCHAR}, #{county,jdbcType=VARCHAR}, #{countyId,jdbcType=VARCHAR},
         #{loginTime,jdbcType=TIMESTAMP})
     </insert>
+
+    <delete id="deleteRoles" parameterType="java.lang.Long">
+        delete FROM system_oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
+    </delete>
+    <insert id="insertRoles" parameterType="java.lang.Object">
+        insert into system_oauth_user_role (uid, role_id)
+        values
+        <foreach collection="roleIds" item="roleId" separator=",">
+            (#{uid,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
+        </foreach>
+    </insert>
 </mapper>
