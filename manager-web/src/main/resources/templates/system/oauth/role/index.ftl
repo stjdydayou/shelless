@@ -1,5 +1,5 @@
 <div class="bjui-pageHeader">
-    <div  class="pull-left">
+    <div class="pull-left">
         <a class="btn btn-orange" href="${__url__}" data-toggle="navtab" data-title="角色管理" data-icon="undo">刷新</a>
     </div>
     <div class="pull-right">
@@ -8,13 +8,13 @@
            data-mask="true"
            data-toggle="dialog"
            data-width="600"
-           class="btn btn-primary"
+           class="btn btn-default"
            data-icon="plus">
             添加
         </a>
     </@s.oauth>
     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.delete">
-        <a type="button" class="btn btn-danger" href="/system/oauth/role/delete.ajax" data-icon="remove"
+        <a type="button" class="btn btn-default" href="/system/oauth/role/delete.ajax" data-icon="remove"
            data-toggle="doajaxchecked" data-confirm-msg="确定要删除选中项吗？" data-idname="ids"
            data-group="roles">
             删除
@@ -45,17 +45,17 @@
                     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.edit">
                     <a href="/system/oauth/role/edit.htm?id=${row.id}"
                        data-mask="true" data-width="600" data-toggle="dialog"
-                       class="btn btn-info" data-icon="edit" title="修改">
+                       class="btn btn-default" data-icon="edit" title="修改">
                         修改
                     </a>
-                </@s.oauth>
+                    </@s.oauth>
                     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.authority">
                     <a href="/system/oauth/role/authority.htm?id=${row.id}" data-width="800" data-height="400"
-                       data-mask="true" data-toggle="dialog" class="btn btn-warning" data-title="设置[${row.name}]权限"
+                       data-mask="true" data-toggle="dialog" class="btn btn-default" data-title="设置[${row.name}]权限"
                        data-icon="cog">
                         设置权限
                     </a>
-                </@s.oauth>
+                    </@s.oauth>
             </td>
             <td>${row.id}</td>
             <td>${row.name}</td>

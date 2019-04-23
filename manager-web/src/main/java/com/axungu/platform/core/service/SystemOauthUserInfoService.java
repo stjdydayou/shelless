@@ -13,7 +13,7 @@ import java.util.List;
  * @author Administrator
  * @date 2017-6-5
  */
-public interface UserInfoService {
+public interface SystemOauthUserInfoService {
 
     /**
      * 查询用户单个的登录账号

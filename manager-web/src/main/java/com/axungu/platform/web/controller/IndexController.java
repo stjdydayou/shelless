@@ -16,7 +16,7 @@ import com.axungu.platform.core.model.UserBaseInfo;
 import com.axungu.platform.core.model.UserLoginAccount;
 import com.axungu.platform.core.model.UserLoginLog;
 import com.axungu.platform.core.model.UserPassword;
-import com.axungu.platform.core.service.UserInfoService;
+import com.axungu.platform.core.service.SystemOauthUserInfoService;
 import com.axungu.platform.web.AjaxResult;
 import com.axungu.platform.web.params.LoginParam;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class IndexController {
     private SimpleCaptchaService simpleCaptchaService;
 
     @Autowired
-    private UserInfoService userInfoService;
+    private SystemOauthUserInfoService systemOauthUserInfoService;
 
     @Autowired
     private OauthService oauthService;
@@ -109,29 +109,29 @@ public class IndexController {
         }
 
 
-        UserLoginAccount userLoginAccount = this.userInfoService.findLoginAccount(loginParam.getLoginAccount(), accountType);
+        UserLoginAccount userLoginAccount = this.systemOauthUserInfoService.findLoginAccount(loginParam.getLoginAccount(), accountType);
         if (userLoginAccount == null) {
             return AjaxResult.instance("用户名或密码错误，请重新输入");
         } else {
-            UserBaseInfo userBaseInfo = this.userInfoService.findUserBaseInfoById(userLoginAccount.getUid());
+            UserBaseInfo userBaseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(userLoginAccount.getUid());
 
-            UserPassword userPassword = this.userInfoService.findUserPasswd(userBaseInfo.getId(), UserPasswordType.login);
+            UserPassword userPassword = this.systemOauthUserInfoService.findUserPasswd(userBaseInfo.getId(), UserPasswordType.login);
 
             String loginPassword = this.oauthService.generatePassword(loginParam.getLoginPassword(), userPassword.getSalt());
             log.debug(loginPassword);
             if (loginPassword.equals(userPassword.getPasswd())) {
 
 
-                UserLoginLog lastLoginLog = this.userInfoService.findLastLogin(userBaseInfo.getId());
+                UserLoginLog lastLoginLog = this.systemOauthUserInfoService.findLastLogin(userBaseInfo.getId());
                 Date lastLoginTime = lastLoginLog == null ? DateUtil.current() : lastLoginLog.getLoginTime();
 
-                List<String> listAuthorities = this.userInfoService.findAuthorities(userBaseInfo.getId());
+                List<String> listAuthorities = this.systemOauthUserInfoService.findAuthorities(userBaseInfo.getId());
 
                 OauthInfo oauthInfo = new OauthInfo(userBaseInfo.getId(), userBaseInfo.getNickName(), userBaseInfo.getAvatar(), lastLoginTime, accessToken, listAuthorities);
                 this.oauthService.setAuth(oauthInfo);
 
                 try {
-                    this.userInfoService.updateLoginInfo(userBaseInfo.getId(), ServletContext.getRemoteIPAddress());
+                    this.systemOauthUserInfoService.updateLoginInfo(userBaseInfo.getId(), ServletContext.getRemoteIPAddress());
                 } catch (Exception e) {
                     log.warn("save login log error", e);
                 }

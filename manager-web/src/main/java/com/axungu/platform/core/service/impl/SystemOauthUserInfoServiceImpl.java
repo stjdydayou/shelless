@@ -8,7 +8,7 @@ import com.axungu.platform.core.model.UserBaseInfo;
 import com.axungu.platform.core.model.UserLoginAccount;
 import com.axungu.platform.core.model.UserLoginLog;
 import com.axungu.platform.core.model.UserPassword;
-import com.axungu.platform.core.service.UserInfoService;
+import com.axungu.platform.core.service.SystemOauthUserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class UserInfoServiceImpl implements UserInfoService {
+public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoService {
 
     @Autowired
     private TransactionTemplate transactionTemplate;

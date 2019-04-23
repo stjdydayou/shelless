@@ -6,7 +6,7 @@ import com.axungu.common.exception.ServiceException;
 import com.axungu.common.oauth.Permission;
 import com.axungu.platform.PluginInfo;
 import com.axungu.platform.core.model.OauthRoleInfo;
-import com.axungu.platform.core.service.OauthRoleInfoService;
+import com.axungu.platform.core.service.SystemOauthRoleInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,12 +26,12 @@ public class SystemOauthRoleController {
 
 
     @Autowired
-    private OauthRoleInfoService oauthRoleInfoService;
+    private SystemOauthRoleInfoService systemOauthRoleInfoService;
 
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.find")
     @RequestMapping("/index.htm")
     public String role(ModelMap modelMap) {
-        List<OauthRoleInfo> listData = this.oauthRoleInfoService.findAll();
+        List<OauthRoleInfo> listData = this.systemOauthRoleInfoService.findAll();
         modelMap.addAttribute("listData", listData);
         return "/system/oauth/role/index";
     }
@@ -46,7 +46,7 @@ public class SystemOauthRoleController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.edit")
     @RequestMapping("/edit.htm")
     public String roleEdit(ModelMap modelMap, Long id) {
-        OauthRoleInfo oauthRoleInfo = this.oauthRoleInfoService.findById(id);
+        OauthRoleInfo oauthRoleInfo = this.systemOauthRoleInfoService.findById(id);
         modelMap.addAttribute("oauthRoleInfo", oauthRoleInfo);
         return "/system/oauth/role/edit";
     }
@@ -58,7 +58,7 @@ public class SystemOauthRoleController {
         if (StringUtils.isBlank(oauthRoleInfo.getName())) {
             return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("请输入角色名称");
         }
-        this.oauthRoleInfoService.save(oauthRoleInfo);
+        this.systemOauthRoleInfoService.save(oauthRoleInfo);
         return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("保存成功").setCloseCurrent(true).setTabid("system", "oauth", "role");
     }
 
@@ -71,7 +71,7 @@ public class SystemOauthRoleController {
                 if (id.equals(1000L)) {
                     continue;
                 }
-                this.oauthRoleInfoService.deleteById(id);
+                this.systemOauthRoleInfoService.deleteById(id);
             }
         }
         return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("删除成功");
@@ -80,12 +80,12 @@ public class SystemOauthRoleController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.authority")
     @RequestMapping("/authority.htm")
     public String roleSetResource(ModelMap modelMap, Long id) {
-        OauthRoleInfo oauthRoleInfo = this.oauthRoleInfoService.findById(id);
+        OauthRoleInfo oauthRoleInfo = this.systemOauthRoleInfoService.findById(id);
         modelMap.addAttribute("oauthRoleInfo", oauthRoleInfo);
 
         Collection<PluginInfo> listPlugins = PluginInfo.REGISTERED_PLUGINS.values();
 
-        List<String> listAuthorities = this.oauthRoleInfoService.findAuthorities(id);
+        List<String> listAuthorities = this.systemOauthRoleInfoService.findAuthorities(id);
         modelMap.addAttribute("listAuthorities", listAuthorities);
         modelMap.addAttribute("listPlugins", listPlugins);
 
@@ -96,7 +96,7 @@ public class SystemOauthRoleController {
     @ResponseBody
     @RequestMapping("/authority.ajax")
     public DwzJSON roleSetResource(Long roleId, String[] authorities) throws ServiceException {
-        this.oauthRoleInfoService.setAuthorities(roleId, authorities);
+        this.systemOauthRoleInfoService.setAuthorities(roleId, authorities);
         return DwzJSON.body(DwzJSON.StatusCode.success).setCloseCurrent(true).setMessage("保存成功");
     }
 

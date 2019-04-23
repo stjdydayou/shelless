@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by shenyj on 17-3-24.
  */
-public interface OauthRoleInfoService {
+public interface SystemOauthRoleInfoService {
 
     /**
      * 查询所有角色

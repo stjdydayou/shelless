@@ -3,7 +3,7 @@ package com.axungu.platform.core.service.impl;
 import com.axungu.common.exception.ServiceException;
 import com.axungu.platform.core.mappers.OauthRoleInfoMapper;
 import com.axungu.platform.core.model.OauthRoleInfo;
-import com.axungu.platform.core.service.OauthRoleInfoService;
+import com.axungu.platform.core.service.SystemOauthRoleInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -14,7 +14,7 @@ import java.util.List;
  * Created by shenyj on 17-3-24.
  */
 @Service
-public class OauthRoleInfoServiceImpl implements OauthRoleInfoService {
+public class SystemOauthRoleInfoServiceImpl implements SystemOauthRoleInfoService {
 
     @Autowired
     protected TransactionTemplate transactionTemplate;
