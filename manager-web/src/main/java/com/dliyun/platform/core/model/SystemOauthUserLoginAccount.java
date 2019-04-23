@@ -10,7 +10,7 @@ public class SystemOauthUserLoginAccount implements Serializable {
 
     private static final long serialVersionUID = -6476815660455154143L;
 
-    private Long id;
+    private String id;
 
     private Long uid;
 
@@ -25,14 +25,14 @@ public class SystemOauthUserLoginAccount implements Serializable {
         return account;
     }
 
-    public Long getId() {
+    public String getId() {
         if (id == null) {
-            id = Long.parseLong(String.format("%s%010d", accountType.getCode(), uid));
+            id = String.format("%s%010d", accountType.getCode(), uid);
         }
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

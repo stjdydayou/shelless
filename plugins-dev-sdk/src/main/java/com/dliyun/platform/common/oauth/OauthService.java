@@ -10,10 +10,10 @@ public interface OauthService {
      * 生成密码
      *
      * @param loginPwd
-     * @param secret
+     * @param salt
      * @return
      */
-    String generatePassword(String loginPwd, String secret);
+    String generatePassword(String loginPwd, String salt);
 
     /**
      * 保存用户登录信息

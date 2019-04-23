@@ -9,7 +9,7 @@ public class SystemOauthUserPassword implements Serializable {
 
     private static final long serialVersionUID = 5320982429919793484L;
 
-    private Long id;
+    private String id;
 
     private Long uid;
 
@@ -30,14 +30,14 @@ public class SystemOauthUserPassword implements Serializable {
         this.type = type;
     }
 
-    public Long getId() {
+    public String getId() {
         if (id == null) {
-            id = Long.parseLong(String.format("%s%010d", type.getCode(), uid));
+            id = String.format("%s@%s", uid, type.getCode());
         }
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

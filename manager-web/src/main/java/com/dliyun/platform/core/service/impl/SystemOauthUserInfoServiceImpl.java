@@ -1,5 +1,7 @@
 package com.dliyun.platform.core.service.impl;
 
+import com.dliyun.platform.common.paginator.domain.PageBounds;
+import com.dliyun.platform.common.paginator.domain.PageResult;
 import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.core.mappers.SystemOauthUserInfoMapper;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
@@ -7,6 +9,7 @@ import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserLoginLog;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
 import com.dliyun.platform.core.service.SystemOauthUserInfoService;
+import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
@@ -32,8 +35,18 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
+    public PageResult<SystemOauthUserBaseInfo> findPage(PageBounds bounds, SystemOauthUserInfoVO vo) {
+        return this.systemOauthUserInfoMapper.findPage(bounds, vo).getPageResult();
+    }
+
+    @Override
     public SystemOauthUserLoginAccount findLoginAccount(String loginAccount, SystemOauthUserLoginAccount.AccountType accountType) {
         return this.systemOauthUserInfoMapper.findLoginAccount(loginAccount, accountType);
+    }
+
+    @Override
+    public List<SystemOauthUserLoginAccount> findLoginAccountsByUid(Long uid) {
+        return this.systemOauthUserInfoMapper.findLoginAccountsByUid(uid);
     }
 
     @Override
@@ -83,5 +96,25 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     @Override
     public List<String> findAuthorities(Long uid) {
         return this.systemOauthUserInfoMapper.findAuthorities(uid);
+    }
+
+    @Override
+    public List<Long> findRolesIdByUserId(Long uid) {
+        return this.systemOauthUserInfoMapper.findRolesIdByUserId(uid);
+    }
+
+    @Override
+    public void updateBaseInfo(SystemOauthUserBaseInfo userBaseInfo) {
+        this.systemOauthUserInfoMapper.updateBaseInfo(userBaseInfo);
+    }
+
+    @Override
+    public void insertOrUpdateUserPassword(Long uid, String passwd, String salt, SystemOauthUserPassword.UserPasswordType type) {
+        SystemOauthUserPassword userPassword = new SystemOauthUserPassword();
+        userPassword.setUid(uid);
+        userPassword.setPasswd(passwd);
+        userPassword.setSalt(salt);
+        userPassword.setType(type);
+        this.systemOauthUserInfoMapper.insertOrUpdateUserPassword(userPassword);
     }
 }

@@ -35,9 +35,8 @@ public class AuthorityDirective implements TemplateDirectiveModel {
         if (StringUtils.isNotBlank(pluginKey) && StringUtils.isNotBlank(moduleKey)) {
             OauthInfo oauthInfo = this.authService.getOAuth();
 
-            if (StringUtils.isNotBlank(authorities)) {
+            if (StringUtils.isNotBlank(authorities) && oauthInfo != null) {
                 String[] arrayAuthorities = authorities.split(";");
-
 
                 if (arrayAuthorities.length > 0) {
                     for (String authority : arrayAuthorities) {

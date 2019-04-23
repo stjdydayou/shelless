@@ -15,16 +15,16 @@ public abstract class BaseOauthService implements OauthService {
      * 生成密码
      *
      * @param loginPwd
-     * @param secret
+     * @param salt
      * @return
      */
     @Override
-    public String generatePassword(String loginPwd, String secret) {
+    public String generatePassword(String loginPwd, String salt) {
         if (loginPwd == null) {
             return "";
         }
         loginPwd = DigestUtils.sha256Hex(loginPwd);
-        return DigestUtils.md5Hex(loginPwd + "@" + secret);
+        return DigestUtils.md5Hex(loginPwd + "@" + salt);
     }
 
     /**

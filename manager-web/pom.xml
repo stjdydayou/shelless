@@ -29,11 +29,11 @@
             <artifactId>plugins-dev-sdk</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.axungu</groupId>
-            <artifactId>plugin-webshell</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.axungu</groupId>-->
+            <!--<artifactId>plugin-webshell</artifactId>-->
+            <!--<version>${parent.version}</version>-->
+        <!--</dependency>-->
         <!--<dependency>-->
             <!--<groupId>com.axungu</groupId>-->
             <!--<artifactId>plugin-sftp</artifactId>-->

@@ -1,9 +1,12 @@
 package com.dliyun.platform.core.service;
 
+import com.dliyun.platform.common.paginator.domain.PageBounds;
+import com.dliyun.platform.common.paginator.domain.PageResult;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserLoginLog;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
+import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
 
 import java.util.List;
 
@@ -14,6 +17,16 @@ import java.util.List;
 public interface SystemOauthUserInfoService {
 
     /**
+     * 分页查询用户列表
+     *
+     * @param bounds
+     * @param vo
+     * @return
+     */
+    PageResult<SystemOauthUserBaseInfo> findPage(PageBounds bounds, SystemOauthUserInfoVO vo);
+
+
+    /**
      * 查询用户单个的登录账号
      *
      * @param loginAccount
@@ -21,6 +34,14 @@ public interface SystemOauthUserInfoService {
      * @return
      */
     SystemOauthUserLoginAccount findLoginAccount(String loginAccount, SystemOauthUserLoginAccount.AccountType accountType);
+
+    /**
+     * 查询用户所有登录账号
+     *
+     * @param uid
+     * @return
+     */
+    List<SystemOauthUserLoginAccount> findLoginAccountsByUid(Long uid);
 
     /**
      * 查询用户基本信息
@@ -64,5 +85,28 @@ public interface SystemOauthUserInfoService {
      */
     List<String> findAuthorities(Long uid);
 
+    /**
+     * 查询用户所有的角色
+     *
+     * @param uid
+     * @return
+     */
+    List<Long> findRolesIdByUserId(Long uid);
 
+    /**
+     * 保存用户基本信息
+     *
+     * @param userBaseInfo
+     */
+    void updateBaseInfo(SystemOauthUserBaseInfo userBaseInfo);
+
+    /**
+     * 更新用户密码
+     *
+     * @param uid
+     * @param passwd
+     * @param salt
+     * @param type
+     */
+    void insertOrUpdateUserPassword(Long uid, String passwd, String salt, SystemOauthUserPassword.UserPasswordType type);
 }

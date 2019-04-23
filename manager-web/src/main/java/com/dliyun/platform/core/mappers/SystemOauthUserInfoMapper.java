@@ -1,9 +1,12 @@
 package com.dliyun.platform.core.mappers;
 
+import com.dliyun.platform.common.paginator.domain.PageBounds;
+import com.dliyun.platform.common.paginator.domain.PageList;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserLoginLog;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
+import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,6 +16,16 @@ import java.util.List;
  * @date 2017-6-7
  */
 public interface SystemOauthUserInfoMapper {
+
+    /**
+     * 分页查询用户列表
+     *
+     * @param bounds
+     * @param vo
+     * @return
+     */
+    PageList<SystemOauthUserBaseInfo> findPage(PageBounds bounds, SystemOauthUserInfoVO vo);
+
     /**
      * 通过用户账号与账号类型查询唯一登录账号
      *
@@ -61,4 +74,35 @@ public interface SystemOauthUserInfoMapper {
      * @return
      */
     List<String> findAuthorities(Long uid);
+
+    /**
+     * 查询用户所有登录账号
+     *
+     * @param uid
+     * @return
+     */
+    List<Long> findRolesIdByUserId(Long uid);
+
+
+    /**
+     * 查询用户所有的角色
+     *
+     * @param uid
+     * @return
+     */
+    List<SystemOauthUserLoginAccount> findLoginAccountsByUid(Long uid);
+
+    /**
+     * 保存用户基本信息
+     *
+     * @param userBaseInfo
+     */
+    void updateBaseInfo(SystemOauthUserBaseInfo userBaseInfo);
+
+    /**
+     * 更新用户密码
+     *
+     * @param userPassword
+     */
+    void insertOrUpdateUserPassword(SystemOauthUserPassword userPassword);
 }

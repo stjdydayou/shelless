@@ -2,11 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dliyun.platform.core.mappers.SystemOauthUserInfoMapper">
     <resultMap id="LoginAccountResultMap" type="com.dliyun.platform.core.model.SystemOauthUserLoginAccount">
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="uid" property="uid" jdbcType="BIGINT"/>
         <result column="login_account" property="loginAccount" jdbcType="VARCHAR"/>
-        <result column="account_type" property="accountType"
-                typeHandler="com.dliyun.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler"/>
+        <result column="account_type" property="accountType" typeHandler="com.dliyun.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler"/>
     </resultMap>
 
     <resultMap id="BaseUserInfoResultMap" type="com.dliyun.platform.core.model.SystemOauthUserBaseInfo">
@@ -14,19 +13,17 @@
         <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="gender" property="gender" typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserGenderTypeHandler"/>
-        <result column="state" property="state"
-                typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserStateTypeHandler"/>
+        <result column="state" property="state" typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserStateTypeHandler"/>
         <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
         <result column="register_ip" property="registerIp" jdbcType="VARCHAR"/>
     </resultMap>
 
     <resultMap id="UserPasswordResultMap" type="com.dliyun.platform.core.model.SystemOauthUserPassword">
-        <id column="id" property="id" jdbcType="BIGINT"/>
+        <id column="id" property="id" jdbcType="VARCHAR"/>
         <result column="uid" property="uid" jdbcType="BIGINT"/>
         <result column="passwd" property="passwd" jdbcType="VARCHAR"/>
         <result column="salt" property="salt" jdbcType="VARCHAR"/>
-        <result column="type" property="type"
-                typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserPasswordTypeHandler"/>
+        <result column="type" property="type" typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserPasswordTypeHandler"/>
     </resultMap>
 
     <resultMap id="UserLoginLogResultMap" type="com.dliyun.platform.core.model.SystemOauthUserLoginLog">
@@ -52,11 +49,55 @@
         `id`, `nick_name`, `avatar`, `gender`, `state`, `register_time`, `register_ip`
     </sql>
     <sql id="UserPassword_Column_List">
-        id, uid, passwd, salt, type
+        id, uid, passwd, salt, `type`
+    </sql>
+    <sql id="LoginAccount_Column_List">
+        id, uid, login_account, account_type
     </sql>
 
+    <update id="updateBaseInfo" parameterType="com.dliyun.platform.core.model.SystemOauthUserBaseInfo">
+        update system_oauth_user_base_info
+        <set>
+            <if test="nickName != null and nickName != ''">
+                nick_name = #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="avatar != null and avatar != ''">
+                avatar = #{avatar,jdbcType=VARCHAR},
+            </if>
+            <if test="gender != null">
+                gender = #{gender,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserGenderTypeHandler},
+            </if>
+            <if test="state != null">
+                state = #{state,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserStateTypeHandler},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="insertOrUpdateUserPassword">
+        REPLACE INTO dliyun_platform.system_oauth_user_password
+        (id, uid, passwd, salt, `type`)
+        VALUES(#{id,jdbcType=VARCHAR}, #{uid,jdbcType=BIGINT}, #{passwd,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{type,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserPasswordTypeHandler});
+    </update>
+
+
+    <select id="findPage" resultMap="BaseUserInfoResultMap">
+        select
+        <include refid="UserBaseInfo_Column_List"/>
+        from system_oauth_user_base_info
+        <where>
+            <if test="loginAccount != null and loginAccount != ''">
+                and id in (select uid from system_oauth_user_login_account where login_account=#{loginAccount,jdbcType=VARCHAR})
+            </if>
+            <if test="state != null">
+                and state = #{state,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserStateTypeHandler}
+            </if>
+        </where>
+        order by id desc
+    </select>
     <select id="findLoginAccount" resultMap="LoginAccountResultMap" parameterType="java.lang.Object">
-        select id,uid,login_account,account_type from system_oauth_user_login_account t where
+        select
+        <include refid="LoginAccount_Column_List"/>
+        from system_oauth_user_login_account t where
         t.login_account=#{loginAccount,jdbcType=VARCHAR} and
         account_type=#{accountType,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler}
     </select>
@@ -88,6 +129,15 @@
       	  select authority from system_oauth_role_authorities WHERE role_id IN (
       		select role_id from system_oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
       		)
+    </select>
+    <select id="findRolesIdByUserId" resultType="java.lang.Long">
+        SELECT role_id FROM system_oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
+    </select>
+    <select id="findLoginAccountsByUid" resultMap="LoginAccountResultMap">
+        select
+        <include refid="LoginAccount_Column_List"/>
+        from system_oauth_user_login_account where
+        uid=#{uid,jdbcType=BIGINT}
     </select>
 
     <insert id="insertLoginLog" parameterType="com.dliyun.platform.core.model.SystemOauthUserLoginLog">
