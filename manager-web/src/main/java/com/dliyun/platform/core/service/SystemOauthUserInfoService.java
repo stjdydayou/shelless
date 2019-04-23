@@ -119,4 +119,14 @@ public interface SystemOauthUserInfoService {
      * @throws ServiceException
      */
     void saveRoles(Long uid, Long[] roleIds) throws ServiceException;
+
+    /**
+     * 注册一个新的用户
+     *
+     * @param userInfo
+     * @param loginPassword
+     * @param salt
+     * @param loginAccounts
+     */
+    void register(SystemOauthUserBaseInfo userInfo, String loginPassword, String salt, List<SystemOauthUserLoginAccount> loginAccounts) throws ServiceException;
 }

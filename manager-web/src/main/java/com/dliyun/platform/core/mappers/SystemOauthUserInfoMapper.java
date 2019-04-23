@@ -93,7 +93,14 @@ public interface SystemOauthUserInfoMapper {
     List<SystemOauthUserLoginAccount> findLoginAccountsByUid(@Param("uid") Long uid);
 
     /**
-     * 保存用户基本信息
+     * 插入用户基本信息
+     *
+     * @param userInfo
+     */
+    void insertBaseInfo(SystemOauthUserBaseInfo userInfo);
+
+    /**
+     * 更新用户基本信息
      *
      * @param userBaseInfo
      */
@@ -120,4 +127,11 @@ public interface SystemOauthUserInfoMapper {
      * @param roleIds
      */
     void insertRoles(@Param("uid") Long uid, @Param("roleIds") Long[] roleIds);
+
+    /**
+     * 插入或者更新用户账号
+     *
+     * @param loginAccount
+     */
+    void insertOrUpdateLoginAccount(SystemOauthUserLoginAccount loginAccount);
 }

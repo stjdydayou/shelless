@@ -3,18 +3,22 @@ package com.dliyun.platform.web.controller;
 
 import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.DwzPageInfo;
+import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.exception.NoFoundException;
 import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.oauth.OauthService;
 import com.dliyun.platform.common.oauth.Permission;
 import com.dliyun.platform.common.paginator.domain.PageResult;
+import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.common.utils.RandCodeUtil;
 import com.dliyun.platform.core.model.SystemOauthRoleInfo;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
+import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
 import com.dliyun.platform.core.service.SystemOauthRoleInfoService;
 import com.dliyun.platform.core.service.SystemOauthUserInfoService;
 import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
+import com.dliyun.platform.web.params.SaveUserInfoParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -124,7 +129,7 @@ public class SystemOauthUserController {
 
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.roles")
     @RequestMapping("/roles.htm")
-    public String userSetRole(ModelMap modelMap, Long id) throws NoFoundException {
+    public String roles(ModelMap modelMap, Long id) throws NoFoundException {
         SystemOauthUserBaseInfo userBaseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(id);
         if (userBaseInfo == null) {
             throw new NoFoundException();
@@ -146,8 +151,59 @@ public class SystemOauthUserController {
     @ResponseBody
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.roles")
     @RequestMapping("/roles.ajax")
-    public DwzJSON userSetRole(Long uid, Long[] roleIds) throws ServiceException {
+    public DwzJSON roles(Long uid, Long[] roleIds) throws ServiceException {
         this.systemOauthUserInfoService.saveRoles(uid, roleIds);
         return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("设置成功").setCloseCurrent(true).setTabid("system", "oauth", "user");
+    }
+
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.add")
+    @RequestMapping("/add.htm")
+    public String add() {
+        return "/system/oauth/user/add";
+    }
+
+    @ResponseBody
+    @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.add")
+    @RequestMapping("/add.ajax")
+    public DwzJSON add(@Valid SaveUserInfoParam param) throws ServiceException {
+
+        SystemOauthUserLoginAccount userNameAccount = this.systemOauthUserInfoService.findLoginAccount(param.getMp(), SystemOauthUserLoginAccount.AccountType.userName);
+        if (userNameAccount != null) {
+            return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("登录账号已被其他用户使用，请使更换手机号");
+        }
+
+        SystemOauthUserLoginAccount mpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp);
+        if (mpAccount != null) {
+            return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("手机号已被其他用户使用，请使更换手机号");
+        }
+
+        SystemOauthUserLoginAccount emailpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email);
+        if (emailpAccount != null) {
+            return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("邮箱已被其他用户使用，请使更换邮箱");
+        }
+
+
+        if (param.getGender() == null) {
+            param.setGender(SystemOauthUserBaseInfo.Gender.secret);
+        }
+
+        String loginPassword = "111111";
+        String salt = RandCodeUtil.getSalt();
+        String secretPassword = this.oauthService.generatePassword(loginPassword, salt);
+
+        SystemOauthUserBaseInfo userInfo = new SystemOauthUserBaseInfo();
+        userInfo.setNickName(param.getNickName());
+        userInfo.setState(SystemOauthUserBaseInfo.UserState.normal);
+        userInfo.setGender(param.getGender());
+        userInfo.setRegisterTime(DateUtil.current());
+        userInfo.setRegisterIp(ServletContext.getRemoteIPAddress());
+
+        List<SystemOauthUserLoginAccount> loginAccounts = new ArrayList<>();
+        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getUserName(), SystemOauthUserLoginAccount.AccountType.userName));
+        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp));
+        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email));
+        this.systemOauthUserInfoService.register(userInfo, secretPassword, salt, loginAccounts);
+
+        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("保存用户成功").setCloseCurrent(true).setTabid("system", "oauth", "user");
     }
 }

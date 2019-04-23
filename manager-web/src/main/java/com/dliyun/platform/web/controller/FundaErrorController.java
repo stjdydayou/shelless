@@ -1,10 +1,10 @@
 package com.dliyun.platform.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.exception.NoLoginException;
 import com.dliyun.platform.common.exception.PermissionDeniedException;
-import com.dliyun.platform.web.AjaxResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.stereotype.Controller;
@@ -77,7 +77,7 @@ public class FundaErrorController implements ErrorController {
             isJsonRequest = true;
         }
 
-        ServletContext.getRequest().setAttribute("errorInfo", isJsonRequest ? JSON.toJSONString(AjaxResult.instance(message)) : message);
+        ServletContext.getRequest().setAttribute("errorInfo", isJsonRequest ? JSON.toJSONString(DwzJSON.body(DwzJSON.StatusCode.error).setMessage(message)) : message);
 
         return isJsonRequest ? "error/ajax_error" : templatePath;
     }

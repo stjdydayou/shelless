@@ -1,5 +1,6 @@
 package com.dliyun.platform.web.controller;
 
+import com.dliyun.platform.PluginInfo;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.oauth.OauthInfo;
 import com.dliyun.platform.common.oauth.OauthService;
@@ -9,7 +10,6 @@ import com.dliyun.platform.common.plugin.PluginModuleInfo;
 import com.dliyun.platform.common.service.SimpleCaptchaService;
 import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.common.utils.PatternUtils;
-import com.dliyun.platform.PluginInfo;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserLoginLog;
@@ -24,6 +24,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
@@ -86,6 +87,12 @@ public class IndexController {
     @GetMapping("/login.htm")
     public String login(ModelMap modelMap) {
         return "login";
+    }
+
+    @RequestMapping("/logout.htm")
+    public String logout() {
+        this.oauthService.destroy();
+        return "redirect:/index.htm";
     }
 
     @ResponseBody

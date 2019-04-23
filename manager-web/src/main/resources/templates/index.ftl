@@ -184,7 +184,7 @@
                             修改密码&nbsp;</a></li>
                         <li><a href="#">&nbsp;<span class="glyphicon glyphicon-user"></span> 我的资料</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.html" class="red">&nbsp;<span class="glyphicon glyphicon-off"></span>
+                        <li><a href="/logout.htm" class="red">&nbsp;<span class="glyphicon glyphicon-off"></span>
                             注销登陆</a></li>
                     </ul>
                 </li>

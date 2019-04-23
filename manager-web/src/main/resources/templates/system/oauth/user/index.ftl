@@ -18,8 +18,8 @@
     </form>
     <div class="pull-right">
     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="user.add">
-        <a class="btn btn-default" href="/oauth/user/disable.ajax" data-icon="plus" data-toggle="doajaxchecked"
-           data-confirm-msg="您确定要禁用所选择的用户吗？" data-idname="ids" data-group="userInfos">
+        <a href="/system/oauth/user/add.htm" data-icon="plus"
+           data-mask="true" data-toggle="dialog" class="btn btn-default" title="设置用户角色">
             添加
         </a>
     </@s.oauth>
@@ -51,7 +51,7 @@
             <th width="26">
                 <input type="checkbox" class="checkboxCtrl" data-group="userInfos" data-toggle="icheck">
             </th>
-            <th width="80">操作</th>
+            <th>操作</th>
             <th data-order-field="id" width="50">ID</th>
             <th>账号</th>
             <th>昵称</th>

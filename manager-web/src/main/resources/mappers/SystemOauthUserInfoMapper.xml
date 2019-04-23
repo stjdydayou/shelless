@@ -160,4 +160,22 @@
             (#{uid,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
         </foreach>
     </insert>
+    <insert id="insertOrUpdateLoginAccount" parameterType="com.dliyun.platform.core.model.SystemOauthUserLoginAccount">
+        replace into system_oauth_user_login_account (
+          id, uid,login_account,account_type
+        ) values (
+        #{id,jdbcType=BIGINT},#{uid,jdbcType=BIGINT}, #{loginAccount,jdbcType=VARCHAR},
+        #{accountType,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler}
+        )
+    </insert>
+    <insert id="insertBaseInfo" parameterType="com.dliyun.platform.core.model.SystemOauthUserBaseInfo" useGeneratedKeys="true"
+            keyProperty="id">
+        insert into system_oauth_user_base_info (
+        `nick_name`, `avatar`, `gender`, `state`, `register_time`, `register_ip`
+        ) values (
+        #{nickName,jdbcType=VARCHAR}, #{avatar,jdbcType=VARCHAR},
+        #{gender,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserGenderTypeHandler},
+        #{state,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserStateTypeHandler},
+        #{registerTime,jdbcType=TIMESTAMP}, #{registerIp,jdbcType=VARCHAR})
+    </insert>
 </mapper>

@@ -12,6 +12,7 @@ import com.dliyun.platform.core.model.SystemOauthUserPassword;
 import com.dliyun.platform.core.service.SystemOauthUserInfoService;
 import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
@@ -133,6 +134,35 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
 
         if (exp != null) {
             throw new ServiceException(exp);
+        }
+    }
+
+    @Override
+    public void register(SystemOauthUserBaseInfo userInfo, String loginPassword, String salt, List<SystemOauthUserLoginAccount> loginAccounts) throws ServiceException {
+        Exception exception = this.transactionTemplate.execute(status -> {
+            try {
+                if (StringUtils.isBlank(userInfo.getAvatar())) {
+                    userInfo.setAvatar("/defultAvatar.jpg");
+                }
+
+                systemOauthUserInfoMapper.insertBaseInfo(userInfo);
+
+                systemOauthUserInfoMapper.insertOrUpdateUserPassword(SystemOauthUserPassword.instance(userInfo.getId(), loginPassword, salt, SystemOauthUserPassword.UserPasswordType.login));
+
+
+                for (SystemOauthUserLoginAccount loginAccount : loginAccounts) {
+                    loginAccount.setUid(userInfo.getId());
+                    systemOauthUserInfoMapper.insertOrUpdateLoginAccount(loginAccount);
+                }
+            } catch (Exception e) {
+                status.setRollbackOnly();
+                return e;
+            }
+            return null;
+        });
+
+        if (exception != null) {
+            throw new ServiceException(exception);
         }
     }
 }

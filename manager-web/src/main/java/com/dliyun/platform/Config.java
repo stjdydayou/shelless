@@ -161,7 +161,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         userModuleInfo.add(new PluginAuthority("role.delete", "删除角色"));
         userModuleInfo.add(new PluginAuthority("role.authority", "设置角色权限"));
 
-
+        userModuleInfo.add(new PluginConfig("default_password", "系统用户默认登录密码（用于添加用户与重置用户登录密码）", PluginConfig.ConfigType.string));
         /*------------------*/
         PluginModuleInfo settingModuleInfo = new PluginModuleInfo("setting", "系统设置", "cog");
 
