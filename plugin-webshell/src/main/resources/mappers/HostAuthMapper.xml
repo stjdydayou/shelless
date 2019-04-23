@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.axungu.webshell.core.mappers.HostAuthMapper">
-    <resultMap id="BaseResultMap" type="com.axungu.webshell.core.model.HostAuth">
+<mapper namespace="com.dliyun.fort.gateway.core.mappers.HostAuthMapper">
+    <resultMap id="BaseResultMap" type="com.dliyun.fort.gateway.core.model.HostAuth">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="name" property="name" jdbcType="VARCHAR"/>
-        <result column="auth_type" property="authType" typeHandler="com.axungu.webshell.core.typehandler.AuthTypeHandler"/>
+        <result column="auth_type" property="authType" typeHandler="com.dliyun.fort.gateway.core.typehandler.AuthTypeHandler"/>
         <result column="user_name" property="userName" jdbcType="VARCHAR"/>
         <result column="auth_text" property="authText" jdbcType="VARCHAR"/>
         <result column="remark" property="remark" jdbcType="VARCHAR"/>
@@ -27,13 +27,13 @@
         WHERE `id` = #{id,jdbcType=BIGINT}
     </select>
 
-    <insert id="insert" parameterType="com.axungu.webshell.core.model.HostInfo">
+    <insert id="insert" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
         INSERT INTO `host_auth`
         (`name`, `auth_type`, `user_name`, `auth_text`, `remark`, `created_time`)
         VALUES
         (
         #{name,jdbcType=VARCHAR },
-        #{authType,typeHandler=com.axungu.webshell.core.typehandler.AuthTypeHandler },
+        #{authType,typeHandler=com.dliyun.fort.gateway.core.typehandler.AuthTypeHandler },
         #{userName,jdbcType=VARCHAR },
         #{authText,jdbcType=VARCHAR },
         #{remark,jdbcType=VARCHAR },
@@ -41,14 +41,14 @@
 
     </insert>
 
-    <update id="update" parameterType="com.axungu.webshell.core.model.HostInfo">
+    <update id="update" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
         UPDATE `host_auth`
         <set>
             <if test="name!=null and name !=''">
                 `name` = #{name,jdbcType=VARCHAR },
             </if>
             <if test="authType!=null">
-                `auth_type` = #{authType,typeHandler=com.axungu.webshell.core.typehandler.AuthTypeHandler },
+                `auth_type` = #{authType,typeHandler=com.dliyun.fort.gateway.core.typehandler.AuthTypeHandler },
             </if>
             <if test="userName!=null and userName!=''">
                 `user_name` = #{userName,jdbcType=VARCHAR },

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.axungu.webshell.core.mappers.HostInfoMapper">
-    <resultMap id="BaseResultMap" type="com.axungu.webshell.core.model.HostInfo">
+<mapper namespace="com.dliyun.fort.gateway.core.mappers.HostInfoMapper">
+    <resultMap id="BaseResultMap" type="com.dliyun.fort.gateway.core.model.HostInfo">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="group_id" property="groupId" jdbcType="BIGINT"/>
         <result column="auth_id" property="authId" jdbcType="BIGINT"/>
@@ -41,7 +41,7 @@
         WHERE `id` = #{id,jdbcType=BIGINT}
     </select>
 
-    <insert id="insert" parameterType="com.axungu.webshell.core.model.HostInfo">
+    <insert id="insert" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
         INSERT INTO `host_info`
         (`id`, `group_id`, `auth_id`, `name`, `host_address`, `port_number`, `os`, `remark`, `created_time`)
         VALUES
@@ -50,7 +50,7 @@
         #{os,jdbcType=VARCHAR }, #{remark,jdbcType=VARCHAR }, #{createdTime,jdbcType=TIMESTAMP });
     </insert>
 
-    <update id="update" parameterType="com.axungu.webshell.core.model.HostInfo">
+    <update id="update" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
         UPDATE `host_info`
         <set>
             <if test="groupId!=null">
