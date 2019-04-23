@@ -15,6 +15,7 @@ import com.dliyun.platform.core.model.SystemOauthRoleInfo;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
+import com.dliyun.platform.core.service.SysConfigService;
 import com.dliyun.platform.core.service.SystemOauthRoleInfoService;
 import com.dliyun.platform.core.service.SystemOauthUserInfoService;
 import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
@@ -48,6 +49,9 @@ public class SystemOauthUserController {
 
     @Autowired
     private OauthService oauthService;
+
+    @Autowired
+    private SysConfigService sysConfigService;
 
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.find")
     @RequestMapping("/index.htm")
@@ -112,19 +116,16 @@ public class SystemOauthUserController {
     @ResponseBody
     @RequestMapping("/resetPassword.ajax")
     public DwzJSON resetPassword(Long[] ids) {
+        String loginPasswd = this.sysConfigService.getStringValue("system", "oauth", "default_password");
         if (ids != null) {
             for (Long id : ids) {
                 String salt = RandCodeUtil.get(6, false);
-                String loginPasswd = "111111";
 
-                Map<String, String> paramData = new HashMap<>();
-                paramData.put("password", loginPasswd);
-
-                loginPasswd = this.oauthService.generatePassword(loginPasswd, salt);
-                this.systemOauthUserInfoService.insertOrUpdateUserPassword(id, loginPasswd, salt, SystemOauthUserPassword.UserPasswordType.login);
+                String saltPasswd = this.oauthService.generatePassword(loginPasswd, salt);
+                this.systemOauthUserInfoService.insertOrUpdateUserPassword(id, saltPasswd, salt, SystemOauthUserPassword.UserPasswordType.login);
             }
         }
-        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("用户密码已经成功被重置为111111").setTabid("system", "oauth", "user");
+        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("用户密码已经成功被重置为" + loginPasswd).setTabid("system", "oauth", "user");
     }
 
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.roles")
@@ -187,7 +188,8 @@ public class SystemOauthUserController {
             param.setGender(SystemOauthUserBaseInfo.Gender.secret);
         }
 
-        String loginPassword = "111111";
+        String loginPassword = this.sysConfigService.getStringValue("system", "oauth", "default_password");
+
         String salt = RandCodeUtil.getSalt();
         String secretPassword = this.oauthService.generatePassword(loginPassword, salt);
 

@@ -35,22 +35,26 @@ public class SysConfigServiceImpl implements SysConfigService {
 
     @Override
     public String getStringValue(String pluginKey, String moduleKey, String configKey) {
-        return null;
+        return this.findDataValue(pluginKey, moduleKey, configKey);
     }
 
     @Override
     public boolean getBooleanValue(String pluginKey, String moduleKey, String configKey) {
-        return false;
+        String dataValue = this.getStringValue(pluginKey, moduleKey, configKey);
+        return Boolean.valueOf(dataValue);
     }
 
     @Override
     public BigDecimal getBigDecimalValue(String pluginKey, String moduleKey, String configKey) {
-        return null;
+        String dataValue = this.getStringValue(pluginKey, moduleKey, configKey);
+
+        return dataValue == null ? null : new BigDecimal(dataValue);
     }
 
     @Override
     public Money getMoneyValue(String pluginKey, String moduleKey, String configKey) {
-        return null;
+        String dataValue = this.getStringValue(pluginKey, moduleKey, configKey);
+        return dataValue == null ? Money.ZERO : new Money(dataValue);
     }
 
     private String buildId(String pluginKey, String moduleKey, String configKey) {

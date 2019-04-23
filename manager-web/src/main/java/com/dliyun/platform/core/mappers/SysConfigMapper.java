@@ -1,6 +1,8 @@
 package com.dliyun.platform.core.mappers;
 
 import org.apache.ibatis.annotations.Param;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 
 /**
  * @author jtoms.shen
@@ -14,6 +16,7 @@ public interface SysConfigMapper {
      * @param id
      * @param dataValue
      */
+    @CacheEvict(value = {"system:config"}, key = "#p0")
     void insertOrUpdate(@Param("id") String id, @Param("dataValue") String dataValue);
 
     /**
@@ -22,5 +25,6 @@ public interface SysConfigMapper {
      * @param id
      * @return
      */
+    @Cacheable(value = {"system:config"}, key = "#p0")
     String findDataValueById(@Param("id") String id);
 }
