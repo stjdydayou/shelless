@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dliyun.platform.core.mappers.SysConfigMapper">
+    <sql id="Base_Column_List">
+    `id`, `data_value`
+    </sql>
+
+    <insert id="insertOrUpdate" parameterType="java.lang.String">
+        replace into system_config (`id`, `data_value`)
+        values (#{id,jdbcType=BIGINT}, #{dataValue,jdbcType=VARCHAR})
+  	</insert>
+
+    <select id="findDataValueById" resultType="java.lang.String" parameterType="java.lang.String">
+		select data_value from system_config WHERE id = #{id,jdbcType=VARCHAR}
+	</select>
+</mapper>

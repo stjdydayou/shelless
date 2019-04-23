@@ -29,7 +29,7 @@ public class SystemOauthUserLoginAccount implements Serializable {
 
     public String getId() {
         if (id == null) {
-            id = DigestUtils.md5Hex(String.format("%s%010d", uid, accountType.getCode()));
+            id = DigestUtils.md5Hex(String.format("%s@%s", uid, accountType.getCode()));
         }
         return id;
     }
