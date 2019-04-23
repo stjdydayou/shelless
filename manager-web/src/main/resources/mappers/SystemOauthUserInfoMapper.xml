@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.axungu.platform.core.mappers.SystemOauthUserInfoMapper">
-    <resultMap id="LoginAccountResultMap" type="com.axungu.platform.core.model.SystemOauthUserLoginAccount">
+<mapper namespace="com.dliyun.platform.core.mappers.SystemOauthUserInfoMapper">
+    <resultMap id="LoginAccountResultMap" type="com.dliyun.platform.core.model.SystemOauthUserLoginAccount">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="uid" property="uid" jdbcType="BIGINT"/>
         <result column="login_account" property="loginAccount" jdbcType="VARCHAR"/>
         <result column="account_type" property="accountType"
-                typeHandler="com.axungu.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler"/>
+                typeHandler="com.dliyun.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler"/>
     </resultMap>
 
-    <resultMap id="BaseUserInfoResultMap" type="com.axungu.platform.core.model.SystemOauthUserBaseInfo">
+    <resultMap id="BaseUserInfoResultMap" type="com.dliyun.platform.core.model.SystemOauthUserBaseInfo">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
-        <result column="gender" property="gender" typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserGenderTypeHandler"/>
+        <result column="gender" property="gender" typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserGenderTypeHandler"/>
         <result column="state" property="state"
-                typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserStateTypeHandler"/>
+                typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserStateTypeHandler"/>
         <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
         <result column="register_ip" property="registerIp" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <resultMap id="UserPasswordResultMap" type="com.axungu.platform.core.model.SystemOauthUserPassword">
+    <resultMap id="UserPasswordResultMap" type="com.dliyun.platform.core.model.SystemOauthUserPassword">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="uid" property="uid" jdbcType="BIGINT"/>
         <result column="passwd" property="passwd" jdbcType="VARCHAR"/>
         <result column="salt" property="salt" jdbcType="VARCHAR"/>
         <result column="type" property="type"
-                typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserPasswordTypeHandler"/>
+                typeHandler="com.dliyun.platform.core.typehandler.SystemOauthUserPasswordTypeHandler"/>
     </resultMap>
 
-    <resultMap id="UserLoginLogResultMap" type="com.axungu.platform.core.model.SystemOauthUserLoginLog">
+    <resultMap id="UserLoginLogResultMap" type="com.dliyun.platform.core.model.SystemOauthUserLoginLog">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="uid" property="uid" jdbcType="BIGINT"/>
         <result column="login_ip" property="loginIp" jdbcType="VARCHAR"/>
@@ -58,7 +58,7 @@
     <select id="findLoginAccount" resultMap="LoginAccountResultMap" parameterType="java.lang.Object">
         select id,uid,login_account,account_type from system_oauth_user_login_account t where
         t.login_account=#{loginAccount,jdbcType=VARCHAR} and
-        account_type=#{accountType,typeHandler=com.axungu.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler}
+        account_type=#{accountType,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler}
     </select>
 
     <select id="findUserBaseInfoById" resultMap="BaseUserInfoResultMap" parameterType="java.lang.Long">
@@ -73,7 +73,7 @@
         <include refid="UserPassword_Column_List"/>
         from system_oauth_user_password
         where uid = #{uid,jdbcType=BIGINT} and
-        type=#{type,typeHandler=com.axungu.platform.core.typehandler.SystemOauthUserPasswordTypeHandler}
+        type=#{type,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserPasswordTypeHandler}
         limit 1
     </select>
     <select id="findLastLogin" resultMap="UserLoginLogResultMap">
@@ -90,7 +90,7 @@
       		)
     </select>
 
-    <insert id="insertLoginLog" parameterType="com.axungu.platform.core.model.SystemOauthUserLoginLog">
+    <insert id="insertLoginLog" parameterType="com.dliyun.platform.core.model.SystemOauthUserLoginLog">
         insert into system_oauth_user_login_log (uid, login_ip, country, country_id,area, area_id, region,
         region_id, city, city_id, county, county_id, login_time)
         values (#{uid,jdbcType=BIGINT}, #{loginIp,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR},

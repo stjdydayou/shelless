@@ -1,7 +1,7 @@
 package com.axungu.webshell;
 
 
-import com.axungu.common.plugin.*;
+import com.dliyun.platform.common.plugin.*;
 import com.axungu.webshell.ssh.ShellHandshakeInterceptor;
 import com.axungu.webshell.ssh.ShellWebSocketHandler;
 import org.mybatis.spring.annotation.MapperScan;

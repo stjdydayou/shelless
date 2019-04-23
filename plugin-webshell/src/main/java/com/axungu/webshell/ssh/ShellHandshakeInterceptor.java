@@ -1,7 +1,7 @@
 package com.axungu.webshell.ssh;
 
-import com.axungu.common.oauth.OauthInfo;
-import com.axungu.common.oauth.OauthService;
+import com.dliyun.platform.common.oauth.OauthInfo;
+import com.dliyun.platform.common.oauth.OauthService;
 import com.axungu.webshell.core.model.HostAuth;
 import com.axungu.webshell.core.model.HostInfo;
 import com.axungu.webshell.core.service.HostAuthService;

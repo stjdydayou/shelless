@@ -1,0 +1,15 @@
+package com.dliyun.platform.web.controller;
+
+
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+/**
+ * Created by shenyj on 17-3-24.
+ */
+@Controller
+@RequestMapping("/system/oauth/user")
+public class SystemOauthUserController {
+
+
+}

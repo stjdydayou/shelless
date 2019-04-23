@@ -1,6 +1,6 @@
 package com.axungu.webshell.core.service;
 
-import com.axungu.common.exception.ServiceException;
+import com.dliyun.platform.common.exception.ServiceException;
 import com.axungu.webshell.core.model.HostAuth;
 
 import java.util.List;

@@ -3,8 +3,8 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <plugins>
-        <plugin interceptor="com.axungu.common.paginator.OffsetLimitInterceptor">
-            <property name="dialectClass" value="com.axungu.common.paginator.dialect.MySQLDialect"/>
+        <plugin interceptor="com.dliyun.platform.common.paginator.OffsetLimitInterceptor">
+            <property name="dialectClass" value="com.dliyun.platform.common.paginator.dialect.MySQLDialect"/>
         </plugin>
     </plugins>
 </configuration>

@@ -1,7 +1,7 @@
 package com.axungu.webshell.core.mappers;
 
-import com.axungu.common.paginator.domain.PageBounds;
-import com.axungu.common.paginator.domain.PageList;
+import com.dliyun.platform.common.paginator.domain.PageBounds;
+import com.dliyun.platform.common.paginator.domain.PageList;
 import com.axungu.webshell.core.model.HostInfo;
 import com.axungu.webshell.core.vo.HostInfoVO;
 import org.apache.ibatis.annotations.Param;

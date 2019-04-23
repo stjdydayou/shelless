@@ -1,11 +1,11 @@
 package com.axungu.webshell.web.controller;
 
-import com.axungu.common.DwzPageInfo;
-import com.axungu.common.ServletContext;
-import com.axungu.common.exception.NoFoundException;
-import com.axungu.common.exception.NoLoginException;
-import com.axungu.common.oauth.OauthService;
-import com.axungu.common.paginator.domain.PageResult;
+import com.dliyun.platform.common.DwzPageInfo;
+import com.dliyun.platform.common.ServletContext;
+import com.dliyun.platform.common.exception.NoFoundException;
+import com.dliyun.platform.common.exception.NoLoginException;
+import com.dliyun.platform.common.oauth.OauthService;
+import com.dliyun.platform.common.paginator.domain.PageResult;
 import com.axungu.webshell.core.model.HostAuth;
 import com.axungu.webshell.core.model.HostGroup;
 import com.axungu.webshell.core.model.HostInfo;
