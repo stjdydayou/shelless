@@ -3,7 +3,7 @@ package com.axungu.platform.core.service.impl;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.platform.core.enums.AccountType;
 import com.axungu.platform.core.enums.UserPasswordType;
-import com.axungu.platform.core.mappers.UserInfoMapper;
+import com.axungu.platform.core.mappers.SystemOauthUserInfoMapper;
 import com.axungu.platform.core.model.UserBaseInfo;
 import com.axungu.platform.core.model.UserLoginAccount;
 import com.axungu.platform.core.model.UserLoginLog;
@@ -28,24 +28,24 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     private TransactionTemplate transactionTemplate;
 
     @Autowired
-    private UserInfoMapper userInfoMapper;
+    private SystemOauthUserInfoMapper systemOauthUserInfoMapper;
 
     @Autowired
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public UserLoginAccount findLoginAccount(String loginAccount, AccountType accountType) {
-        return this.userInfoMapper.findLoginAccount(loginAccount, accountType);
+        return this.systemOauthUserInfoMapper.findLoginAccount(loginAccount, accountType);
     }
 
     @Override
     public UserBaseInfo findUserBaseInfoById(Long id) {
-        return this.userInfoMapper.findUserBaseInfoById(id);
+        return this.systemOauthUserInfoMapper.findUserBaseInfoById(id);
     }
 
     @Override
     public UserPassword findUserPasswd(Long uid, UserPasswordType type) {
-        return this.userInfoMapper.findUserPasswd(uid, type);
+        return this.systemOauthUserInfoMapper.findUserPasswd(uid, type);
     }
 
 
@@ -63,7 +63,7 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
                     loginLog.setLoginTime(DateUtil.current());
                     loginLog.setLoginIp(lastLoginIp);
                     loginLog.setUid(uid);
-                    userInfoMapper.insertLoginLog(loginLog);
+                    systemOauthUserInfoMapper.insertLoginLog(loginLog);
 
                     return null;
                 } catch (Exception e) {
@@ -79,11 +79,11 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
 
     @Override
     public UserLoginLog findLastLogin(Long uid) {
-        return this.userInfoMapper.findLastLogin(uid);
+        return this.systemOauthUserInfoMapper.findLastLogin(uid);
     }
 
     @Override
     public List<String> findAuthorities(Long uid) {
-        return this.userInfoMapper.findAuthorities(uid);
+        return this.systemOauthUserInfoMapper.findAuthorities(uid);
     }
 }

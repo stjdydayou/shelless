@@ -1,7 +1,7 @@
 package com.axungu.platform.core.service.impl;
 
 import com.axungu.common.exception.ServiceException;
-import com.axungu.platform.core.mappers.OauthRoleInfoMapper;
+import com.axungu.platform.core.mappers.SystemOauthRoleInfoMapper;
 import com.axungu.platform.core.model.OauthRoleInfo;
 import com.axungu.platform.core.service.SystemOauthRoleInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,25 +20,25 @@ public class SystemOauthRoleInfoServiceImpl implements SystemOauthRoleInfoServic
     protected TransactionTemplate transactionTemplate;
 
     @Autowired
-    private OauthRoleInfoMapper oauthRoleInfoMapper;
+    private SystemOauthRoleInfoMapper systemOauthRoleInfoMapper;
 
     @Override
     public List<OauthRoleInfo> findAll() {
-        return this.oauthRoleInfoMapper.findAll();
+        return this.systemOauthRoleInfoMapper.findAll();
     }
 
     @Override
     public OauthRoleInfo findById(Long id) {
-        return this.oauthRoleInfoMapper.findById(id);
+        return this.systemOauthRoleInfoMapper.findById(id);
     }
 
     @Override
     public void save(OauthRoleInfo oauthRoleInfo) throws ServiceException {
         try {
             if (oauthRoleInfo.getId() == null) {
-                this.oauthRoleInfoMapper.insert(oauthRoleInfo);
+                this.systemOauthRoleInfoMapper.insert(oauthRoleInfo);
             } else {
-                this.oauthRoleInfoMapper.updateById(oauthRoleInfo);
+                this.systemOauthRoleInfoMapper.updateById(oauthRoleInfo);
             }
         } catch (Exception e) {
             throw new ServiceException(e);
@@ -47,15 +47,15 @@ public class SystemOauthRoleInfoServiceImpl implements SystemOauthRoleInfoServic
 
     @Override
     public void deleteById(Long id) {
-        this.oauthRoleInfoMapper.deleteById(id);
+        this.systemOauthRoleInfoMapper.deleteById(id);
     }
 
     @Override
     public void setAuthorities(final Long roleId, final String[] authorities) throws ServiceException {
         Exception exp = this.transactionTemplate.execute(status -> {
             try {
-                oauthRoleInfoMapper.deleteAuthorities(roleId);
-                oauthRoleInfoMapper.insertAuthorities(authorities, roleId);
+                systemOauthRoleInfoMapper.deleteAuthorities(roleId);
+                systemOauthRoleInfoMapper.insertAuthorities(authorities, roleId);
                 return null;
             } catch (Exception e) {
                 status.setRollbackOnly();
@@ -71,6 +71,6 @@ public class SystemOauthRoleInfoServiceImpl implements SystemOauthRoleInfoServic
 
     @Override
     public List<String> findAuthorities(Long roleId) {
-        return this.oauthRoleInfoMapper.findAuthorities(roleId);
+        return this.systemOauthRoleInfoMapper.findAuthorities(roleId);
     }
 }

@@ -11,9 +11,11 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017-6-7.
+ *
+ * @author Administrator
+ * @date 2017-6-7
  */
-public interface UserInfoMapper {
+public interface SystemOauthUserInfoMapper {
     /**
      * 通过用户账号与账号类型查询唯一登录账号
      *

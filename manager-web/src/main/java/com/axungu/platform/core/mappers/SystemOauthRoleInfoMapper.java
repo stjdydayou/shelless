@@ -6,7 +6,10 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
-public interface OauthRoleInfoMapper {
+/**
+ * @author jtoms
+ */
+public interface SystemOauthRoleInfoMapper {
 
     List<OauthRoleInfo> findAll();
 
