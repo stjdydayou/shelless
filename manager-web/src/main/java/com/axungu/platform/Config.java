@@ -10,6 +10,8 @@ import com.axungu.common.freemarker.FreemarkerComponent;
 import com.axungu.common.plugin.*;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.HostInfoUtil;
+import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
+import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
 import com.axungu.platform.core.oauth.OauthInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -167,7 +169,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         PluginModuleInfo settingModuleInfo = new PluginModuleInfo("setting", "系统设置", "cog");
 
         //注册菜单
-        settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm","config.find"));
+        settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm", "config.find"));
 
         //注册权限
         settingModuleInfo.add(new PluginAuthority("config.find", "查询系统参数"));
@@ -261,7 +263,10 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         FastJsonConfig config = new FastJsonConfig();
 
         SerializeConfig serializeConfig = new SerializeConfig();
-//        serializeConfig.configEnumAsJavaBean(AuthType.class, YN.class);
+
+        Class[] enumClasses = new Class[]{SystemOauthUserLoginAccount.AccountType.class, SystemOauthUserBaseInfo.Gender.class};
+
+        serializeConfig.configEnumAsJavaBean(enumClasses);
 
         config.setSerializeConfig(serializeConfig);
         config.setSerializerFeatures(SerializerFeature.QuoteFieldNames,

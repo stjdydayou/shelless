@@ -3,7 +3,6 @@ package com.axungu.platform.core.model;
 import java.io.Serializable;
 
 /**
- *
  * @author Administrator
  * @date 2017-6-7
  */
@@ -91,5 +90,4 @@ public class SystemOauthUserLoginAccount implements Serializable {
             return text;
         }
     }
-
 }

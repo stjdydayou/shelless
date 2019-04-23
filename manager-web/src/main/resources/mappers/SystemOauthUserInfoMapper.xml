@@ -6,14 +6,14 @@
         <result column="uid" property="uid" jdbcType="BIGINT"/>
         <result column="login_account" property="loginAccount" jdbcType="VARCHAR"/>
         <result column="account_type" property="accountType"
-                typeHandler="com.axungu.platform.core.typehandler.AccountTypeTypeHandler"/>
+                typeHandler="com.axungu.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler"/>
     </resultMap>
 
     <resultMap id="BaseUserInfoResultMap" type="com.axungu.platform.core.model.SystemOauthUserBaseInfo">
         <id column="id" property="id" jdbcType="BIGINT"/>
         <result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
-        <result column="gender" property="gender" typeHandler="com.axungu.platform.core.typehandler.GenderTypeHandler"/>
+        <result column="gender" property="gender" typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserGenderTypeHandler"/>
         <result column="state" property="state"
                 typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserStateTypeHandler"/>
         <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
@@ -26,7 +26,7 @@
         <result column="passwd" property="passwd" jdbcType="VARCHAR"/>
         <result column="salt" property="salt" jdbcType="VARCHAR"/>
         <result column="type" property="type"
-                typeHandler="com.axungu.platform.core.typehandler.UserPasswordTypeHandler"/>
+                typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserPasswordTypeHandler"/>
     </resultMap>
 
     <resultMap id="UserLoginLogResultMap" type="com.axungu.platform.core.model.SystemOauthUserLoginLog">
@@ -58,7 +58,7 @@
     <select id="findLoginAccount" resultMap="LoginAccountResultMap" parameterType="java.lang.Object">
         select id,uid,login_account,account_type from system_oauth_user_login_account t where
         t.login_account=#{loginAccount,jdbcType=VARCHAR} and
-        account_type=#{accountType,typeHandler=com.axungu.platform.core.typehandler.AccountTypeTypeHandler}
+        account_type=#{accountType,typeHandler=com.axungu.platform.core.typehandler.SystemOauthLoginAccountTypeTypeHandler}
     </select>
 
     <select id="findUserBaseInfoById" resultMap="BaseUserInfoResultMap" parameterType="java.lang.Long">
@@ -73,7 +73,7 @@
         <include refid="UserPassword_Column_List"/>
         from system_oauth_user_password
         where uid = #{uid,jdbcType=BIGINT} and
-        type=#{type,typeHandler=com.axungu.platform.core.typehandler.UserPasswordTypeHandler}
+        type=#{type,typeHandler=com.axungu.platform.core.typehandler.SystemOauthUserPasswordTypeHandler}
         limit 1
     </select>
     <select id="findLastLogin" resultMap="UserLoginLogResultMap">
