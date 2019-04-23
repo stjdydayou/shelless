@@ -56,7 +56,7 @@
     </sql>
 
     <select id="findLoginAccount" resultMap="LoginAccountResultMap" parameterType="java.lang.Object">
-        select id,uid,login_account,account_type from user_login_account t where
+        select id,uid,login_account,account_type from system_oauth_user_login_account t where
         t.login_account=#{loginAccount,jdbcType=VARCHAR} and
         account_type=#{accountType,typeHandler=com.axungu.platform.core.typehandler.AccountTypeTypeHandler}
     </select>
@@ -64,14 +64,14 @@
     <select id="findUserBaseInfoById" resultMap="BaseUserInfoResultMap" parameterType="java.lang.Long">
         select
         <include refid="UserBaseInfo_Column_List"/>
-        from user_base_info t where
+        from system_oauth_user_base_info t where
         t.id=#{id,jdbcType=BIGINT}
     </select>
 
     <select id="findUserPasswd" resultMap="UserPasswordResultMap">
         select
         <include refid="UserPassword_Column_List"/>
-        from user_password
+        from system_oauth_user_password
         where uid = #{uid,jdbcType=BIGINT} and
         type=#{type,typeHandler=com.axungu.platform.core.typehandler.UserPasswordTypeHandler}
         limit 1
@@ -79,19 +79,19 @@
     <select id="findLastLogin" resultMap="UserLoginLogResultMap">
         select
         <include refid="UserLoginLog_Column_List"/>
-        from user_login_log
+        from system_oauth_user_login_log
         where uid = #{uid,jdbcType=BIGINT}
         order by id desc
         limit 1
     </select>
     <select id="findAuthorities" resultType="java.lang.String">
-      	  select authority from oauth_role_authorities WHERE role_id IN (
-      		select role_id from oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
+      	  select authority from system_oauth_role_authorities WHERE role_id IN (
+      		select role_id from system_oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
       		)
     </select>
 
     <insert id="insertLoginLog" parameterType="com.axungu.platform.core.model.UserLoginLog">
-        insert into user_login_log (uid, login_ip, country, country_id,area, area_id, region,
+        insert into system_oauth_user_login_log (uid, login_ip, country, country_id,area, area_id, region,
         region_id, city, city_id, county, county_id, login_time)
         values (#{uid,jdbcType=BIGINT}, #{loginIp,jdbcType=VARCHAR}, #{country,jdbcType=VARCHAR},
         #{countryId,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, #{areaId,jdbcType=VARCHAR},

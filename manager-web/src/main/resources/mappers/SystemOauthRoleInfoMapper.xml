@@ -12,25 +12,25 @@
     <select id="findAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from oauth_role_info
+        from system_oauth_role_info
         ORDER BY id DESC
     </select>
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         select
         <include refid="Base_Column_List"/>
-        from oauth_role_info
+        from system_oauth_role_info
         where id = #{id,jdbcType=BIGINT}
     </select>
     <delete id="deleteById" parameterType="java.lang.Long">
-    delete from oauth_role_info
+    delete from system_oauth_role_info
     where id = #{id,jdbcType=BIGINT}
   	</delete>
     <insert id="insert" parameterType="com.axungu.platform.core.model.OauthRoleInfo">
-    insert into oauth_role_info (id, `name`,remark)
+    insert into system_oauth_role_info (id, `name`,remark)
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR})
   	</insert>
     <update id="updateById" parameterType="com.axungu.platform.core.model.OauthRoleInfo">
-        update oauth_role_info
+        update system_oauth_role_info
         <set>
             <if test="name != null and name != ''">
                 `name` = #{name,jdbcType=VARCHAR},
@@ -43,16 +43,16 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <delete id="deleteAuthorities" parameterType="java.lang.Long">
-		delete FROM oauth_role_authorities WHERE role_id = #{roleId,jdbcType=BIGINT}
+		delete FROM system_oauth_role_authorities WHERE role_id = #{roleId,jdbcType=BIGINT}
 	</delete>
     <insert id="insertAuthorities" parameterType="java.lang.Long">
-        insert into oauth_role_authorities (authority, role_id)
+        insert into system_oauth_role_authorities (authority, role_id)
         values
         <foreach collection="authorities" item="authority" separator=",">
             (#{authority,jdbcType=BIGINT}, #{roleId,jdbcType=BIGINT})
         </foreach>
     </insert>
     <select id="findAuthorities" resultType="java.lang.String" parameterType="java.lang.Long">
-		select authority from oauth_role_authorities WHERE role_id = #{roleId,jdbcType=BIGINT}
+		select authority from system_oauth_role_authorities WHERE role_id = #{roleId,jdbcType=BIGINT}
 	</select>
 </mapper>
