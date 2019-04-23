@@ -10,8 +10,6 @@ import com.axungu.common.service.SimpleCaptchaService;
 import com.axungu.common.utils.DateUtil;
 import com.axungu.common.utils.PatternUtils;
 import com.axungu.platform.PluginInfo;
-import com.axungu.platform.core.enums.AccountType;
-import com.axungu.platform.core.enums.UserPasswordType;
 import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
 import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
 import com.axungu.platform.core.model.SystemOauthUserLoginLog;
@@ -96,12 +94,12 @@ public class IndexController {
         String accessToken = ServletContext.getAccessToken();
 
 
-        AccountType accountType = AccountType.userName;
+        SystemOauthUserLoginAccount.AccountType accountType = SystemOauthUserLoginAccount.AccountType.userName;
         if (PatternUtils.validExpression(loginParam.getLoginAccount(), PatternUtils.MOBILE_EXPRESSION)) {
-            accountType = AccountType.mp;
+            accountType = SystemOauthUserLoginAccount.AccountType.mp;
         }
         if (PatternUtils.validExpression(loginParam.getLoginAccount(), PatternUtils.EMAIL_EXPRESSION)) {
-            accountType = AccountType.email;
+            accountType = SystemOauthUserLoginAccount.AccountType.email;
         }
 
         if (!this.simpleCaptchaService.compareCaptcha(loginParam.getCaptcha(), accessToken, true)) {
@@ -115,7 +113,7 @@ public class IndexController {
         } else {
             SystemOauthUserBaseInfo userBaseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(userLoginAccount.getUid());
 
-            SystemOauthUserPassword userPassword = this.systemOauthUserInfoService.findUserPasswd(userBaseInfo.getId(), UserPasswordType.login);
+            SystemOauthUserPassword userPassword = this.systemOauthUserInfoService.findUserPasswd(userBaseInfo.getId(), SystemOauthUserPassword.UserPasswordType.login);
 
             String loginPassword = this.oauthService.generatePassword(loginParam.getLoginPassword(), userPassword.getSalt());
             log.debug(loginPassword);

@@ -1,11 +1,11 @@
 package com.axungu.platform.core.model;
 
-import com.axungu.platform.core.enums.AccountType;
-
 import java.io.Serializable;
 
 /**
- * Created by Administrator on 2017-6-7.
+ *
+ * @author Administrator
+ * @date 2017-6-7
  */
 public class SystemOauthUserLoginAccount implements Serializable {
 
@@ -60,4 +60,36 @@ public class SystemOauthUserLoginAccount implements Serializable {
     public void setAccountType(AccountType accountType) {
         this.accountType = accountType;
     }
+
+
+    public enum AccountType {
+        userName(0, "账号"), email(1, "邮箱"), mp(2, "手机号");
+
+        private int code;
+        private String text;
+
+        AccountType(int code, String text) {
+            this.code = code;
+            this.text = text;
+        }
+
+        public static AccountType valueOf(int code) {
+            AccountType[] values = AccountType.values();
+            for (AccountType type : values) {
+                if (type.code == code) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getText() {
+            return text;
+        }
+    }
+
 }

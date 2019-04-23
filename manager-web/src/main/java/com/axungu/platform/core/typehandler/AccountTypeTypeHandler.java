@@ -1,6 +1,6 @@
 package com.axungu.platform.core.typehandler;
 
-import com.axungu.platform.core.enums.AccountType;
+import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
 
@@ -9,10 +9,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AccountTypeTypeHandler extends BaseTypeHandler<AccountType> {
+/**
+ * @author jtoms
+ */
+public class AccountTypeTypeHandler extends BaseTypeHandler<SystemOauthUserLoginAccount.AccountType> {
 
     @Override
-    public AccountType getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public SystemOauthUserLoginAccount.AccountType getNullableResult(ResultSet rs, String columnName) throws SQLException {
         // 根据数据库存储类型决定获取类型，本例子中数据库中存放INT类型
         int i = rs.getInt(columnName);
 
@@ -25,7 +28,7 @@ public class AccountTypeTypeHandler extends BaseTypeHandler<AccountType> {
     }
 
     @Override
-    public AccountType getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public SystemOauthUserLoginAccount.AccountType getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         // 根据数据库存储类型决定获取类型，本例子中数据库中存放INT类型
         int i = rs.getInt(columnIndex);
         if (rs.wasNull()) {
@@ -37,7 +40,7 @@ public class AccountTypeTypeHandler extends BaseTypeHandler<AccountType> {
     }
 
     @Override
-    public AccountType getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public SystemOauthUserLoginAccount.AccountType getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         // 根据数据库存储类型决定获取类型，本例子中数据库中存放INT类型
         int i = cs.getInt(columnIndex);
         if (cs.wasNull()) {
@@ -49,7 +52,7 @@ public class AccountTypeTypeHandler extends BaseTypeHandler<AccountType> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, AccountType parameter, JdbcType jdbcType) throws SQLException {
+    public void setNonNullParameter(PreparedStatement ps, int i, SystemOauthUserLoginAccount.AccountType parameter, JdbcType jdbcType) throws SQLException {
         // baseTypeHandler已经帮我们做了parameter的null判断
         ps.setInt(i, parameter.getCode());
 
@@ -61,7 +64,7 @@ public class AccountTypeTypeHandler extends BaseTypeHandler<AccountType> {
      * @param code 数据库中存储的自定义code属性
      * @return code对应的枚举类
      */
-    private AccountType locate(int code) {
-        return AccountType.valueOf(code);
+    private SystemOauthUserLoginAccount.AccountType locate(int code) {
+        return SystemOauthUserLoginAccount.AccountType.valueOf(code);
     }
 }

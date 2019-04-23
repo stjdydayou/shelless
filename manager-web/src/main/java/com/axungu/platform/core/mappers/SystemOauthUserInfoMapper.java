@@ -1,7 +1,5 @@
 package com.axungu.platform.core.mappers;
 
-import com.axungu.platform.core.enums.AccountType;
-import com.axungu.platform.core.enums.UserPasswordType;
 import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
 import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
 import com.axungu.platform.core.model.SystemOauthUserLoginLog;
@@ -11,7 +9,6 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 /**
- *
  * @author Administrator
  * @date 2017-6-7
  */
@@ -23,7 +20,7 @@ public interface SystemOauthUserInfoMapper {
      * @param accountType
      * @return
      */
-    SystemOauthUserLoginAccount findLoginAccount(@Param("loginAccount") String loginAccount, @Param("accountType") AccountType accountType);
+    SystemOauthUserLoginAccount findLoginAccount(@Param("loginAccount") String loginAccount, @Param("accountType") SystemOauthUserLoginAccount.AccountType accountType);
 
     /**
      * 查询一个用户的账号详情
@@ -40,7 +37,7 @@ public interface SystemOauthUserInfoMapper {
      * @param type
      * @return
      */
-    SystemOauthUserPassword findUserPasswd(@Param("uid") Long uid, @Param("type") UserPasswordType type);
+    SystemOauthUserPassword findUserPasswd(@Param("uid") Long uid, @Param("type") SystemOauthUserPassword.UserPasswordType type);
 
     /**
      * 插入用户的登录日志

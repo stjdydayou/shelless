@@ -15,7 +15,7 @@
         <result column="avatar" property="avatar" jdbcType="VARCHAR"/>
         <result column="gender" property="gender" typeHandler="com.axungu.platform.core.typehandler.GenderTypeHandler"/>
         <result column="state" property="state"
-                typeHandler="com.axungu.platform.core.typehandler.UserStateTypeHandler"/>
+                typeHandler="com.axungu.platform.core.typehandler.SystemOauthUserStateTypeHandler"/>
         <result column="register_time" property="registerTime" jdbcType="TIMESTAMP"/>
         <result column="register_ip" property="registerIp" jdbcType="VARCHAR"/>
     </resultMap>

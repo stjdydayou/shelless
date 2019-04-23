@@ -1,8 +1,6 @@
 package com.axungu.platform.core.service.impl;
 
 import com.axungu.common.utils.DateUtil;
-import com.axungu.platform.core.enums.AccountType;
-import com.axungu.platform.core.enums.UserPasswordType;
 import com.axungu.platform.core.mappers.SystemOauthUserInfoMapper;
 import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
 import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
@@ -34,7 +32,7 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
-    public SystemOauthUserLoginAccount findLoginAccount(String loginAccount, AccountType accountType) {
+    public SystemOauthUserLoginAccount findLoginAccount(String loginAccount, SystemOauthUserLoginAccount.AccountType accountType) {
         return this.systemOauthUserInfoMapper.findLoginAccount(loginAccount, accountType);
     }
 
@@ -44,7 +42,7 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     }
 
     @Override
-    public SystemOauthUserPassword findUserPasswd(Long uid, UserPasswordType type) {
+    public SystemOauthUserPassword findUserPasswd(Long uid, SystemOauthUserPassword.UserPasswordType type) {
         return this.systemOauthUserInfoMapper.findUserPasswd(uid, type);
     }
 

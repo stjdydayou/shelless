@@ -1,9 +1,10 @@
 package com.axungu.platform.core.model;
 
-import com.axungu.platform.core.enums.UserPasswordType;
-
 import java.io.Serializable;
 
+/**
+ * @author jtoms
+ */
 public class SystemOauthUserPassword implements Serializable {
 
     private static final long serialVersionUID = 5320982429919793484L;
@@ -70,5 +71,35 @@ public class SystemOauthUserPassword implements Serializable {
 
     public void setType(UserPasswordType type) {
         this.type = type;
+    }
+
+    public enum UserPasswordType {
+        login(1, "登录密码"), trade(2, "交易密码");
+
+        private int code;
+        private String text;
+
+        UserPasswordType(int code, String text) {
+            this.code = code;
+            this.text = text;
+        }
+
+        public static UserPasswordType valueOf(int code) {
+            UserPasswordType[] values = UserPasswordType.values();
+            for (UserPasswordType type : values) {
+                if (type.code == code) {
+                    return type;
+                }
+            }
+            return null;
+        }
+
+        public int getCode() {
+            return code;
+        }
+
+        public String getText() {
+            return text;
+        }
     }
 }

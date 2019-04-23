@@ -1,7 +1,5 @@
 package com.axungu.platform.core.service;
 
-import com.axungu.platform.core.enums.AccountType;
-import com.axungu.platform.core.enums.UserPasswordType;
 import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
 import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
 import com.axungu.platform.core.model.SystemOauthUserLoginLog;
@@ -22,7 +20,7 @@ public interface SystemOauthUserInfoService {
      * @param accountType
      * @return
      */
-    SystemOauthUserLoginAccount findLoginAccount(String loginAccount, AccountType accountType);
+    SystemOauthUserLoginAccount findLoginAccount(String loginAccount, SystemOauthUserLoginAccount.AccountType accountType);
 
     /**
      * 查询用户基本信息
@@ -39,7 +37,7 @@ public interface SystemOauthUserInfoService {
      * @param type
      * @return
      */
-    SystemOauthUserPassword findUserPasswd(Long uid, UserPasswordType type);
+    SystemOauthUserPassword findUserPasswd(Long uid, SystemOauthUserPassword.UserPasswordType type);
 
     /**
      * 插入一条登录记录

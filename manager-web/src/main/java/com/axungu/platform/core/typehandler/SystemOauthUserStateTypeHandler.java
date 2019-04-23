@@ -12,7 +12,7 @@ import java.sql.SQLException;
 /**
  * @author jtoms
  */
-public class UserStateTypeHandler extends BaseTypeHandler<SystemOauthUserBaseInfo.UserState> {
+public class SystemOauthUserStateTypeHandler extends BaseTypeHandler<SystemOauthUserBaseInfo.UserState> {
 
     @Override
     public SystemOauthUserBaseInfo.UserState getNullableResult(ResultSet rs, String columnName) throws SQLException {
