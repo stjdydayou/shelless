@@ -1,12 +1,14 @@
 package com.axungu.platform.core.service;
 
 import com.axungu.common.exception.ServiceException;
-import com.axungu.platform.core.model.OauthRoleInfo;
+import com.axungu.platform.core.model.SystemOauthRoleInfo;
 
 import java.util.List;
 
 /**
- * Created by shenyj on 17-3-24.
+ *
+ * @author shenyj
+ * @date 17-3-24
  */
 public interface SystemOauthRoleInfoService {
 
@@ -15,7 +17,7 @@ public interface SystemOauthRoleInfoService {
      *
      * @return
      */
-    List<OauthRoleInfo> findAll();
+    List<SystemOauthRoleInfo> findAll();
 
     /**
      * 查询一个角色
@@ -23,7 +25,7 @@ public interface SystemOauthRoleInfoService {
      * @param id
      * @return
      */
-    OauthRoleInfo findById(Long id);
+    SystemOauthRoleInfo findById(Long id);
 
     /**
      * 保存角色
@@ -31,7 +33,7 @@ public interface SystemOauthRoleInfoService {
      * @param oauthRoleInfo
      * @throws ServiceException
      */
-    void save(OauthRoleInfo oauthRoleInfo) throws ServiceException;
+    void save(SystemOauthRoleInfo oauthRoleInfo) throws ServiceException;
 
     /**
      * 删除角色

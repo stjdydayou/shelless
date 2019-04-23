@@ -5,7 +5,7 @@ import com.axungu.common.DwzJSON;
 import com.axungu.common.exception.ServiceException;
 import com.axungu.common.oauth.Permission;
 import com.axungu.platform.PluginInfo;
-import com.axungu.platform.core.model.OauthRoleInfo;
+import com.axungu.platform.core.model.SystemOauthRoleInfo;
 import com.axungu.platform.core.service.SystemOauthRoleInfoService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SystemOauthRoleController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.find")
     @RequestMapping("/index.htm")
     public String role(ModelMap modelMap) {
-        List<OauthRoleInfo> listData = this.systemOauthRoleInfoService.findAll();
+        List<SystemOauthRoleInfo> listData = this.systemOauthRoleInfoService.findAll();
         modelMap.addAttribute("listData", listData);
         return "/system/oauth/role/index";
     }
@@ -39,14 +39,14 @@ public class SystemOauthRoleController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.add")
     @RequestMapping("/add.htm")
     public String roleAdd(ModelMap modelMap) {
-        modelMap.addAttribute("oauthRoleInfo", new OauthRoleInfo());
+        modelMap.addAttribute("oauthRoleInfo", new SystemOauthRoleInfo());
         return "/system/oauth/role/edit";
     }
 
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.edit")
     @RequestMapping("/edit.htm")
     public String roleEdit(ModelMap modelMap, Long id) {
-        OauthRoleInfo oauthRoleInfo = this.systemOauthRoleInfoService.findById(id);
+        SystemOauthRoleInfo oauthRoleInfo = this.systemOauthRoleInfoService.findById(id);
         modelMap.addAttribute("oauthRoleInfo", oauthRoleInfo);
         return "/system/oauth/role/edit";
     }
@@ -54,7 +54,7 @@ public class SystemOauthRoleController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = {"role.add", "role.edit"})
     @ResponseBody
     @RequestMapping("/save.ajax")
-    public DwzJSON save(OauthRoleInfo oauthRoleInfo) throws ServiceException {
+    public DwzJSON save(SystemOauthRoleInfo oauthRoleInfo) throws ServiceException {
         if (StringUtils.isBlank(oauthRoleInfo.getName())) {
             return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("请输入角色名称");
         }
@@ -80,7 +80,7 @@ public class SystemOauthRoleController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "role.authority")
     @RequestMapping("/authority.htm")
     public String roleSetResource(ModelMap modelMap, Long id) {
-        OauthRoleInfo oauthRoleInfo = this.systemOauthRoleInfoService.findById(id);
+        SystemOauthRoleInfo oauthRoleInfo = this.systemOauthRoleInfoService.findById(id);
         modelMap.addAttribute("oauthRoleInfo", oauthRoleInfo);
 
         Collection<PluginInfo> listPlugins = PluginInfo.REGISTERED_PLUGINS.values();

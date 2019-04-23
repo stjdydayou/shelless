@@ -2,7 +2,10 @@ package com.axungu.platform.core.model;
 
 import java.io.Serializable;
 
-public class OauthRoleInfo implements Serializable {
+/**
+ * @author jtoms
+ */
+public class SystemOauthRoleInfo implements Serializable {
 
     private static final long serialVersionUID = 5241138963805332125L;
 

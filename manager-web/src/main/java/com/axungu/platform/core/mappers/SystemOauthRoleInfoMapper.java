@@ -1,7 +1,7 @@
 package com.axungu.platform.core.mappers;
 
 
-import com.axungu.platform.core.model.OauthRoleInfo;
+import com.axungu.platform.core.model.SystemOauthRoleInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -11,15 +11,15 @@ import java.util.List;
  */
 public interface SystemOauthRoleInfoMapper {
 
-    List<OauthRoleInfo> findAll();
+    List<SystemOauthRoleInfo> findAll();
 
     int deleteById(@Param("id") Long id);
 
-    int insert(OauthRoleInfo oauthRoleInfo);
+    int insert(SystemOauthRoleInfo oauthRoleInfo);
 
-    OauthRoleInfo findById(@Param("id") Long id);
+    SystemOauthRoleInfo findById(@Param("id") Long id);
 
-    int updateById(OauthRoleInfo oauthRoleInfo);
+    int updateById(SystemOauthRoleInfo oauthRoleInfo);
 
     void deleteAuthorities(@Param("roleId") Long roleId);
 

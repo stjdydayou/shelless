@@ -2,7 +2,7 @@ package com.axungu.platform.core.service.impl;
 
 import com.axungu.common.exception.ServiceException;
 import com.axungu.platform.core.mappers.SystemOauthRoleInfoMapper;
-import com.axungu.platform.core.model.OauthRoleInfo;
+import com.axungu.platform.core.model.SystemOauthRoleInfo;
 import com.axungu.platform.core.service.SystemOauthRoleInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,17 +23,17 @@ public class SystemOauthRoleInfoServiceImpl implements SystemOauthRoleInfoServic
     private SystemOauthRoleInfoMapper systemOauthRoleInfoMapper;
 
     @Override
-    public List<OauthRoleInfo> findAll() {
+    public List<SystemOauthRoleInfo> findAll() {
         return this.systemOauthRoleInfoMapper.findAll();
     }
 
     @Override
-    public OauthRoleInfo findById(Long id) {
+    public SystemOauthRoleInfo findById(Long id) {
         return this.systemOauthRoleInfoMapper.findById(id);
     }
 
     @Override
-    public void save(OauthRoleInfo oauthRoleInfo) throws ServiceException {
+    public void save(SystemOauthRoleInfo oauthRoleInfo) throws ServiceException {
         try {
             if (oauthRoleInfo.getId() == null) {
                 this.systemOauthRoleInfoMapper.insert(oauthRoleInfo);
