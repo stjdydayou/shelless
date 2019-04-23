@@ -1,16 +1,16 @@
 package com.dliyun.platform.core.patchca;
 
 
-import com.dliyun.platform.common.service.SimpleCaptchaService;
 import com.dliyun.platform.common.Token;
+import com.dliyun.platform.common.service.SimpleCaptchaService;
 import com.dliyun.platform.core.patchca.color.SingleColorFactory;
 import com.dliyun.platform.core.patchca.filter.predefined.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
-import org.ehcache.Cache;
-import org.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.BoundValueOperations;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
@@ -18,13 +18,16 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Component
 public class SimpleCaptchaServiceImpl implements SimpleCaptchaService {
 
+    private static final String CAPTCHA_SESSION_KEY = "system:captcha:session:%s";
+
     @Autowired
-    private CacheManager cacheManager;
+    private StringRedisTemplate stringRedisTemplate;
 
     @Override
     public BufferedImage generateImage(String token) {
@@ -55,8 +58,9 @@ public class SimpleCaptchaServiceImpl implements SimpleCaptchaService {
 
             Captcha captcha = cs.getCaptcha();
             if (Token.checkToken(token)) {
-                Cache<String, String> cache = cacheManager.getCache("captchaSessionCache", String.class, String.class);
-                cache.put(token, captcha.getChallenge());
+                BoundValueOperations<String, String> boundValueOperations = this.stringRedisTemplate.boundValueOps(String.format(CAPTCHA_SESSION_KEY, token));
+                boundValueOperations.set(captcha.getChallenge());
+                boundValueOperations.expire(5, TimeUnit.MINUTES);
             } else {
                 log.warn("生成验证码的 Token 无效");
             }
@@ -96,10 +100,13 @@ public class SimpleCaptchaServiceImpl implements SimpleCaptchaService {
      */
     @Override
     public boolean compareCaptcha(String captcha, String token, boolean destroySession) {
-        Cache<String, String> cache = cacheManager.getCache("captchaSessionCache", String.class, String.class);
-        String extistCaptcha = cache.get(token);
+        String redisKey = String.format(CAPTCHA_SESSION_KEY, token);
+        log.debug(redisKey);
+        BoundValueOperations<String, String> boundValueOperations = this.stringRedisTemplate.boundValueOps(redisKey);
+
+        String extistCaptcha = boundValueOperations.get();
         if (destroySession) {
-            cache.remove(token);
+            this.stringRedisTemplate.delete(redisKey);
         }
         log.debug("SESSION captcha " + extistCaptcha);
         log.debug("INPUT captcha " + captcha);

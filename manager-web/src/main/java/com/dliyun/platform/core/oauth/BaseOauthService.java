@@ -58,4 +58,12 @@ public abstract class BaseOauthService implements OauthService {
      */
     @Override
     public abstract void destroy();
+
+    /**
+     * 销毁用户登录信息
+     *
+     * @param accessToken
+     */
+    @Override
+    public abstract void destroy(String accessToken);
 }

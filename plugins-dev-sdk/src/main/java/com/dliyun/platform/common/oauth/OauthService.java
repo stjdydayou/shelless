@@ -41,4 +41,11 @@ public interface OauthService {
      * 销毁用户登录信息
      */
     void destroy();
+
+    /**
+     * 销毁用户登录信息
+     *
+     * @param accessToken
+     */
+    void destroy(String accessToken);
 }

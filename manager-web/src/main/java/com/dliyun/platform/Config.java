@@ -15,9 +15,6 @@ import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.oauth.OauthInterceptor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.ehcache.CacheManager;
-import org.ehcache.config.builders.CacheManagerBuilder;
-import org.ehcache.xml.XmlConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -183,13 +180,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         pluginInfo.addModule(userModuleInfo).addModule(settingModuleInfo);
         PluginInfo.REGISTERED_PLUGINS.put(pluginInfo.getKey(), pluginInfo);
 
-    }
-
-    @Bean
-    public CacheManager buildCacheManager() {
-        CacheManager cacheManager = CacheManagerBuilder.newCacheManager(new XmlConfiguration(getClass().getResource("/ehcache.xml")));
-        cacheManager.init();
-        return cacheManager;
     }
 
     @Bean
