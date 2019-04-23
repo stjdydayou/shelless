@@ -167,7 +167,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         PluginModuleInfo settingModuleInfo = new PluginModuleInfo("setting", "系统设置", "cog");
 
         //注册菜单
-        settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm"));
+        settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm","config.find"));
 
         //注册权限
         settingModuleInfo.add(new PluginAuthority("config.find", "查询系统参数"));

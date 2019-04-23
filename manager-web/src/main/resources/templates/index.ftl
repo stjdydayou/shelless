@@ -135,7 +135,11 @@
                 }
 
                 e.preventDefault()
-            })
+            });
+
+            $("#bjui-hnav-navbar").find('.plugin').each(function(){
+                console.log(this);
+            });
 
             //时钟
             var today = new Date(), time = today.getTime()
@@ -225,7 +229,7 @@
             <div id="bjui-hnav-navbar-box">
                 <ul id="bjui-hnav-navbar">
                     <#list registeredPlugins as plugin>
-                        <li <#if plugin_index==0>class="active"</#if>>
+                        <li class="plugin <#if plugin_index==0>active</#if>">
                             <a href="javascript:;" data-toggle="slidebar">
                                 <i class="fa fa-${plugin.faicon}"></i>
                                 ${plugin.name}
