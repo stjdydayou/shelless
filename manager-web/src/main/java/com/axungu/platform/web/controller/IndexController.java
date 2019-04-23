@@ -12,10 +12,10 @@ import com.axungu.common.utils.PatternUtils;
 import com.axungu.platform.PluginInfo;
 import com.axungu.platform.core.enums.AccountType;
 import com.axungu.platform.core.enums.UserPasswordType;
-import com.axungu.platform.core.model.UserBaseInfo;
-import com.axungu.platform.core.model.UserLoginAccount;
-import com.axungu.platform.core.model.UserLoginLog;
-import com.axungu.platform.core.model.UserPassword;
+import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
+import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
+import com.axungu.platform.core.model.SystemOauthUserLoginLog;
+import com.axungu.platform.core.model.SystemOauthUserPassword;
 import com.axungu.platform.core.service.SystemOauthUserInfoService;
 import com.axungu.platform.web.AjaxResult;
 import com.axungu.platform.web.params.LoginParam;
@@ -109,20 +109,20 @@ public class IndexController {
         }
 
 
-        UserLoginAccount userLoginAccount = this.systemOauthUserInfoService.findLoginAccount(loginParam.getLoginAccount(), accountType);
+        SystemOauthUserLoginAccount userLoginAccount = this.systemOauthUserInfoService.findLoginAccount(loginParam.getLoginAccount(), accountType);
         if (userLoginAccount == null) {
             return AjaxResult.instance("用户名或密码错误，请重新输入");
         } else {
-            UserBaseInfo userBaseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(userLoginAccount.getUid());
+            SystemOauthUserBaseInfo userBaseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(userLoginAccount.getUid());
 
-            UserPassword userPassword = this.systemOauthUserInfoService.findUserPasswd(userBaseInfo.getId(), UserPasswordType.login);
+            SystemOauthUserPassword userPassword = this.systemOauthUserInfoService.findUserPasswd(userBaseInfo.getId(), UserPasswordType.login);
 
             String loginPassword = this.oauthService.generatePassword(loginParam.getLoginPassword(), userPassword.getSalt());
             log.debug(loginPassword);
             if (loginPassword.equals(userPassword.getPasswd())) {
 
 
-                UserLoginLog lastLoginLog = this.systemOauthUserInfoService.findLastLogin(userBaseInfo.getId());
+                SystemOauthUserLoginLog lastLoginLog = this.systemOauthUserInfoService.findLastLogin(userBaseInfo.getId());
                 Date lastLoginTime = lastLoginLog == null ? DateUtil.current() : lastLoginLog.getLoginTime();
 
                 List<String> listAuthorities = this.systemOauthUserInfoService.findAuthorities(userBaseInfo.getId());

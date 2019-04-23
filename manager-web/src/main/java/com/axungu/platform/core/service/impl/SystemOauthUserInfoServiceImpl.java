@@ -4,10 +4,10 @@ import com.axungu.common.utils.DateUtil;
 import com.axungu.platform.core.enums.AccountType;
 import com.axungu.platform.core.enums.UserPasswordType;
 import com.axungu.platform.core.mappers.SystemOauthUserInfoMapper;
-import com.axungu.platform.core.model.UserBaseInfo;
-import com.axungu.platform.core.model.UserLoginAccount;
-import com.axungu.platform.core.model.UserLoginLog;
-import com.axungu.platform.core.model.UserPassword;
+import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
+import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
+import com.axungu.platform.core.model.SystemOauthUserLoginLog;
+import com.axungu.platform.core.model.SystemOauthUserPassword;
 import com.axungu.platform.core.service.SystemOauthUserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +34,17 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
-    public UserLoginAccount findLoginAccount(String loginAccount, AccountType accountType) {
+    public SystemOauthUserLoginAccount findLoginAccount(String loginAccount, AccountType accountType) {
         return this.systemOauthUserInfoMapper.findLoginAccount(loginAccount, accountType);
     }
 
     @Override
-    public UserBaseInfo findUserBaseInfoById(Long id) {
+    public SystemOauthUserBaseInfo findUserBaseInfoById(Long id) {
         return this.systemOauthUserInfoMapper.findUserBaseInfoById(id);
     }
 
     @Override
-    public UserPassword findUserPasswd(Long uid, UserPasswordType type) {
+    public SystemOauthUserPassword findUserPasswd(Long uid, UserPasswordType type) {
         return this.systemOauthUserInfoMapper.findUserPasswd(uid, type);
     }
 
@@ -54,7 +54,7 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
         this.threadPoolTaskExecutor.execute(() -> {
             Exception exp = transactionTemplate.execute(status -> {
                 try {
-                    UserLoginLog loginLog = new UserLoginLog();
+                    SystemOauthUserLoginLog loginLog = new SystemOauthUserLoginLog();
                     try {
 
                     } catch (Exception e) {
@@ -78,7 +78,7 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     }
 
     @Override
-    public UserLoginLog findLastLogin(Long uid) {
+    public SystemOauthUserLoginLog findLastLogin(Long uid) {
         return this.systemOauthUserInfoMapper.findLastLogin(uid);
     }
 

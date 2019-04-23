@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2017-6-7.
  */
-public class UserLoginAccount implements Serializable {
+public class SystemOauthUserLoginAccount implements Serializable {
 
     private static final long serialVersionUID = -6476815660455154143L;
 
@@ -19,8 +19,8 @@ public class UserLoginAccount implements Serializable {
 
     private AccountType accountType;
 
-    public static UserLoginAccount instance(String loginAccount, AccountType accountType) {
-        UserLoginAccount account = new UserLoginAccount();
+    public static SystemOauthUserLoginAccount instance(String loginAccount, AccountType accountType) {
+        SystemOauthUserLoginAccount account = new SystemOauthUserLoginAccount();
         account.setLoginAccount(loginAccount);
         account.setAccountType(accountType);
         return account;

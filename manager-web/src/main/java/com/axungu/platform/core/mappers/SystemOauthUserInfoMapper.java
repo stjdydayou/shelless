@@ -2,10 +2,10 @@ package com.axungu.platform.core.mappers;
 
 import com.axungu.platform.core.enums.AccountType;
 import com.axungu.platform.core.enums.UserPasswordType;
-import com.axungu.platform.core.model.UserBaseInfo;
-import com.axungu.platform.core.model.UserLoginAccount;
-import com.axungu.platform.core.model.UserLoginLog;
-import com.axungu.platform.core.model.UserPassword;
+import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
+import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
+import com.axungu.platform.core.model.SystemOauthUserLoginLog;
+import com.axungu.platform.core.model.SystemOauthUserPassword;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,7 +23,7 @@ public interface SystemOauthUserInfoMapper {
      * @param accountType
      * @return
      */
-    UserLoginAccount findLoginAccount(@Param("loginAccount") String loginAccount, @Param("accountType") AccountType accountType);
+    SystemOauthUserLoginAccount findLoginAccount(@Param("loginAccount") String loginAccount, @Param("accountType") AccountType accountType);
 
     /**
      * 查询一个用户的账号详情
@@ -31,7 +31,7 @@ public interface SystemOauthUserInfoMapper {
      * @param id
      * @return
      */
-    UserBaseInfo findUserBaseInfoById(@Param("id") Long id);
+    SystemOauthUserBaseInfo findUserBaseInfoById(@Param("id") Long id);
 
     /**
      * 查询用户的密码
@@ -40,14 +40,14 @@ public interface SystemOauthUserInfoMapper {
      * @param type
      * @return
      */
-    UserPassword findUserPasswd(@Param("uid") Long uid, @Param("type") UserPasswordType type);
+    SystemOauthUserPassword findUserPasswd(@Param("uid") Long uid, @Param("type") UserPasswordType type);
 
     /**
      * 插入用户的登录日志
      *
      * @param loginLog
      */
-    void insertLoginLog(UserLoginLog loginLog);
+    void insertLoginLog(SystemOauthUserLoginLog loginLog);
 
     /**
      * 查询用户最后一次登录信息
@@ -55,7 +55,7 @@ public interface SystemOauthUserInfoMapper {
      * @param uid
      * @return
      */
-    UserLoginLog findLastLogin(Long uid);
+    SystemOauthUserLoginLog findLastLogin(Long uid);
 
     /**
      * 查询用户所拥有的权限

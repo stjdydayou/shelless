@@ -2,10 +2,10 @@ package com.axungu.platform.core.service;
 
 import com.axungu.platform.core.enums.AccountType;
 import com.axungu.platform.core.enums.UserPasswordType;
-import com.axungu.platform.core.model.UserBaseInfo;
-import com.axungu.platform.core.model.UserLoginAccount;
-import com.axungu.platform.core.model.UserLoginLog;
-import com.axungu.platform.core.model.UserPassword;
+import com.axungu.platform.core.model.SystemOauthUserBaseInfo;
+import com.axungu.platform.core.model.SystemOauthUserLoginAccount;
+import com.axungu.platform.core.model.SystemOauthUserLoginLog;
+import com.axungu.platform.core.model.SystemOauthUserPassword;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface SystemOauthUserInfoService {
      * @param accountType
      * @return
      */
-    UserLoginAccount findLoginAccount(String loginAccount, AccountType accountType);
+    SystemOauthUserLoginAccount findLoginAccount(String loginAccount, AccountType accountType);
 
     /**
      * 查询用户基本信息
@@ -30,7 +30,7 @@ public interface SystemOauthUserInfoService {
      * @param id
      * @return
      */
-    UserBaseInfo findUserBaseInfoById(Long id);
+    SystemOauthUserBaseInfo findUserBaseInfoById(Long id);
 
     /**
      * 查询用户登录密码
@@ -39,7 +39,7 @@ public interface SystemOauthUserInfoService {
      * @param type
      * @return
      */
-    UserPassword findUserPasswd(Long uid, UserPasswordType type);
+    SystemOauthUserPassword findUserPasswd(Long uid, UserPasswordType type);
 
     /**
      * 插入一条登录记录
@@ -55,7 +55,7 @@ public interface SystemOauthUserInfoService {
      * @param uid
      * @return
      */
-    UserLoginLog findLastLogin(Long uid);
+    SystemOauthUserLoginLog findLastLogin(Long uid);
 
 
     /**

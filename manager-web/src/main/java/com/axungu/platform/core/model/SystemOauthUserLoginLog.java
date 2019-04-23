@@ -3,7 +3,7 @@ package com.axungu.platform.core.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class UserLoginLog implements Serializable {
+public class SystemOauthUserLoginLog implements Serializable {
 
     private static final long serialVersionUID = -5575118901053685160L;
 

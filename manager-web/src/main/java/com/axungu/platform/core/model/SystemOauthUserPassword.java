@@ -4,7 +4,7 @@ import com.axungu.platform.core.enums.UserPasswordType;
 
 import java.io.Serializable;
 
-public class UserPassword implements Serializable {
+public class SystemOauthUserPassword implements Serializable {
 
     private static final long serialVersionUID = 5320982429919793484L;
 
@@ -18,11 +18,11 @@ public class UserPassword implements Serializable {
 
     private UserPasswordType type;
 
-    public UserPassword() {
+    public SystemOauthUserPassword() {
 
     }
 
-    public UserPassword(Long uid, String passwd, String salt, UserPasswordType type) {
+    public SystemOauthUserPassword(Long uid, String passwd, String salt, UserPasswordType type) {
         this.uid = uid;
         this.passwd = passwd;
         this.salt = salt;

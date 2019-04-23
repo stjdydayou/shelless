@@ -10,7 +10,7 @@ import java.util.Date;
  * @author Administrator
  * @date 2017-6-7
  */
-public class UserBaseInfo implements Serializable {
+public class SystemOauthUserBaseInfo implements Serializable {
 
     private static final long serialVersionUID = 925241835389657323L;
 
