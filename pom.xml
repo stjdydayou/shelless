@@ -10,7 +10,6 @@
     <modules>
         <module>plugins-dev-sdk</module>
         <module>manager-web</module>
-        <module>plugin-webshell</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
