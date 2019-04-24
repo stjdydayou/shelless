@@ -29,22 +29,13 @@
             <artifactId>plugins-dev-sdk</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>com.axungu</groupId>-->
-            <!--<artifactId>plugin-webshell</artifactId>-->
-            <!--<version>${parent.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-            <!--<groupId>com.axungu</groupId>-->
-            <!--<artifactId>plugin-sftp</artifactId>-->
-            <!--<version>${parent.version}</version>-->
-            <!--<exclusions>-->
-                <!--<exclusion>-->
-                    <!--<groupId>*</groupId>-->
-                    <!--<artifactId>*</artifactId>-->
-                <!--</exclusion>-->
-            <!--</exclusions>-->
-        <!--</dependency>-->
+        <!---插件依懒-->
+        <dependency>
+            <groupId>com.dliyun</groupId>
+            <artifactId>plugin-demo</artifactId>
+            <version>${parent.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
