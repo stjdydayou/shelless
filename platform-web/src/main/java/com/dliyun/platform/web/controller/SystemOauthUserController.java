@@ -15,7 +15,7 @@ import com.dliyun.platform.core.model.SystemOauthRoleInfo;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
-import com.dliyun.platform.core.service.SysConfigService;
+import com.dliyun.platform.core.service.AbstractSysConfigService;
 import com.dliyun.platform.core.service.SystemOauthRoleInfoService;
 import com.dliyun.platform.core.service.SystemOauthUserInfoService;
 import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
@@ -51,7 +51,7 @@ public class SystemOauthUserController {
     private OauthService oauthService;
 
     @Autowired
-    private SysConfigService sysConfigService;
+    private AbstractSysConfigService sysConfigService;
 
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.find")
     @RequestMapping("/index.htm")

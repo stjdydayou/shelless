@@ -1,13 +1,10 @@
 package com.dliyun.platform.core.service.impl;
 
-import com.dliyun.platform.common.model.Money;
 import com.dliyun.platform.core.mappers.SysConfigMapper;
-import com.dliyun.platform.core.service.SysConfigService;
+import com.dliyun.platform.core.service.AbstractSysConfigService;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 /**
  * @author jtoms.shen
@@ -15,7 +12,7 @@ import java.math.BigDecimal;
  * @date 2019/4/23 23:19
  */
 @Service
-public class SysConfigServiceImpl implements SysConfigService {
+public class SysConfigServiceImpl extends AbstractSysConfigService {
 
     @Autowired
     private SysConfigMapper sysConfigMapper;
@@ -23,7 +20,6 @@ public class SysConfigServiceImpl implements SysConfigService {
     @Override
     public void insertOrUpdate(String pluginKey, String moduleKey, String configKey, String dataValue) {
         String id = this.buildId(pluginKey, moduleKey, configKey);
-
         this.sysConfigMapper.insertOrUpdate(id, dataValue);
     }
 
@@ -33,29 +29,6 @@ public class SysConfigServiceImpl implements SysConfigService {
         return this.sysConfigMapper.findDataValueById(id);
     }
 
-    @Override
-    public String getStringValue(String pluginKey, String moduleKey, String configKey) {
-        return this.findDataValue(pluginKey, moduleKey, configKey);
-    }
-
-    @Override
-    public boolean getBooleanValue(String pluginKey, String moduleKey, String configKey) {
-        String dataValue = this.getStringValue(pluginKey, moduleKey, configKey);
-        return Boolean.valueOf(dataValue);
-    }
-
-    @Override
-    public BigDecimal getBigDecimalValue(String pluginKey, String moduleKey, String configKey) {
-        String dataValue = this.getStringValue(pluginKey, moduleKey, configKey);
-
-        return dataValue == null ? null : new BigDecimal(dataValue);
-    }
-
-    @Override
-    public Money getMoneyValue(String pluginKey, String moduleKey, String configKey) {
-        String dataValue = this.getStringValue(pluginKey, moduleKey, configKey);
-        return dataValue == null ? Money.ZERO : new Money(dataValue);
-    }
 
     private String buildId(String pluginKey, String moduleKey, String configKey) {
         return DigestUtils.md5Hex(String.format("%s@%s@%s", pluginKey, moduleKey, configKey));

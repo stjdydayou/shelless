@@ -4,7 +4,7 @@ package com.dliyun.platform.web.controller;
 import com.dliyun.platform.PluginInfo;
 import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.oauth.Permission;
-import com.dliyun.platform.core.service.SysConfigService;
+import com.dliyun.platform.core.service.AbstractSysConfigService;
 import com.dliyun.platform.web.params.SystemConfigParam;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Collection;
 public class SystemConfigController {
 
     @Autowired
-    private SysConfigService sysConfigService;
+    private AbstractSysConfigService sysConfigService;
 
     @RequestMapping("/index.htm")
     @Permission(pluginKey = "system", moduleKey = "setting", authority = "config.find")

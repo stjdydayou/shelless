@@ -1,4 +1,4 @@
-package com.dliyun.platform.core.service;
+package com.dliyun.platform.common.service;
 
 import com.dliyun.platform.common.model.Money;
 
@@ -8,26 +8,6 @@ import java.math.BigDecimal;
  * @author jtoms
  */
 public interface SysConfigService {
-
-    /**
-     * 保存一个配置项
-     *
-     * @param pluginKey
-     * @param moduleKey
-     * @param configKey
-     * @param dataValue
-     */
-    void insertOrUpdate(String pluginKey, String moduleKey, String configKey, String dataValue);
-
-    /**
-     * 获取一个配置项详情
-     *
-     * @param pluginKey
-     * @param moduleKey
-     * @param configKey
-     * @return
-     */
-    String findDataValue(String pluginKey, String moduleKey, String configKey);
 
     /**
      * 获取配置文件的值
