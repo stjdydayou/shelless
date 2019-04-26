@@ -1,7 +1,7 @@
 package com.dliyun.fort.gateway.core.service;
 
-import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.fort.gateway.core.model.HostGroup;
+import com.dliyun.platform.common.exception.ServiceException;
 
 import java.util.List;
 
@@ -12,14 +12,14 @@ import java.util.List;
  */
 public interface HostGroupService {
     /**
-     * 分页查询主机列表
+     * 分页查询主机分组列表
      *
      * @return
      */
     List<HostGroup> findAll();
 
     /**
-     * 查询主机yung
+     * 查询主机分组
      *
      * @param id
      * @return
@@ -27,7 +27,7 @@ public interface HostGroupService {
     HostGroup findById(Long id);
 
     /**
-     * 添加管理
+     * 插入或者仲想主机分组
      *
      * @param group
      */
@@ -35,9 +35,26 @@ public interface HostGroupService {
 
 
     /**
-     * 删除主机
+     * 删除主机分组
      *
      * @param ids
+     * @throws ServiceException
      */
     void delete(Long[] ids) throws ServiceException;
+
+    /**
+     * 查询主机分组被授权的用户ID
+     *
+     * @param groupId
+     */
+    List<Long> findUserIds(Long groupId);
+
+
+    /**
+     * 保存主机分组被授权的用户ID
+     *
+     * @param groupId
+     * @param userIds
+     */
+    void insertOrUpdateGroupUsers(Long groupId, Long[] userIds) throws ServiceException;
 }

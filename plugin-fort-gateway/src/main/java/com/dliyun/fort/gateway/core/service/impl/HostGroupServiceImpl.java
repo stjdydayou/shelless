@@ -1,10 +1,11 @@
 package com.dliyun.fort.gateway.core.service.impl;
 
-import com.dliyun.platform.common.exception.ServiceException;
-import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.fort.gateway.core.mappers.HostGroupMapper;
 import com.dliyun.fort.gateway.core.model.HostGroup;
 import com.dliyun.fort.gateway.core.service.HostGroupService;
+import com.dliyun.platform.common.exception.ServiceException;
+import com.dliyun.platform.common.utils.DateUtil;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.support.TransactionTemplate;
@@ -54,6 +55,28 @@ public class HostGroupServiceImpl implements HostGroupService {
             }
             for (Long id : ids) {
                 this.hostGroupMapper.delete(id);
+            }
+            return null;
+        });
+        if (exp != null) {
+            throw new ServiceException(exp);
+        }
+    }
+
+    @Override
+    public List<Long> findUserIds(Long groupId) {
+        return this.hostGroupMapper.findUserIds(groupId);
+    }
+
+    @Override
+    public void insertOrUpdateGroupUsers(Long groupId, Long[] userIds) throws ServiceException {
+        Exception exp = this.transactionTemplate.execute(status -> {
+            this.hostGroupMapper.deleteGroupUsers(groupId);
+            if (userIds != null && userIds.length > 0) {
+                for (Long uid : userIds) {
+                    String id = DigestUtils.md5Hex(groupId + "@" + uid);
+                    this.hostGroupMapper.insertGroupUser(id, groupId, uid);
+                }
             }
             return null;
         });

@@ -23,6 +23,26 @@
         from `fort_gateway_host_group`
         WHERE `id` = #{id,jdbcType=BIGINT}
     </select>
+    <select id="findUserIds" parameterType="java.lang.Long" resultType="java.lang.Long">
+        select
+        uid
+        from `fort_gateway_host_group_users`
+        WHERE `group_id` = #{groupId,jdbcType=BIGINT}
+    </select>
+
+    <insert id="insertGroupUser" parameterType="java.lang.Object">
+        INSERT INTO `fort_gateway_host_group_users` (`id`,`group_id`,`uid`)
+        VALUE (
+        #{id,jdbcType=VARCHAR },
+        #{groupId,jdbcType=BIGINT },
+        #{uid,jdbcType=BIGINT }
+        )
+    </insert>
+
+
+    <delete id="deleteGroupUsers">
+        DELETE FROM `fort_gateway_host_group_users` WHERE `group_id` = #{groupId,jdbcType=BIGINT}
+    </delete>
 
     <insert id="insert" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
         INSERT INTO `fort_gateway_host_group`
@@ -32,7 +52,6 @@
         #{name,jdbcType=VARCHAR },
         #{remark,jdbcType=VARCHAR },
         #{createdTime,jdbcType=TIMESTAMP })
-
     </insert>
 
     <update id="update" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
@@ -41,7 +60,7 @@
             <if test="name!=null and name !=''">
                 `name` = #{name,jdbcType=VARCHAR },
             </if>
-            <if test="remark!=null and remark !=''">
+            <if test="remark!=null">
                 `remark` = #{remark,jdbcType=VARCHAR },
             </if>
         </set>

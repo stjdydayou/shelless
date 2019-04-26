@@ -1,8 +1,10 @@
 package com.dliyun.fort.gateway.core.mappers;
 
-import com.dliyun.platform.common.paginator.domain.PageList;
 import com.dliyun.fort.gateway.core.model.HostGroup;
+import com.dliyun.platform.common.paginator.domain.PageList;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @author jtoms.shen
@@ -45,4 +47,23 @@ public interface HostGroupMapper {
      * @param id
      */
     void delete(@Param("id") Long id);
+
+    /**
+     * 查询主机分组被授权的用户ID
+     *
+     * @param groupId
+     * @return
+     */
+    List<Long> findUserIds(@Param("groupId") Long groupId);
+
+    /**
+     * 保存主机分组被授权的用户ID
+     *
+     * @param id
+     * @param groupId
+     * @param uid
+     */
+    void insertGroupUser(@Param("id") String id, @Param("groupId") Long groupId, @Param("uid") Long uid);
+
+    void deleteGroupUsers(@Param("groupId") Long groupId);
 }

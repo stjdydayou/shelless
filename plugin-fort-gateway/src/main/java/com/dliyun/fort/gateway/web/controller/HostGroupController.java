@@ -8,6 +8,7 @@ import com.dliyun.platform.common.exception.NoFoundException;
 import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.oauth.Permission;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +56,44 @@ public class HostGroupController {
         return "fortGateway/host/group/edit";
     }
 
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.authority"})
+    @GetMapping("/authority.htm")
+    public String authority(Long id, ModelMap modelMap) throws NoFoundException {
+        HostGroup hostGroup = this.hostGroupService.findById(id);
+        if (hostGroup == null) {
+            throw new NoFoundException();
+        }
+        List<Long> listUserIds = this.hostGroupService.findUserIds(hostGroup.getId());
+        String userIds = StringUtils.join(listUserIds.toArray(), ",");
+
+        modelMap.addAttribute("hostGroup", hostGroup);
+        modelMap.addAttribute("userIds", userIds);
+        return "fortGateway/host/group/authority";
+    }
+
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.edit"})
+    @ResponseBody
+    @PostMapping("/authority.ajax")
+    public DwzJSON authority(Long groupId, String userIds) throws NoFoundException, ServiceException {
+        HostGroup hostGroup = this.hostGroupService.findById(groupId);
+        if (hostGroup == null) {
+            throw new NoFoundException();
+        }
+        if (StringUtils.isBlank(userIds)) {
+            userIds = "";
+        }
+        List<Long> listUserIds = new ArrayList<>();
+        try {
+            String[] arrUserIds = userIds.split(",");
+            for (String userId : arrUserIds) {
+                listUserIds.add(Long.parseLong(userId));
+            }
+        } catch (Exception e) {
+            return DwzJSON.body(DwzJSON.StatusCode.error, "用户ID只能是数字组成，多个用户ID请用英文逗号分开");
+        }
+        this.hostGroupService.insertOrUpdateGroupUsers(groupId, listUserIds.toArray(new Long[0]));
+        return DwzJSON.body(DwzJSON.StatusCode.success, "保存分组成功").setCloseCurrent(true);
+    }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.edit"})
     @ResponseBody
@@ -68,7 +108,7 @@ public class HostGroupController {
         hostGroup.setRemark(param.getRemark());
 
         this.hostGroupService.insertOrUpdate(hostGroup);
-        return DwzJSON.body(DwzJSON.StatusCode.success, "保存分组成功").setCloseCurrent(true).setTabid("fortGateway","hostManager","hostGroup");
+        return DwzJSON.body(DwzJSON.StatusCode.success, "保存分组成功").setCloseCurrent(true).setTabid("fortGateway", "hostManager", "hostGroup");
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = "host.delete")
