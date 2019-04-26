@@ -134,4 +134,11 @@ public interface SystemOauthUserInfoMapper {
      * @param loginAccount
      */
     void insertOrUpdateLoginAccount(SystemOauthUserLoginAccount loginAccount);
+
+    /**
+     * 删除一个登录账号
+     *
+     * @param id
+     */
+    void deleteLoginAccount(@Param("id") String id);
 }

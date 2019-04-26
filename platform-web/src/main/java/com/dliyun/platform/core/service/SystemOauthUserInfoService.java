@@ -102,6 +102,15 @@ public interface SystemOauthUserInfoService {
     void updateBaseInfo(SystemOauthUserBaseInfo userBaseInfo);
 
     /**
+     * 保存用户基本信息。带账号变更
+     *
+     * @param userBaseInfo
+     * @param loginAccounts
+     * @throws ServiceException
+     */
+    void updateBaseInfo(SystemOauthUserBaseInfo userBaseInfo, List<SystemOauthUserLoginAccount> loginAccounts) throws ServiceException;
+
+    /**
      * 更新用户密码
      *
      * @param uid

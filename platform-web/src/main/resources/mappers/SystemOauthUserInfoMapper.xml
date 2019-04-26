@@ -137,7 +137,7 @@
         select
         <include refid="LoginAccount_Column_List"/>
         from system_oauth_user_login_account where
-        uid=#{uid,jdbcType=BIGINT}
+        uid=#{uid,jdbcType=BIGINT} order by account_type asc
     </select>
 
     <insert id="insertLoginLog" parameterType="com.dliyun.platform.core.model.SystemOauthUserLoginLog">
@@ -152,6 +152,9 @@
 
     <delete id="deleteRoles" parameterType="java.lang.Long">
         delete FROM system_oauth_user_role WHERE uid = #{uid,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteLoginAccount" parameterType="java.lang.String">
+        delete FROM system_oauth_user_login_account WHERE id = #{id,jdbcType=BIGINT}
     </delete>
     <insert id="insertRoles" parameterType="java.lang.Object">
         insert into system_oauth_user_role (uid, role_id)

@@ -111,6 +111,30 @@ public class SystemOauthUserInfoServiceImpl implements SystemOauthUserInfoServic
     }
 
     @Override
+    public void updateBaseInfo(SystemOauthUserBaseInfo userBaseInfo, List<SystemOauthUserLoginAccount> loginAccounts) throws ServiceException {
+        Exception exception = this.transactionTemplate.execute(status -> {
+            try {
+
+                systemOauthUserInfoMapper.updateBaseInfo(userBaseInfo);
+
+                for (SystemOauthUserLoginAccount loginAccount : loginAccounts) {
+                    loginAccount.setUid(userBaseInfo.getId());
+                    systemOauthUserInfoMapper.deleteLoginAccount(loginAccount.getId());
+                    systemOauthUserInfoMapper.insertOrUpdateLoginAccount(loginAccount);
+                }
+            } catch (Exception e) {
+                status.setRollbackOnly();
+                return e;
+            }
+            return null;
+        });
+
+        if (exception != null) {
+            throw new ServiceException(exception);
+        }
+    }
+
+    @Override
     public void insertOrUpdateUserPassword(Long uid, String password, String salt, SystemOauthUserPassword.UserPasswordType type) {
         SystemOauthUserPassword userPassword = SystemOauthUserPassword.instance(uid, password, salt, type);
         this.systemOauthUserInfoMapper.insertOrUpdateUserPassword(userPassword);

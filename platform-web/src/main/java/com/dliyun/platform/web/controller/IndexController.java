@@ -1,7 +1,9 @@
 package com.dliyun.platform.web.controller;
 
 import com.dliyun.platform.PluginInfo;
+import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.ServletContext;
+import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.oauth.OauthInfo;
 import com.dliyun.platform.common.oauth.OauthService;
 import com.dliyun.platform.common.oauth.Permission;
@@ -10,13 +12,16 @@ import com.dliyun.platform.common.plugin.PluginModuleInfo;
 import com.dliyun.platform.common.service.SimpleCaptchaService;
 import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.common.utils.PatternUtils;
+import com.dliyun.platform.common.utils.RandCodeUtil;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.model.SystemOauthUserLoginLog;
 import com.dliyun.platform.core.model.SystemOauthUserPassword;
 import com.dliyun.platform.core.service.SystemOauthUserInfoService;
 import com.dliyun.platform.web.AjaxResult;
+import com.dliyun.platform.web.params.ChangeMyLoginPassowdParam;
 import com.dliyun.platform.web.params.LoginParam;
+import com.dliyun.platform.web.params.SaveUserInfoParam;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,10 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Controller
@@ -160,5 +162,100 @@ public class IndexController {
         } else {
             return AjaxResult.instance(AjaxResult.Code.SERVER_ERROR, "获取验证码失败");
         }
+    }
+
+    @Permission(pluginKey = "system", moduleKey = "index")
+    @GetMapping("/changeMyLoginPassowd.htm")
+    public String changeMyLoginPassowd() {
+        return "system/changeMyLoginPassowd";
+    }
+
+
+    @Permission(pluginKey = "system", moduleKey = "index")
+    @ResponseBody
+    @PostMapping("/changeMyLoginPassowd.ajax")
+    public DwzJSON changeMyLoginPassowd(@Valid ChangeMyLoginPassowdParam param) {
+
+        OauthInfo oauthInfo = this.oauthService.getOAuth();
+
+        SystemOauthUserPassword userPassword = this.systemOauthUserInfoService.findUserPasswd(oauthInfo.getId(), SystemOauthUserPassword.UserPasswordType.login);
+
+        String loginPassword = this.oauthService.generatePassword(param.getOldPassword(), userPassword.getSalt());
+        log.debug(loginPassword);
+        if (loginPassword.equals(userPassword.getPasswd())) {
+
+            if (!param.getNewPassword().equals(param.getReNewPassword())) {
+                return DwzJSON.body(DwzJSON.StatusCode.error, "确认密码与新密码不一致，请重新输入");
+            }
+
+            String salt = RandCodeUtil.get(6, false);
+
+            String saltPasswd = this.oauthService.generatePassword(param.getNewPassword(), salt);
+
+            this.systemOauthUserInfoService.insertOrUpdateUserPassword(oauthInfo.getId(), saltPasswd, salt, SystemOauthUserPassword.UserPasswordType.login);
+
+            return DwzJSON.body(DwzJSON.StatusCode.success, "修改密码成功，下次请使用新的密码登录").setCloseCurrent(true);
+        } else {
+            return DwzJSON.body(DwzJSON.StatusCode.error, "旧的登录密码错误，请重新输入");
+        }
+    }
+
+    @Permission(pluginKey = "system", moduleKey = "index")
+    @GetMapping("/changeMyProfile.htm")
+    public String changeMyProfile(ModelMap modelMap) {
+        OauthInfo oauthInfo = this.oauthService.getOAuth();
+
+        SystemOauthUserBaseInfo baseInfo = this.systemOauthUserInfoService.findUserBaseInfoById(oauthInfo.getId());
+        List<SystemOauthUserLoginAccount> listAccounts = this.systemOauthUserInfoService.findLoginAccountsByUid(oauthInfo.getId());
+        modelMap.addAttribute("baseInfo", baseInfo);
+        Map<String, String> accounts = new HashMap<>(listAccounts.size());
+        for (SystemOauthUserLoginAccount account : listAccounts) {
+            accounts.put(account.getAccountType().name(), account.getLoginAccount());
+        }
+        modelMap.addAttribute("accounts", accounts);
+        return "system/changeMyProfile";
+    }
+
+
+    @Permission(pluginKey = "system", moduleKey = "index")
+    @ResponseBody
+    @PostMapping("/changeMyProfile.ajax")
+    public DwzJSON changeMyProfile(@Valid SaveUserInfoParam param) throws ServiceException {
+
+        OauthInfo oauthInfo = this.oauthService.getOAuth();
+
+        List<SystemOauthUserLoginAccount> loginAccounts = new ArrayList<>();
+
+        if (StringUtils.isNotBlank(param.getMp())) {
+            SystemOauthUserLoginAccount mpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp);
+            if (mpAccount != null && !mpAccount.getUid().equals(oauthInfo.getId())) {
+                return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("手机号已被其他用户使用，请使更换手机号");
+            }
+            loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp));
+        }
+
+        if (StringUtils.isNotBlank(param.getEmail())) {
+            SystemOauthUserLoginAccount emailpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email);
+            if (emailpAccount != null && !emailpAccount.getUid().equals(oauthInfo.getId())) {
+                return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("邮箱已被其他用户使用，请使更换邮箱");
+            }
+            loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email));
+        }
+
+
+        if (param.getGender() == null) {
+            param.setGender(SystemOauthUserBaseInfo.Gender.secret);
+        }
+
+
+        SystemOauthUserBaseInfo userInfo = new SystemOauthUserBaseInfo();
+        userInfo.setId(oauthInfo.getId());
+        userInfo.setNickName(param.getNickName());
+        userInfo.setGender(param.getGender());
+
+
+        this.systemOauthUserInfoService.updateBaseInfo(userInfo, loginAccounts);
+
+        return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("保存用户成功").setCloseCurrent(true).setTabid("system", "oauth", "user");
     }
 }

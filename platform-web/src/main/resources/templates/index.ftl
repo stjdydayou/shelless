@@ -176,16 +176,28 @@
                     <div><span id="bjui-date"></span> <span id="bjui-clock"></span></div>
                 </li>
                 <li><a href="#">消息 <span class="badge">4</span></a></li>
-                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">我的账户 <span
+                <li class="dropdown"><a href="javascript" class="dropdown-toggle" data-toggle="dropdown">我的账户 <span
                         class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="changepwd.html" data-toggle="dialog" data-id="changepwd_page" data-mask="true"
-                               data-width="400" data-height="260">&nbsp;<span class="glyphicon glyphicon-lock"></span>
-                            修改密码&nbsp;</a></li>
-                        <li><a href="#">&nbsp;<span class="glyphicon glyphicon-user"></span> 我的资料</a></li>
+                        <li>
+                            <a href="/changeMyLoginPassowd.htm" data-toggle="dialog" data-id="change-my-login-passowd" data-mask="true" data-width="400" data-height="260">
+                                <span class="glyphicon glyphicon-lock"></span>
+                                修改密码
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/changeMyProfile.htm" data-toggle="dialog" data-id="change-my-profile" data-mask="true" data-width="400" data-height="260">
+                                <span class="glyphicon glyphicon-user"></span>
+                                我的资料
+                            </a>
+                        </li>
                         <li class="divider"></li>
-                        <li><a href="/logout.htm" class="red">&nbsp;<span class="glyphicon glyphicon-off"></span>
-                            注销登陆</a></li>
+                        <li>
+                            <a href="/logout.htm" class="red">
+                                <span class="glyphicon glyphicon-off"></span>
+                                注销登陆
+                            </a>
+                        </li>
                     </ul>
                 </li>
                 <li class="dropdown" style="margin: 0 10px;">
