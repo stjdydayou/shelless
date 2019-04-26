@@ -3,9 +3,9 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>湖南斗笠云网络科技有限公司</title>
-    <meta name="Keywords" content="湖南斗笠云网络科技有限公司"/>
-    <meta name="Description" content="湖南斗笠云网络科技有限公司"/>
+    <title>运维管理平台</title>
+    <meta name="Keywords" content="运维管理平台"/>
+    <meta name="Description" content="运维管理平台"/>
     <!-- bootstrap - css -->
     <link href="/BJUI/themes/css/bootstrap.css" rel="stylesheet">
     <!-- core - css -->
@@ -306,7 +306,7 @@
         </div>
     </div>
     <footer id="bjui-footer">
-        Copyright &copy; 2019　<a href="http://www.dliyun.com/" target="_blank">湖南斗笠云网络科技有限公司</a>　
+        Copyright &copy; 2019
     </footer>
 </div>
 </body>

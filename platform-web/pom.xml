@@ -10,18 +10,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>platform-web</artifactId>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+
 
     <dependencies>
         <dependency>
@@ -30,11 +19,11 @@
             <version>${parent.version}</version>
         </dependency>
         <!---插件依懒-->
-        <dependency>
-            <groupId>com.dliyun</groupId>
-            <artifactId>plugin-demo</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
+        <!--<dependency>-->
+        <!--<groupId>com.dliyun</groupId>-->
+        <!--<artifactId>plugin-demo</artifactId>-->
+        <!--<version>${parent.version}</version>-->
+        <!--</dependency>-->
         <dependency>
             <groupId>com.dliyun</groupId>
             <artifactId>plugin-fort-gateway</artifactId>
@@ -47,4 +36,40 @@
             <version>${spring-boot.version}</version>
         </dependency>
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
+                <configuration>
+                    <mainClass>com.dliyun.platform.StartServer</mainClass>
+                    <layout>ZIP</layout>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
