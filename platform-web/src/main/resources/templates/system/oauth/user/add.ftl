@@ -5,12 +5,13 @@
             <tr>
                 <td>
                     <label class="control-label x85">用户昵称：</label>
-                    <input type="text" name="nickName" value=""/>
+                    <input type="text" name="nickName" value="" class="required" data-rule="required"/>
                 </td>
-            </tr><tr>
+            </tr>
+            <tr>
                 <td>
                     <label class="control-label x85">登录账号：</label>
-                    <input type="text" name="userName" value=""/>
+                    <input type="text" name="userName" class="required" data-rule="required"/>
                 </td>
             </tr>
             <tr>
@@ -28,7 +29,9 @@
             <tr>
                 <td>
                     <label class="control-label x85">性别：</label>
-                    <input type="text" name="gender" value="secret"/>
+                    <input type="radio" name="gender" value="secret" data-toggle="icheck" data-label="保密"/>
+                    <input type="radio" name="gender" value="male" data-toggle="icheck" data-label="男"/>
+                    <input type="radio" name="gender" value="female" data-toggle="icheck" data-label="女"/>
                 </td>
             </tr>
             </tbody>

@@ -8,7 +8,7 @@
             <tr>
                 <td>
                     <label>角色名称：</label>
-                    <input type="text" value="${oauthRoleInfo.name!''}" name="name" class="required" data-rule="required" data-width="200"/>
+                    <input type="text" value="${oauthRoleInfo.name!''}" name="name" class="required" data-rule="required"/>
                 </td>
             </tr>
             <tr>

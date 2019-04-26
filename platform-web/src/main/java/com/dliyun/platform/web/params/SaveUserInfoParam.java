@@ -15,10 +15,10 @@ public class SaveUserInfoParam {
     @NotBlank(message = "用户昵称不能为空")
     private String nickName;
 
-    @NotBlank(message = "用户登录账户不能为空")
+//    @NotBlank(message = "用户登录账户不能为空")
     private String userName;
 
-    @NotBlank(message = "请输入手机号")
+//    @NotBlank(message = "请输入手机号")
     @MobileNumber(message = "请输入正确的手机号")
     private String mp;
 

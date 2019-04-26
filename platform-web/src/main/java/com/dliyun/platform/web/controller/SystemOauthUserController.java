@@ -21,6 +21,7 @@ import com.dliyun.platform.core.service.SystemOauthUserInfoService;
 import com.dliyun.platform.core.vo.SystemOauthUserInfoVO;
 import com.dliyun.platform.web.params.SaveUserInfoParam;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -168,19 +169,29 @@ public class SystemOauthUserController {
     @RequestMapping("/add.ajax")
     public DwzJSON add(@Valid SaveUserInfoParam param) throws ServiceException {
 
+        List<SystemOauthUserLoginAccount> loginAccounts = new ArrayList<>();
+
         SystemOauthUserLoginAccount userNameAccount = this.systemOauthUserInfoService.findLoginAccount(param.getMp(), SystemOauthUserLoginAccount.AccountType.userName);
         if (userNameAccount != null) {
             return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("登录账号已被其他用户使用，请使更换手机号");
         }
+        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getUserName(), SystemOauthUserLoginAccount.AccountType.userName));
 
-        SystemOauthUserLoginAccount mpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp);
-        if (mpAccount != null) {
-            return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("手机号已被其他用户使用，请使更换手机号");
+
+        if (StringUtils.isNotBlank(param.getMp())) {
+            SystemOauthUserLoginAccount mpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp);
+            if (mpAccount != null) {
+                return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("手机号已被其他用户使用，请使更换手机号");
+            }
+            loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp));
+
         }
-
-        SystemOauthUserLoginAccount emailpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email);
-        if (emailpAccount != null) {
-            return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("邮箱已被其他用户使用，请使更换邮箱");
+        if (StringUtils.isNotBlank(param.getEmail())) {
+            SystemOauthUserLoginAccount emailpAccount = this.systemOauthUserInfoService.findLoginAccount(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email);
+            if (emailpAccount != null) {
+                return DwzJSON.body(DwzJSON.StatusCode.error).setMessage("邮箱已被其他用户使用，请使更换邮箱");
+            }
+            loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email));
         }
 
 
@@ -200,10 +211,7 @@ public class SystemOauthUserController {
         userInfo.setRegisterTime(DateUtil.current());
         userInfo.setRegisterIp(ServletContext.getRemoteIPAddress());
 
-        List<SystemOauthUserLoginAccount> loginAccounts = new ArrayList<>();
-        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getUserName(), SystemOauthUserLoginAccount.AccountType.userName));
-        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getMp(), SystemOauthUserLoginAccount.AccountType.mp));
-        loginAccounts.add(SystemOauthUserLoginAccount.instance(param.getEmail(), SystemOauthUserLoginAccount.AccountType.email));
+
         this.systemOauthUserInfoService.register(userInfo, secretPassword, salt, loginAccounts);
 
         return DwzJSON.body(DwzJSON.StatusCode.success).setMessage("保存用户成功").setCloseCurrent(true).setTabid("system", "oauth", "user");
