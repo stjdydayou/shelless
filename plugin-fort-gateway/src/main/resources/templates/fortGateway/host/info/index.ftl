@@ -65,7 +65,7 @@
         <#list listData as row>
         <tr target="row_id" rel="${row.id}">
             <td>
-                <input type="checkbox" name="roles" data-toggle="icheck" value="${row.id}">
+                <input type="checkbox" name="ids" data-toggle="icheck" value="${row.id}">
             </td>
             <td>${row.id}</td>
             <td>${row.name}</td>
@@ -85,11 +85,9 @@
                 </@s.oauth>
 
                 <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="host.terminal">
-                    <a href="/fortGateway/hostInfo/terminal/${row.id}.htm" data-id="terminal-${row.id}"
-                       data-mask="false" data-width="800" data-toggle="dialog" data-max="true"
-                       class="btn btn-default btn-sm" data-icon="terminal" data-title="${row.name}(${row.hostAddress})">
-                        打开终端
-                    </a>
+                <a href="javascript:;" onclick="openTerminalDialog(this,'${row.id}','终端:${row.name}')" class="btn btn-default btn-sm open-terminal" data-icon="terminal">
+                    打开终端
+                </a>
                 </@s.oauth>
             </td>
         </tr>
@@ -98,3 +96,13 @@
     </table>
 </div>
 <#include "/paginator.ftl" />
+
+<script type="text/javascript">
+    function openTerminalDialog(object, id, title) {
+        $(object).navtab({
+            id: 'terminal-' + id + Math.random(),
+            url: '/fortGateway/hostInfo/terminal/' + id + '.htm',
+            title: title
+        });
+    }
+</script>
