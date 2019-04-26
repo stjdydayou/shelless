@@ -4,30 +4,30 @@
             <tbody>
             <tr>
                 <td>
-                    <label for="j_dialog_name" class="control-label x85">用户昵称：</label>
+                    <label class="control-label x85">用户昵称：</label>
                     <input type="text" name="nickName" value=""/>
                 </td>
             </tr><tr>
                 <td>
-                    <label for="j_dialog_name" class="control-label x85">登录账号：</label>
+                    <label class="control-label x85">登录账号：</label>
                     <input type="text" name="userName" value=""/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="j_dialog_name" class="control-label x85">手机号：</label>
+                    <label class="control-label x85">手机号：</label>
                     <input type="text" name="mp" value=""/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="j_dialog_name" class="control-label x85">邮箱：</label>
+                    <label class="control-label x85">邮箱：</label>
                     <input type="text" name="email" value=""/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label for="j_dialog_name" class="control-label x85">性别：</label>
+                    <label class="control-label x85">性别：</label>
                     <input type="text" name="gender" value="secret"/>
                 </td>
             </tr>

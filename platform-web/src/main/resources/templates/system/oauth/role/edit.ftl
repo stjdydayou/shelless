@@ -8,13 +8,13 @@
             <tr>
                 <td>
                     <label>角色名称：</label>
-                    <input type="text" value="${oauthRoleInfo.name!''}" name="name" class="required" data-rule="required" style="width:200px"/>
+                    <input type="text" value="${oauthRoleInfo.name!''}" name="name" class="required" data-rule="required" data-width="200"/>
                 </td>
             </tr>
             <tr>
                 <td>
                     <label>角色描述：</label>
-                    <textarea name="remark" style="width:400px;" rows="2">${(oauthRoleInfo.remark!'')?html}</textarea>
+                    <textarea name="remark" style="width:400px;" rows="2" data-width="400">${(oauthRoleInfo.remark!'')?html}</textarea>
                 </td>
             </tr>
             </tbody>

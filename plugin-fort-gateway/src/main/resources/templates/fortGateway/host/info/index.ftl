@@ -74,7 +74,7 @@
             <td>${row.portNumber}</td>
             <td>${row.os}</td>
             <td>${row.remark!''}</td>
-            <td class="td-manage">
+            <td>
                 <a href="/webshell/hostInfo/terminal/${row.id}.htm" data-id="terminal-${row.id}"
                    data-mask="false" data-width="800" data-toggle="dialog" data-max="true"
                    class="btn btn-default btn-sm" data-icon="terminal" data-title="${row.name}(${row.hostAddress})">

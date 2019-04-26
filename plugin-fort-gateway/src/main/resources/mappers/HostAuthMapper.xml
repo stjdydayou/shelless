@@ -18,17 +18,17 @@
     <select id="findAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from `host_auth`
+        from `fort_gateway_host_auth`
     </select>
     <select id="findById" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from `host_auth`
+        from `fort_gateway_host_auth`
         WHERE `id` = #{id,jdbcType=BIGINT}
     </select>
 
     <insert id="insert" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
-        INSERT INTO `host_auth`
+        INSERT INTO `fort_gateway_host_auth`
         (`name`, `auth_type`, `user_name`, `auth_text`, `remark`, `created_time`)
         VALUES
         (
@@ -42,7 +42,7 @@
     </insert>
 
     <update id="update" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
-        UPDATE `host_auth`
+        UPDATE `fort_gateway_host_auth`
         <set>
             <if test="name!=null and name !=''">
                 `name` = #{name,jdbcType=VARCHAR },
@@ -64,6 +64,6 @@
     </update>
 
     <delete id="delete">
-        DELETE FROM `host_auth` WHERE `id` = #{id,jdbcType=BIGINT}
+        DELETE FROM `fort_gateway_host_auth` WHERE `id` = #{id,jdbcType=BIGINT}
     </delete>
 </mapper>

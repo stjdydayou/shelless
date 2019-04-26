@@ -20,7 +20,7 @@
     <select id="findPage" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from `host_info`
+        from `fort_gateway_host_info`
         <where>
             <if test="groupId!=null">
                 AND `group_id` = #{groupId,jdbcType=BIGINT}
@@ -37,12 +37,12 @@
     <select id="findById" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
-        from `host_info`
+        from `fort_gateway_host_info`
         WHERE `id` = #{id,jdbcType=BIGINT}
     </select>
 
     <insert id="insert" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
-        INSERT INTO `host_info`
+        INSERT INTO `fort_gateway_host_info`
         (`id`, `group_id`, `auth_id`, `name`, `host_address`, `port_number`, `os`, `remark`, `created_time`)
         VALUES
         (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{authId,jdbcType=BIGINT},
@@ -51,7 +51,7 @@
     </insert>
 
     <update id="update" parameterType="com.dliyun.fort.gateway.core.model.HostInfo">
-        UPDATE `host_info`
+        UPDATE `fort_gateway_host_info`
         <set>
             <if test="groupId!=null">
                 `group_id` = #{groupId,jdbcType=BIGINT},
@@ -79,7 +79,7 @@
     </update>
 
     <delete id="delete">
-        DELETE FROM `host_info` WHERE `id` = #{id,jdbcType=BIGINT}
+        DELETE FROM `fort_gateway_host_info` WHERE `id` = #{id,jdbcType=BIGINT}
     </delete>
 
 </mapper>
