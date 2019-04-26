@@ -31,6 +31,9 @@
             <if test="name!=null and name !=''">
                 AND `name` like CONCAT('%',#{name,jdbcType=VARCHAR },'%')
             </if>
+            <if test="uid!=null">
+                AND `group_id` in (select `group_id` from `fort_gateway_host_group_users` WHERE `uid` = #{uid,jdbcType=BIGINT})
+            </if>
         </where>
     </select>
 

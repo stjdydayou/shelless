@@ -1,13 +1,7 @@
 package com.dliyun.fort.gateway.ssh;
 
-import com.dliyun.platform.common.oauth.OauthInfo;
-import com.dliyun.platform.common.oauth.OauthService;
-import com.dliyun.fort.gateway.core.model.HostAuth;
-import com.dliyun.fort.gateway.core.model.HostInfo;
-import com.dliyun.fort.gateway.core.service.HostAuthService;
-import com.dliyun.fort.gateway.core.service.HostInfoService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -26,15 +20,6 @@ import java.util.Map;
 @Component
 public class ShellHandshakeInterceptor implements HandshakeInterceptor {
 
-    @Autowired
-    private OauthService oauthService;
-
-    @Autowired
-    private HostInfoService hostInfoService;
-
-    @Autowired
-    private HostAuthService hostAuthService;
-
     /**
      * @param request
      * @param response
@@ -50,23 +35,12 @@ public class ShellHandshakeInterceptor implements HandshakeInterceptor {
             String cols = ((ServletServerHttpRequest) request).getServletRequest().getParameter("cols");
             String rows = ((ServletServerHttpRequest) request).getServletRequest().getParameter("rows");
 
-            OauthInfo oauthInfo = this.oauthService.getOAuth(accessToken);
-            if (oauthInfo == null) {
+            if (StringUtils.isBlank(accessToken) || StringUtils.isBlank(hostId) || StringUtils.isBlank(cols) || StringUtils.isBlank(rows)) {
                 return false;
             }
 
-            HostInfo hostInfo = this.hostInfoService.findById(Long.parseLong(hostId));
-            if (hostInfo == null) {
-                return false;
-            }
-
-            HostAuth hostAuth = hostAuthService.findById(hostInfo.getAuthId());
-            if (hostAuth == null) {
-                return false;
-            }
-
-            attributes.put("hostInfo", hostInfo);
-            attributes.put("hostAuth", hostAuth);
+            attributes.put("accessToken", accessToken);
+            attributes.put("hostId", hostId);
             attributes.put("cols", cols);
             attributes.put("rows", rows);
 

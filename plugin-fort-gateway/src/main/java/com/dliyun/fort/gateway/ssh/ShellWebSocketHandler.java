@@ -4,6 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.dliyun.fort.gateway.core.model.HostAuth;
 import com.dliyun.fort.gateway.core.model.HostInfo;
+import com.dliyun.fort.gateway.core.service.HostAuthService;
+import com.dliyun.fort.gateway.core.service.HostGroupService;
+import com.dliyun.fort.gateway.core.service.HostInfoService;
+import com.dliyun.platform.common.oauth.OauthInfo;
+import com.dliyun.platform.common.oauth.OauthService;
 import com.dliyun.platform.common.service.SysConfigService;
 import com.dliyun.platform.common.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +28,17 @@ import java.util.Map;
 @Component
 public class ShellWebSocketHandler implements WebSocketHandler {
 
+    @Autowired
+    private OauthService oauthService;
+
+    @Autowired
+    private HostInfoService hostInfoService;
+
+    @Autowired
+    private HostAuthService hostAuthService;
+
+    @Autowired
+    private HostGroupService hostGroupService;
 
     @Autowired
     private SysConfigService sysConfigService;
@@ -31,15 +48,45 @@ public class ShellWebSocketHandler implements WebSocketHandler {
 
         Map<String, Object> attributes = session.getAttributes();
 
-        HostInfo hostInfo = (HostInfo) attributes.get("hostInfo");
-        HostAuth hostAuth = (HostAuth) attributes.get("hostAuth");
+        String accessToken = attributes.get("accessToken").toString();
+        String hostId = attributes.get("hostId").toString();
         String cols = attributes.get("cols").toString();
         String rows = attributes.get("rows").toString();
+
+        session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, this.getBanner()).toString()));
+
+
+        OauthInfo oauthInfo = this.oauthService.getOAuth(accessToken);
+        if (oauthInfo == null) {
+            session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, "您的登录信息已经失效，请重新登录").toString()));
+            session.close();
+            return;
+        }
+
+        HostInfo hostInfo = this.hostInfoService.findById(Long.parseLong(hostId));
+        if (hostInfo == null) {
+            session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, "您要登录的主机已经不存在").toString()));
+            session.close();
+            return;
+        }
+
+        List<Long> listGroupUsers = this.hostGroupService.findUserIds(hostInfo.getGroupId());
+        if (listGroupUsers == null || !listGroupUsers.contains(oauthInfo.getId())) {
+            session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, "您没有被授权管理此主机，请不要随意操作").toString()));
+            session.close();
+            return;
+        }
+
+        HostAuth hostAuth = hostAuthService.findById(hostInfo.getAuthId());
+        if (hostAuth == null) {
+            session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, "您要登录的主机密钥已经不存在").toString()));
+            session.close();
+            return;
+        }
 
         String desKey = this.sysConfigService.getStringValue("fortGateway", "hostManager", "des_key");
 
 
-        session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, this.getBanner()).toString()));
         SSHClient client = null;
 
         if (hostAuth.getAuthType().equals(HostAuth.AuthType.password)) {
@@ -131,7 +178,7 @@ public class ShellWebSocketHandler implements WebSocketHandler {
     private StringBuilder getBanner() {
         StringBuilder buffer = new StringBuilder();
         buffer.append("\u001b[32mWelcome to WebSSH.\r\n");
-        buffer.append("Copyright © 2019 http://www.dliyun.com.\r\n");
+        buffer.append("Copyright © 2019\r\n");
         buffer.append("\u001b[31m-----------------------------------------------------\r\n");
         buffer.append("\u001b[0m");
         return buffer;

@@ -7,6 +7,8 @@ package com.dliyun.fort.gateway.core.vo;
  */
 public class HostInfoVO {
 
+    private Long uid;
+
     private Long groupId;
 
     private Long authId;
@@ -35,5 +37,13 @@ public class HostInfoVO {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getUid() {
+        return uid;
+    }
+
+    public void setUid(Long uid) {
+        this.uid = uid;
     }
 }

@@ -14,6 +14,7 @@ import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.exception.NoFoundException;
 import com.dliyun.platform.common.exception.NoLoginException;
 import com.dliyun.platform.common.exception.ServiceException;
+import com.dliyun.platform.common.oauth.OauthInfo;
 import com.dliyun.platform.common.oauth.OauthService;
 import com.dliyun.platform.common.oauth.Permission;
 import com.dliyun.platform.common.paginator.domain.PageResult;
@@ -51,6 +52,9 @@ public class HostInfoController {
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = "host.find")
     @RequestMapping("/index.htm")
     public String index(ModelMap modelMap, DwzPageInfo dwzPageInfo, HostInfoVO vo) {
+
+        OauthInfo oauthInfo = this.oauthService.getOAuth();
+//        vo.setUid(oauthInfo.getId());
 
         PageResult<HostInfo> pageResult = hostInfoService.findPage(dwzPageInfo.getPageBounds(), vo);
 
