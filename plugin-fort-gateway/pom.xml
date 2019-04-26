@@ -30,5 +30,10 @@
             <artifactId>ganymed-ssh2</artifactId>
             <version>${ganymed-ssh2.version}</version>
         </dependency>
+        <dependency>
+            <groupId>net.finderweb</groupId>
+            <artifactId>gateway</artifactId>
+            <version>1.0.6</version>
+        </dependency>
     </dependencies>
 </project>

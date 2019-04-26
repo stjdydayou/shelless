@@ -1,6 +1,7 @@
 package com.dliyun.fort.gateway.web.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.dliyun.fort.gateway.core.model.HostAuth;
 import com.dliyun.fort.gateway.core.service.HostAuthService;
 import com.dliyun.fort.gateway.ssh.CryptoDESUtil;
@@ -31,7 +32,7 @@ import java.util.Map;
  */
 @Slf4j
 @Controller
-@RequestMapping("/host/auth")
+@RequestMapping("/fortGateway/auth")
 public class HostAuthController {
 
     @Autowired
@@ -48,22 +49,46 @@ public class HostAuthController {
         return "fortGateway/host/auth/index";
     }
 
-    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"auth.add", "auth.auth"})
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"auth.add", "auth.edit"})
     @GetMapping("/edit.htm")
     public String edit(Long id, ModelMap modelMap) throws NoFoundException {
+
+        String desKey = this.sysConfigService.getStringValue("fortGateway", "hostManager", "des_key");
+
+
         HostAuth hostAuth = new HostAuth();
         if (id != null) {
             hostAuth = this.hostAuthService.findById(id);
+
+            if (hostAuth == null) {
+                throw new NoFoundException();
+            }
+
+            if (hostAuth.getAuthType().equals(HostAuth.AuthType.password)) {
+                String password = CryptoDESUtil.decode(desKey, hostAuth.getAuthText());
+                modelMap.addAttribute("password", password);
+
+            }
+            if (hostAuth.getAuthType().equals(HostAuth.AuthType.sshkey)) {
+
+                String authJson = CryptoDESUtil.decode(desKey, hostAuth.getAuthText());
+
+                JSONObject jsonObject = JSON.parseObject(authJson);
+
+                modelMap.addAttribute("publicKey", jsonObject.getString("publicKey"));
+                modelMap.addAttribute("passphrase", jsonObject.getString("passphrase"));
+            }
         }
-        if (hostAuth == null) {
-            throw new NoFoundException();
+        if (hostAuth.getAuthType() == null) {
+            hostAuth.setAuthType(HostAuth.AuthType.password);
         }
+
         modelMap.addAttribute("hostAuth", hostAuth);
         return "fortGateway/host/auth/edit";
     }
 
 
-    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"auth.add", "auth.auth"})
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"auth.add", "auth.edit"})
     @ResponseBody
     @PostMapping("/insertOrUpdate.ajax")
     public DwzJSON insertOrUpdate(Long id, SaveHostAuthParam param) throws ServiceException {
@@ -86,8 +111,10 @@ public class HostAuthController {
         }
 
         if (param.getAuthType().equals(HostAuth.AuthType.sshkey)) {
-            Map<String, String> authMap = new HashMap<>();
-            authMap.put("privateKey", param.getPrivateKey());
+            if (StringUtils.isBlank(param.getPublicKey())) {
+                return DwzJSON.body(DwzJSON.StatusCode.error, "SSH公钥不能为空");
+            }
+            Map<String, String> authMap = new HashMap<>(2);
             authMap.put("publicKey", param.getPublicKey());
             authMap.put("passphrase", param.getPassphrase());
 
@@ -96,7 +123,7 @@ public class HostAuthController {
 
 
         this.hostAuthService.insertOrUpdate(hostAuth);
-        return DwzJSON.body(DwzJSON.StatusCode.success, "保存密钥成功");
+        return DwzJSON.body(DwzJSON.StatusCode.success, "保存密钥成功").setCloseCurrent(true).setTabid("fortGateway", "hostManager", "hostAuth");
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = "group.find")

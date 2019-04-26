@@ -46,8 +46,8 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
 
         //注册菜单
         moduleInfo.add(new PluginMenu("hostGroup", "分组管理", "/fortGateway/group/index.htm", "group.find"));
-        moduleInfo.add(new PluginMenu("host-auth", "密钥管理", "/fortGateway/auth/index.htm", "auth.find"));
-        moduleInfo.add(new PluginMenu("host-info", "主机管理", "/fortGateway/hostInfo/index.htm", "host.find"));
+        moduleInfo.add(new PluginMenu("hostAuth", "密钥管理", "/fortGateway/auth/index.htm", "auth.find"));
+        moduleInfo.add(new PluginMenu("hostInfo", "主机管理", "/fortGateway/hostInfo/index.htm", "host.find"));
 
         //注册权限
         moduleInfo.add(new PluginAuthority("group.find", "查询分组"));

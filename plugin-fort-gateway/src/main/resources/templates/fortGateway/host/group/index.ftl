@@ -1,13 +1,13 @@
 <div class="bjui-pageHeader">
     <div class="pull-right">
-        <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="auth.add">
+        <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="group.add">
             <a href="/fortGateway/group/edit.htm"
                data-mask="true" data-width="500" data-toggle="dialog"
                class="btn btn-default" data-icon="plus" data-title="添加分组">
                 添加
             </a>
         </@s.oauth>
-        <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="auth.delete">
+        <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="group.delete">
             <a type="button" class="btn btn-default" href="/fortGateway/group/delete.ajax" data-icon="remove"
                data-toggle="doajaxchecked" data-confirm-msg="确定要删除选中项吗？" data-idname="ids" data-group="ids">
                 删除
@@ -42,7 +42,7 @@
             <td>${row.createdTime?datetime}</td>
             <td>${row.remark!''}</td>
             <td>
-                <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="auth.edit">
+                <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="group.edit">
                     <a href="/fortGateway/group/edit.htm?id=${row.id}"
                        data-mask="true" data-width="500" data-toggle="dialog"
                        class="btn btn-default btn-sm" data-icon="edit" data-title="修改[${row.name}]">

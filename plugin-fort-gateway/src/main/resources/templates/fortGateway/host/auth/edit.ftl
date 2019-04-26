@@ -1,90 +1,68 @@
-<!DOCTYPE html>
-<html class="x-admin-sm">
-
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="/css/font.css">
-    <link rel="stylesheet" href="/css/xadmin.css">
-    <script type="text/javascript" src="/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="/layui/layui.js" charset="utf-8"></script>
-    <script type="text/javascript" src="/js/xadmin.js"></script>
-    <script type="text/javascript" src="/js/cookie.js"></script>
-    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
-    <!--[if lt IE 9]>
-    <script src="/js/html5.min.js"></script>
-    <script src="/js/respond.min.js"></script>
-    <![endif]-->
-</head>
-
-<body>
-<div class="x-body">
-    <form class="layui-form">
+<div class="bjui-pageContent">
+    <form method="post" action="/fortGateway/auth/insertOrUpdate.ajax" class="pageForm" data-toggle="validate">
         <#if hostAuth.id??><input type="hidden" name="id" value="${hostAuth.id}"></#if>
-        <input type="hidden" name="authType" value="password">
-        <div class="layui-form-item">
-            <label for="name" class="layui-form-label">
-                <span class="x-red">*</span>密钥名称
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="name" name="name" lay-verify="required"
-                       value="${hostAuth.name!''}" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="hostAddress" class="layui-form-label">
-                <span class="x-red">*</span>用户名
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="userName" name="userName" required="" lay-verify="required"
-                       value="${hostAuth.userName!''}" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <label for="portNumber" class="layui-form-label">
-                <span class="x-red">*</span>密码
-            </label>
-            <div class="layui-input-inline">
-                <input type="text" id="password" name="password" required="" lay-verify="required"
-                       value="${hostAuth.password!''}" autocomplete="off" class="layui-input">
-            </div>
-        </div>
-        <div class="layui-form-item layui-form-text">
-            <label for="remark" class="layui-form-label">
-                备注
-            </label>
-            <div class="layui-input-block">
-                <textarea placeholder="请输入内容" id="remark" name="remark"
-                          class="layui-textarea">${hostAuth.remark!''}</textarea>
-            </div>
-        </div>
+        <table class="table table-condensed">
+            <tbody>
+            <tr>
+                <td>
+                    <label class="control-label x85">密钥名称：</label>
+                    <input type="text" value="${hostAuth.name!''}" name="name" class="required" data-rule="required" style="width: 200px;"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label x85">用户名：</label>
+                    <input type="text" value="${hostAuth.userName!''}" name="userName" class="required" data-rule="required" style="width: 200px;"/>
+                </td>
+            </tr>
+            <td>
+                <label class="control-label x85">认证类型：</label>
+                <input type="radio" name="authType" id="authType_password" data-toggle="icheck" value="password" data-label="用户名密码" <#if hostAuth.authType.code==0>checked</#if>>
+                <input type="radio" name="authType" id="authType_sshkey" data-toggle="icheck" value="sshkey" data-label="SSH密钥"  <#if hostAuth.authType.code==1>checked</#if>>
+            </td>
+            <tr <#if hostAuth.authType.code==1>style="display: none"</#if> class="authType authType-password">
+                <td>
+                    <label class="control-label x85">密码：</label>
+                    <input type="text" value="${password!''}" name="password" style="width: 200px;"/>
+                </td>
+            </tr>
+            <tr <#if hostAuth.authType.code==0>style="display: none"</#if> class="authType authType-sshkey">
+                <td>
+                    <label class="control-label x85">密钥密码：</label>
+                    <input type="text" value="${passphrase!''}" name="passphrase" style="width: 200px;"/>
+                </td>
+            </tr>
+            <tr <#if hostAuth.authType.code==0>style="display: none"</#if> class="authType authType-sshkey">
+                <td>
+                    <label class="control-label x85">SSH公钥：</label>
+                    <textarea name="publicKey" rows="2" style="width: 450px;">${publicKey!''}</textarea>
 
-        <div class="layui-form-item ">
-            <label for="L_repass" class="layui-form-label">
-            </label>
-            <button class="layui-btn" lay-filter="insertOrUpdate" lay-submit="">
-                增加
-            </button>
-        </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label x85">备注：</label>
+                    <textarea name="remark" rows="2" style="width: 450px;">${hostAuth.remark!''}</textarea>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </form>
 </div>
-<script>
-    layui.use(['form', 'layer'], function () {
-        $ = layui.jquery;
-        var form = layui.form, layer = layui.layer;
-
-        //监听提交
-        form.on('submit(insertOrUpdate)', function (data) {
-            $.post("/host/auth/insertOrUpdate.ajax", data.field, function (result) {
-                if (result.code === 'SUCCESS') {
-                    parent.location.reload();
-                } else {
-                    layer.msg(data.message);
-                }
-            });
-            return false;
-        });
+<div class="bjui-pageFooter">
+    <ul>
+        <li>
+            <button type="button" class="btn-close">关闭</button>
+        </li>
+        <li>
+            <button type="submit" class="btn-blue">保存</button>
+        </li>
+    </ul>
+</div>
+<script type="text/javascript">
+    $('input').on('ifChecked', function (event) {
+        var authType = $(this).val();
+        $(".authType").hide();
+        $(".authType-" + authType).show();
     });
 </script>
-</body>
-
-</html>

@@ -3,6 +3,7 @@ package com.dliyun.platform.core.service.impl;
 import com.dliyun.platform.core.mappers.SysConfigMapper;
 import com.dliyun.platform.core.service.AbstractSysConfigService;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,8 @@ public class SysConfigServiceImpl extends AbstractSysConfigService {
     @Override
     public String findDataValue(String pluginKey, String moduleKey, String configKey) {
         String id = this.buildId(pluginKey, moduleKey, configKey);
-        return this.sysConfigMapper.findDataValueById(id);
+        String dataValue = this.sysConfigMapper.findDataValueById(id);
+        return StringUtils.isBlank(dataValue) ? "" : dataValue;
     }
 
 

@@ -27,18 +27,19 @@
         </div>
     </form>
     <div class="pull-right">
-        <a class="btn btn-danger" href="/oauth/user/disable.ajax" data-icon="lock" data-toggle="doajaxchecked"
-           data-confirm-msg="您确定要禁用所选择的用户吗？" data-idname="ids" data-group="userInfos">
-            禁用
-        </a>
-        <a class="btn btn-success" href="/oauth/user/enable.ajax" data-icon="unlock" data-toggle="doajaxchecked"
-           data-confirm-msg="您确定要启用所选择的用户吗？" data-idname="ids" data-group="userInfos">
-            启用
-        </a>
-        <a class="btn btn-info" href="/oauth/user/resetpwd.ajax" data-icon="undo" data-toggle="doajaxchecked"
-           data-confirm-msg="您确定要此用户重置登录密码吗？" data-idname="ids" data-group="userInfos">
-            重置登录密码
-        </a>
+        <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="host.add">
+            <a href="/fortGateway/hostInfo/edit.htm"
+               data-mask="true" data-width="600" data-toggle="dialog"
+               class="btn btn-default" data-icon="plus" title="添加主机">
+                添加
+            </a>
+        </@s.oauth>
+        <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="host.delete">
+            <a type="button" class="btn btn-default" href="/fortGateway/hostInfo/delete.ajax" data-icon="remove"
+               data-toggle="doajaxchecked" data-confirm-msg="确定要删除选中项吗？" data-idname="ids" data-group="ids">
+                删除
+            </a>
+        </@s.oauth>
     </div>
 </div>
 
@@ -57,7 +58,7 @@
             <th>端口</th>
             <th>操作系统</th>
             <th>备注说明</th>
-            <th width="200">操作</th>
+            <th width="150">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -75,17 +76,21 @@
             <td>${row.os}</td>
             <td>${row.remark!''}</td>
             <td>
-                <a href="/webshell/hostInfo/terminal/${row.id}.htm" data-id="terminal-${row.id}"
-                   data-mask="false" data-width="800" data-toggle="dialog" data-max="true"
-                   class="btn btn-default btn-sm" data-icon="terminal" data-title="${row.name}(${row.hostAddress})">
-                    打开终端
-                </a>
+                <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="host.edit">
+                    <a href="/fortGateway/hostInfo/edit.htm?id=${row.id}"
+                       data-mask="true" data-width="600" data-toggle="dialog"
+                       class="btn btn-default btn-sm" data-icon="edit" title="修改[${row.name}]">
+                        修改
+                    </a>
+                </@s.oauth>
 
-                <a href="/login.htm?id=${row.id}"
-                   data-mask="true" data-width="600" data-toggle="dialog"
-                   class="btn btn-blue" data-icon="edit" title="修改${row.name}">
-                    修改
-                </a>
+                <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="host.terminal">
+                    <a href="/fortGateway/hostInfo/terminal/${row.id}.htm" data-id="terminal-${row.id}"
+                       data-mask="false" data-width="800" data-toggle="dialog" data-max="true"
+                       class="btn btn-default btn-sm" data-icon="terminal" data-title="${row.name}(${row.hostAddress})">
+                        打开终端
+                    </a>
+                </@s.oauth>
             </td>
         </tr>
         </#list>

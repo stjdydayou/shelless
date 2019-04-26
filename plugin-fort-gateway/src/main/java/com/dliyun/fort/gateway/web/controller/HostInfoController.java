@@ -7,10 +7,13 @@ import com.dliyun.fort.gateway.core.service.HostAuthService;
 import com.dliyun.fort.gateway.core.service.HostGroupService;
 import com.dliyun.fort.gateway.core.service.HostInfoService;
 import com.dliyun.fort.gateway.core.vo.HostInfoVO;
+import com.dliyun.fort.gateway.web.params.SaveHostInfoParam;
+import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.DwzPageInfo;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.exception.NoFoundException;
 import com.dliyun.platform.common.exception.NoLoginException;
+import com.dliyun.platform.common.exception.ServiceException;
 import com.dliyun.platform.common.oauth.OauthService;
 import com.dliyun.platform.common.oauth.Permission;
 import com.dliyun.platform.common.paginator.domain.PageResult;
@@ -18,9 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -68,6 +71,58 @@ public class HostInfoController {
         modelMap.addAttribute("listGroups", listGroups);
         return "fortGateway/host/info/index";
     }
+
+
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"host.add", "host.edit"})
+    @GetMapping("/edit.htm")
+    public String edit(Long id, ModelMap modelMap) throws NoFoundException {
+        HostInfo hostInfo = new HostInfo();
+        if (id != null) {
+            hostInfo = this.hostInfoService.findById(id);
+        }
+        if (hostInfo == null) {
+            throw new NoFoundException();
+        }
+        modelMap.addAttribute("hostInfo", hostInfo);
+
+        List<HostAuth> listAuths = this.hostAuthService.findAll();
+        modelMap.addAttribute("listAuths", listAuths);
+        List<HostGroup> listGroups = this.hostGroupService.findAll();
+        modelMap.addAttribute("listGroups", listGroups);
+
+        return "fortGateway/host/info/edit";
+    }
+
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"host.add", "host.edit"})
+    @ResponseBody
+    @PostMapping("/insertOrUpdate.ajax")
+    public DwzJSON insertOrUpdate(Long id, @Valid SaveHostInfoParam param) {
+
+        HostInfo hostInfo = new HostInfo();
+        if (id != null && id.compareTo(0L) > 0) {
+            hostInfo.setId(id);
+        }
+        hostInfo.setGroupId(param.getGroupId());
+        hostInfo.setAuthId(param.getAuthId());
+        hostInfo.setName(param.getName());
+        hostInfo.setHostAddress(param.getHostAddress());
+        hostInfo.setPortNumber(param.getPortNumber());
+        hostInfo.setOs(param.getOs());
+        hostInfo.setRemark(param.getRemark());
+
+        this.hostInfoService.insertOrUpdate(hostInfo);
+        return DwzJSON.body(DwzJSON.StatusCode.success, "保存主机成功").setCloseCurrent(true).setTabid("fortGateway", "hostManager", "hostInfo");
+    }
+
+
+    @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = "host.delete")
+    @ResponseBody
+    @PostMapping("/delete.ajax")
+    public DwzJSON delete(Long[] ids) throws ServiceException {
+        this.hostInfoService.delete(ids);
+        return DwzJSON.body(DwzJSON.StatusCode.success, "删除主机成功");
+    }
+
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = "host.terminal")
     @RequestMapping("/terminal/{hostId:[0-9]+}.htm")

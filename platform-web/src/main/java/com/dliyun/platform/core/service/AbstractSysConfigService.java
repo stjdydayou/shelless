@@ -31,7 +31,7 @@ public abstract class AbstractSysConfigService implements SysConfigService {
      * @param configKey
      * @return
      */
-    @Cacheable(value = {"system:config"}, key = "#p0+':'+#p1+':'+#p2")
+    @Cacheable(value = {"system:config"}, key = "#p0+':'+#p1+':'+#p2",condition = "")
     public abstract String findDataValue(String pluginKey, String moduleKey, String configKey);
 
     @Override
