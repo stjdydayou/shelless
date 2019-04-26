@@ -34,8 +34,8 @@
             </tr>
             <tr <#if hostAuth.authType.code==0>style="display: none"</#if> class="authType authType-sshkey">
                 <td>
-                    <label class="control-label x85">SSH公钥：</label>
-                    <textarea name="publicKey" rows="2" style="width: 450px;">${publicKey!''}</textarea>
+                    <label class="control-label x85">SSH私钥：</label>
+                    <textarea name="privateKey" rows="2" style="width: 450px;">${privateKey!''}</textarea>
 
                 </td>
             </tr>

@@ -1,14 +1,13 @@
 package com.dliyun.fort.gateway.ssh;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.fort.gateway.core.model.HostAuth;
 import com.dliyun.fort.gateway.core.model.HostInfo;
+import com.dliyun.platform.common.service.SysConfigService;
+import com.dliyun.platform.common.utils.DateUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 
@@ -21,14 +20,11 @@ import java.util.Map;
  */
 @Slf4j
 @Component
-public class ShellWebSocketHandler implements WebSocketHandler, ApplicationContextAware {
+public class ShellWebSocketHandler implements WebSocketHandler {
 
-    private ApplicationContext applicationContext;
 
-    @Override
-    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-        this.applicationContext = applicationContext;
-    }
+    @Autowired
+    private SysConfigService sysConfigService;
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
@@ -40,12 +36,31 @@ public class ShellWebSocketHandler implements WebSocketHandler, ApplicationConte
         String cols = attributes.get("cols").toString();
         String rows = attributes.get("rows").toString();
 
-        String loginPasswd = CryptoDESUtil.decode("g3SacLwCmsFvldjOM7Y7lVhs1vhWvT1g", hostAuth.getAuthText());
+        String desKey = this.sysConfigService.getStringValue("fortGateway", "hostManager", "des_key");
+
 
         session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, this.getBanner()).toString()));
+        SSHClient client = null;
 
-        SSHClient client = SSHClient.connect(hostInfo.getHostAddress(), hostInfo.getPortNumber(),
-                hostAuth.getUserName(), loginPasswd, Integer.parseInt(cols), Integer.parseInt(rows));
+        if (hostAuth.getAuthType().equals(HostAuth.AuthType.password)) {
+            log.debug("使用用户名密码登录");
+            String loginPasswd = CryptoDESUtil.decode(desKey, hostAuth.getAuthText());
+
+            client = SSHClient.connect(hostInfo.getHostAddress(), hostInfo.getPortNumber(),
+                    hostAuth.getUserName(), loginPasswd, Integer.parseInt(cols), Integer.parseInt(rows));
+        }
+        if (hostAuth.getAuthType().equals(HostAuth.AuthType.sshkey)) {
+            log.debug("使用sshkey登录");
+            String authJson = CryptoDESUtil.decode(desKey, hostAuth.getAuthText());
+
+            JSONObject jsonObject = JSON.parseObject(authJson);
+            String privateKey = jsonObject.getString("privateKey");
+            String passphrase = jsonObject.getString("passphrase");
+
+            client = SSHClient.connectWithSSHKey(hostInfo.getHostAddress(), hostInfo.getPortNumber(),
+                    hostAuth.getUserName(), privateKey, passphrase, Integer.parseInt(cols), Integer.parseInt(rows));
+        }
+
         if (client == null) {
             session.sendMessage(new TextMessage(MessageResponse.instance(MessageResponse.Code.info, "连接服务器失败！！").toString()));
             session.close();

@@ -75,7 +75,7 @@ public class HostAuthController {
 
                 JSONObject jsonObject = JSON.parseObject(authJson);
 
-                modelMap.addAttribute("publicKey", jsonObject.getString("publicKey"));
+                modelMap.addAttribute("privateKey", jsonObject.getString("privateKey"));
                 modelMap.addAttribute("passphrase", jsonObject.getString("passphrase"));
             }
         }
@@ -111,11 +111,11 @@ public class HostAuthController {
         }
 
         if (param.getAuthType().equals(HostAuth.AuthType.sshkey)) {
-            if (StringUtils.isBlank(param.getPublicKey())) {
+            if (StringUtils.isBlank(param.getPrivateKey())) {
                 return DwzJSON.body(DwzJSON.StatusCode.error, "SSH公钥不能为空");
             }
             Map<String, String> authMap = new HashMap<>(2);
-            authMap.put("publicKey", param.getPublicKey());
+            authMap.put("privateKey", param.getPrivateKey());
             authMap.put("passphrase", param.getPassphrase());
 
             hostAuth.setAuthText(CryptoDESUtil.encode(desKey, JSON.toJSONString(authMap)));

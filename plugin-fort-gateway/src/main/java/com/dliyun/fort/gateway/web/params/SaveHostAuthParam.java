@@ -27,7 +27,7 @@ public class SaveHostAuthParam {
     private String password;
 
 
-    private String publicKey;
+    private String privateKey;
     private String passphrase;
 
 
@@ -71,19 +71,19 @@ public class SaveHostAuthParam {
         this.password = password;
     }
 
-    public String getPublicKey() {
-        return publicKey;
-    }
-
-    public void setPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-    }
-
     public String getPassphrase() {
         return passphrase;
     }
 
     public void setPassphrase(String passphrase) {
         this.passphrase = passphrase;
+    }
+
+    public String getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = privateKey;
     }
 }
