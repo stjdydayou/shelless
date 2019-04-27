@@ -11,6 +11,7 @@
         <module>plugins-dev-sdk</module>
         <module>platform-web</module>
         <module>plugin-demo</module>
+        <module>platform-core</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
@@ -33,17 +34,6 @@
         <mybatis-spring-boot.version>2.0.0</mybatis-spring-boot.version>
         <flyway.version>5.2.4</flyway.version>
     </properties>
-
-    <distributionManagement>
-        <repository>
-            <id>dliyunNexus</id>
-            <url>http://mvn.dev.dliyun.com/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>dliyunNexus</id>
-            <url>http://mvn.dev.dliyun.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
 
     <build>
         <plugins>
