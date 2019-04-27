@@ -42,13 +42,13 @@
                     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.edit">
                     <a href="/system/oauth/role/edit.htm?id=${row.id}"
                        data-mask="true" data-width="600" data-toggle="dialog"
-                       class="btn btn-default" data-icon="edit" data-title="修改[${row.name}]">
+                       class="btn btn-default btn-sm" data-icon="edit" data-title="修改[${row.name}]">
                         修改
                     </a>
                     </@s.oauth>
                     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.authority">
                     <a href="/system/oauth/role/authority.htm?id=${row.id}" data-width="800" data-height="400"
-                       data-mask="true" data-toggle="dialog" class="btn btn-default" data-title="设置[${row.name}]权限"
+                       data-mask="true" data-toggle="dialog" class="btn btn-default btn-sm" data-title="设置[${row.name}]权限"
                        data-icon="cog">
                         设置权限
                     </a>

@@ -18,7 +18,7 @@
             <td>
                 <@s.oauth pluginKey="system" moduleKey="setting" authorities="config.edit">
                     <a href="/system/config/edit.htm?pluginKey=${plugin.key}&moduleKey=${module.key}&configKey=${config.key}&configType=${config.type}"
-                       data-mask="true" data-toggle="dialog" class="btn btn-default" data-title="设置[${config.key}]值"
+                       data-mask="true" data-toggle="dialog" class="btn btn-default btn-sm" data-title="设置[${config.key}]值"
                        data-icon="edit">
                         编辑
                     </a>
