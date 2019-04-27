@@ -10,6 +10,7 @@ import com.dliyun.platform.common.oauth.Permission;
 import com.dliyun.platform.common.plugin.PluginMenu;
 import com.dliyun.platform.common.plugin.PluginModuleInfo;
 import com.dliyun.platform.common.service.SimpleCaptchaService;
+import com.dliyun.platform.common.service.SysConfigService;
 import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.common.utils.PatternUtils;
 import com.dliyun.platform.common.utils.RandCodeUtil;
@@ -38,6 +39,9 @@ import java.util.*;
 @Slf4j
 @Controller
 public class IndexController {
+
+    @Autowired
+    private SysConfigService sysConfigService;
 
     @Autowired
     private SimpleCaptchaService simpleCaptchaService;
@@ -77,6 +81,11 @@ public class IndexController {
         }
         modelMap.addAttribute("registeredPlugins", registeredPlugins);
 
+        String title = this.sysConfigService.getStringValue("system", "setting", "title");
+        String logoUrl = this.sysConfigService.getStringValue("system", "setting", "logo_url");
+        modelMap.addAttribute("title", title);
+        modelMap.addAttribute("logoUrl", logoUrl);
+
         return "index";
     }
 
@@ -88,6 +97,10 @@ public class IndexController {
 
     @GetMapping("/login.htm")
     public String login(ModelMap modelMap) {
+        String title = this.sysConfigService.getStringValue("system", "setting", "title");
+        String logoUrl = this.sysConfigService.getStringValue("system", "setting", "logo_url");
+        modelMap.addAttribute("title", title);
+        modelMap.addAttribute("logoUrl", logoUrl);
         return "login";
     }
 

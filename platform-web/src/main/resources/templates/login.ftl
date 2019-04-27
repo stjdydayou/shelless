@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>运维管理系统登录</title>
+    <title>${title!'运维管理系统'}-用户登录</title>
     <script src="/js/jquery-1.7.2.min.js"></script>
     <script src="/js/jquery.cookie.js"></script>
     <link href="/BJUI/themes/css/bootstrap.min.css" rel="stylesheet">
@@ -89,7 +89,11 @@
 <div class="main_box">
     <div class="login_box">
         <div class="login_logo">
-            管理系统登录
+            <#if logoUrl!=''>
+                <img src="${logoUrl}">
+            <#else>
+                ${title!'运维管理系统'}
+            </#if>
         </div>
         <div class="login_msg">
             <font color="red" id="loginMsg"></font>

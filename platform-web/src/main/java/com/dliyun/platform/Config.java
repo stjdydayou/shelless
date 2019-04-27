@@ -150,7 +150,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
 
     private void registerSystemPlugins() {
 
-
+        /*--------用户管理模块----------*/
         PluginModuleInfo userModuleInfo = new PluginModuleInfo("oauth", "用户管理", "users");
 
         //注册菜单
@@ -170,8 +170,12 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         userModuleInfo.add(new PluginAuthority("role.delete", "删除角色"));
         userModuleInfo.add(new PluginAuthority("role.authority", "设置角色权限"));
 
+        //注册配置
         userModuleInfo.add(new PluginConfig("default_password", "系统用户默认登录密码（用于添加用户与重置用户登录密码）", PluginConfig.ConfigType.string));
-        /*------------------*/
+
+
+
+        /*--------系统设置模块----------*/
         PluginModuleInfo settingModuleInfo = new PluginModuleInfo("setting", "系统设置", "cog");
 
         //注册菜单
@@ -181,6 +185,9 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         settingModuleInfo.add(new PluginAuthority("config.find", "查询系统参数"));
         settingModuleInfo.add(new PluginAuthority("config.edit", "编辑系统参数"));
 
+        //注册配置
+        settingModuleInfo.add(new PluginConfig("title", "平台名称", PluginConfig.ConfigType.string));
+        settingModuleInfo.add(new PluginConfig("logo_url", "Logo地址", PluginConfig.ConfigType.string));
 
         PluginInfo pluginInfo = new PluginInfo();
         pluginInfo.setKey("system");

@@ -3,9 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>运维管理平台</title>
-    <meta name="Keywords" content="运维管理平台"/>
-    <meta name="Description" content="运维管理平台"/>
+    <title>${title!'运维'}-管理系统</title>
     <!-- bootstrap - css -->
     <link href="/BJUI/themes/css/bootstrap.css" rel="stylesheet">
     <!-- core - css -->
@@ -168,7 +166,13 @@
                     data-target="#bjui-navbar-collapse">
                 <i class="fa fa-bars"></i>
             </button>
-            <a class="bjui-navbar-logo" href="/" style="font-size: 18px;color: #333;line-height: 45px;margin-left: 20px;">运营管理平台</a>
+            <a class="bjui-navbar-logo" href="/">
+                <#if logoUrl!=''>
+                    <img style="height: 36px" src="${logoUrl}">
+                <#else>
+                    <span style="font-size: 18px;color: #333;line-height: 45px;margin-left: 20px;">${title!'运维管理系统'}</span>
+                </#if>
+            </a>
         </div>
         <nav id="bjui-navbar-collapse">
             <ul class="bjui-navbar-right">

@@ -5,7 +5,7 @@
         <input type="hidden" name="configKey" value="${config.configKey!''}"/>
         <input type="hidden" name="configType" value="${config.configType!''}"/>
         <#if config.configType.code==1>
-            <input type="text" name="dataValue" class="large" value="${(config.dataValue!"")?html}"/>
+            <input type="text" name="dataValue" class="large" value="${(config.dataValue!"")?html}" style="width: 100%"/>
         </#if>
         <#if config.configType.code==2>
             <input type="text" name="dataValue" class="small" value="${(config.dataValue!"")?html}" data-rule="number"/>
@@ -15,7 +15,7 @@
             <input type="radio" name="dataValue" value="false" <#if config.dataValue?? && config.dataValue=='false'>checked</#if> data-toggle="icheck" data-label="否"/>
         </#if>
         <#if config.configType.code==4>
-            <textarea name="dataValue" style="width:400px;" rows="4">${(config.dataValue!"")?html}</textarea>
+            <textarea name="dataValue" style="width: 100%" rows="4">${(config.dataValue!"")?html}</textarea>
         </#if>
     </form>
 </div>
