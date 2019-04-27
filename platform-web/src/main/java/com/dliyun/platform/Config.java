@@ -15,7 +15,6 @@ import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
 import com.dliyun.platform.core.model.SystemOauthUserLoginAccount;
 import com.dliyun.platform.core.oauth.OauthInterceptor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -77,9 +76,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
 
     public static final String VERSION = "__version__";
 
-    public static final String URL = "__url__";
-
-    private static String runVersion = "000000";
+    private static String runVersion;
 
     static {
         runVersion = DateUtil.format("yyyyMMddHHmmss");
@@ -231,9 +228,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
             @Override
             public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
                 if (modelAndView != null) {
-                    String url = request.getRequestURL() + (StringUtils.isNotBlank(request.getQueryString()) ? "?" + request.getQueryString() : "");
-                    request.setAttribute(URL, url);
-
                     if (isdebug) {
                         runVersion = DateUtil.format("yyyyMMddHHmmss");
                     }

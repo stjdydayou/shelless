@@ -54,7 +54,7 @@ public class HostInfoController {
     public String index(ModelMap modelMap, DwzPageInfo dwzPageInfo, HostInfoVO vo) {
 
         OauthInfo oauthInfo = this.oauthService.getOAuth();
-//        vo.setUid(oauthInfo.getId());
+        vo.setUid(oauthInfo.getId());
 
         PageResult<HostInfo> pageResult = hostInfoService.findPage(dwzPageInfo.getPageBounds(), vo);
 

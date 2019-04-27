@@ -1,5 +1,5 @@
 <div class="bjui-pageHeader">
-    <form id="pagerForm" class="pull-left" data-toggle="ajaxsearch" action="${__url__}" method="post">
+    <form id="pagerForm" class="pull-left" data-toggle="ajaxsearch" action="/system/oauth/user/index.htm" method="post">
     <#include "/pagerForm.ftl" />
         <div class="bjui-searchBar">
             <label>邮箱/手机号：</label>

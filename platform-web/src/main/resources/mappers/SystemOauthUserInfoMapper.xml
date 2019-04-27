@@ -74,7 +74,7 @@
         where id = #{id,jdbcType=BIGINT}
     </update>
     <update id="insertOrUpdateUserPassword">
-        REPLACE INTO dliyun_platform.system_oauth_user_password
+        REPLACE INTO system_oauth_user_password
         (id, uid, passwd, salt, `type`)
         VALUES(#{id,jdbcType=VARCHAR}, #{uid,jdbcType=BIGINT}, #{passwd,jdbcType=VARCHAR}, #{salt,jdbcType=VARCHAR}, #{type,typeHandler=com.dliyun.platform.core.typehandler.SystemOauthUserPasswordTypeHandler});
     </update>

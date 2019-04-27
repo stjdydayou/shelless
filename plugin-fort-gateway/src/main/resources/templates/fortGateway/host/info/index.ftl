@@ -1,5 +1,5 @@
 <div class="bjui-pageHeader">
-    <form id="pagerForm" class="pull-left" data-toggle="ajaxsearch" action="${__url__}" method="post">
+    <form id="pagerForm" class="pull-left" data-toggle="ajaxsearch" action="/fortGateway/hostInfo/index.htm" method="post">
     <#include "/pagerForm.ftl" />
         <div class="bjui-searchBar">
             <label>主机名：</label>

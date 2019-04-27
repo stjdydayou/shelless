@@ -1,7 +1,4 @@
 <div class="bjui-pageHeader">
-    <div class="pull-left">
-        <a class="btn btn-orange" href="${__url__}" data-toggle="navtab" data-title="角色管理" data-icon="undo">刷新</a>
-    </div>
     <div class="pull-right">
     <@s.oauth pluginKey="system" moduleKey="oauth" authorities="role.add">
         <a href="/system/oauth/role/add.htm"
