@@ -36,6 +36,7 @@ CREATE TABLE `system_config` (
 LOCK TABLES `system_config` WRITE;
 /*!40000 ALTER TABLE `system_config` DISABLE KEYS */;
 INSERT INTO `system_config` VALUES ('025fdcde303bcd4b375640f223dd4787','123456');
+INSERT INTO `system_config` VALUES ('bc57d4ec748f44b873c431da51c40b30','湖南斗笠云网络科技有限公司');
 /*!40000 ALTER TABLE `system_config` ENABLE KEYS */;
 UNLOCK TABLES;
 

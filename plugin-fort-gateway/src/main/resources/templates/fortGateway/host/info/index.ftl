@@ -48,7 +48,7 @@
         <thead>
         <tr>
             <th width="26">
-                <input type="checkbox" class="checkboxCtrl" data-group="roles" data-toggle="icheck">
+                <input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck">
             </th>
             <th>编号</th>
             <th>主机名</th>
