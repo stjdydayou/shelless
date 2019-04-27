@@ -5,7 +5,6 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.alibaba.fastjson.support.spring.FastJsonRedisSerializer;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.freemarker.FreemarkerComponent;
 import com.dliyun.platform.common.plugin.*;
@@ -20,27 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.data.redis.cache.RedisCacheConfiguration;
-import org.springframework.data.redis.cache.RedisCacheManager;
-import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.serializer.RedisSerializationContext;
-import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -50,7 +38,6 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -65,10 +52,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 @Configuration
 @EnableCaching
 @EnableAutoConfiguration
-@SpringBootApplication(scanBasePackages = {"com.dliyun"})
+@SpringBootApplication(scanBasePackages = {"com.dliyun", "**.plugin"})
 @MapperScan(basePackages = "com.dliyun.platform.core.mappers")
 public class Config implements WebMvcConfigurer, ApplicationContextAware {
-
 
     public static final String HOST_INFO = "__host_info__";
 
@@ -199,18 +185,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
     }
 
     @Bean
-    public CorsFilter corsFilter() {
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        final CorsConfiguration config = new CorsConfiguration();
-        config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        return new CorsFilter(source);
-    }
-
-    @Bean
     public ThreadPoolTaskExecutor threadPoolTaskExecutor() {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(corePoolSize);
@@ -279,43 +253,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
                 SerializerFeature.DisableCircularReferenceDetect);
         fastJsonHttpMessageConverter.setFastJsonConfig(config);
         converters.add(fastJsonHttpMessageConverter);
-    }
-
-    @Bean
-    public CacheManager cacheManager(RedisConnectionFactory factory) {
-        RedisCacheConfiguration redisCacheConfiguration = RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofMinutes(30))
-                .disableCachingNullValues().serializeValuesWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(new FastJsonRedisSerializer<>(Object.class))
-                ).serializeKeysWith(
-                        RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
-                );
-
-        return RedisCacheManager.builder(factory)
-                .cacheDefaults(redisCacheConfiguration)
-                .transactionAware()
-                .build();
-    }
-
-    @Bean
-    public RedisTemplate redisTemplate(RedisConnectionFactory factory) {
-        StringRedisTemplate redisTemplate = new StringRedisTemplate(factory);
-
-        // 设置key序列化类，否则key前面会多了一些乱码
-        StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
-        FastJsonRedisSerializer<Object> fastJsonRedisSerializer = new FastJsonRedisSerializer<>(Object.class);
-
-        // 设置值（value）的序列化采用FastJsonRedisSerializer。
-        redisTemplate.setValueSerializer(fastJsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(fastJsonRedisSerializer);
-        // 设置键（key）的序列化采用StringRedisSerializer。
-        redisTemplate.setKeySerializer(stringRedisSerializer);
-        redisTemplate.setHashKeySerializer(stringRedisSerializer);
-
-        redisTemplate.afterPropertiesSet();
-        redisTemplate.setEnableTransactionSupport(true);
-
-        return redisTemplate;
     }
 }
 

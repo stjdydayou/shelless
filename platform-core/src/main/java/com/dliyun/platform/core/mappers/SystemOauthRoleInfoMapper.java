@@ -2,6 +2,7 @@ package com.dliyun.platform.core.mappers;
 
 
 import com.dliyun.platform.core.model.SystemOauthRoleInfo;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

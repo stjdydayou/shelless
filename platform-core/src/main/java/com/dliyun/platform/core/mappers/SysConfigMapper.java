@@ -1,8 +1,6 @@
 package com.dliyun.platform.core.mappers;
 
 import org.apache.ibatis.annotations.Param;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 /**
  * @author jtoms.shen

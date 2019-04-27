@@ -1,6 +1,7 @@
 package com.dliyun.plugin.demo;
 
 import com.dliyun.platform.common.plugin.*;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;

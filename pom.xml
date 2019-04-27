@@ -31,7 +31,8 @@
         <spring.version>5.1.5.RELEASE</spring.version>
 
         <mariadb-java-client.version>2.3.0</mariadb-java-client.version>
-        <mybatis-spring-boot.version>2.0.0</mybatis-spring-boot.version>
+        <mybatis.version>3.5.1</mybatis.version>
+        <mybatis-spring.version>2.0.1</mybatis-spring.version>
         <flyway.version>5.2.4</flyway.version>
     </properties>
 
