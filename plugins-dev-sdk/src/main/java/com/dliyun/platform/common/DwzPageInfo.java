@@ -72,7 +72,17 @@ public class DwzPageInfo implements Serializable {
         this.dwz_order_direction_ = dwz_order_direction_;
     }
 
+    @Deprecated
     public Order getOrder() {
+        return buildOrder();
+    }
+
+    @Deprecated
+    public PageBounds getPageBounds() {
+        return buildPageBounds();
+    }
+
+    public Order buildOrder() {
         if (StringUtils.isNotBlank(dwz_order_direction_) && !StringUtils.isNotBlank(dwz_order_field_)) {
             return Order.create(this.dwz_order_field_, this.dwz_order_direction_);
         } else {
@@ -80,10 +90,10 @@ public class DwzPageInfo implements Serializable {
         }
     }
 
-    public PageBounds getPageBounds() {
+    public PageBounds buildPageBounds() {
         PageBounds bounds = new PageBounds(this.dwz_p_, this.dwz_page_size_);
-        if (this.getOrder() != null) {
-            bounds.addOrder(this.getOrder());
+        if (this.buildOrder() != null) {
+            bounds.addOrder(this.buildOrder());
         }
         return bounds;
     }

@@ -35,6 +35,7 @@
                 AND `group_id` in (select `group_id` from `fort_gateway_host_group_users` WHERE `uid` = #{uid,jdbcType=BIGINT})
             </if>
         </where>
+        order by id desc
     </select>
 
     <select id="findById" resultMap="BaseResultMap">

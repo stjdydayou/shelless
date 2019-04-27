@@ -56,7 +56,7 @@ public class HostInfoController {
         OauthInfo oauthInfo = this.oauthService.getOAuth();
         vo.setUid(oauthInfo.getId());
 
-        PageResult<HostInfo> pageResult = hostInfoService.findPage(dwzPageInfo.getPageBounds(), vo);
+        PageResult<HostInfo> pageResult = hostInfoService.findPage(dwzPageInfo.buildPageBounds(), vo);
 
         List<HostInfo> listData = pageResult.getData();
         for (HostInfo hostInfo : listData) {

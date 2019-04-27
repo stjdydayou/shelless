@@ -57,7 +57,7 @@ public class SystemOauthUserController {
     @Permission(pluginKey = "system", moduleKey = "oauth", authority = "user.find")
     @RequestMapping("/index.htm")
     public String user(ModelMap modelMap, DwzPageInfo dwzPageInfo, SystemOauthUserInfoVO vo) {
-        PageResult<SystemOauthUserBaseInfo> pageResult = this.systemOauthUserInfoService.findPage(dwzPageInfo.getPageBounds(), vo);
+        PageResult<SystemOauthUserBaseInfo> pageResult = this.systemOauthUserInfoService.findPage(dwzPageInfo.buildPageBounds(), vo);
         List<Map<String, Object>> listData = new ArrayList<>();
 
         for (SystemOauthUserBaseInfo userBaseInfo : pageResult.getData()) {
