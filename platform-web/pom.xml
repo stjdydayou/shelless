@@ -18,27 +18,10 @@
             <artifactId>plugins-dev-sdk</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <!---插件依懒-->
-        <!--<dependency>-->
-        <!--<groupId>com.dliyun</groupId>-->
-        <!--<artifactId>plugin-demo</artifactId>-->
-        <!--<version>${parent.version}</version>-->
-        <!--</dependency>-->
-        <!--<dependency>-->
-        <!--<groupId>com.dliyun</groupId>-->
-        <!--<artifactId>plugin-fort-gateway</artifactId>-->
-        <!--<version>${parent.version}</version>-->
-        <!--</dependency>-->
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-freemarker</artifactId>
             <version>${spring-boot.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.flywaydb</groupId>
-            <artifactId>flyway-core</artifactId>
-            <version>5.2.0</version>
         </dependency>
     </dependencies>
     <build>

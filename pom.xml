@@ -11,7 +11,6 @@
         <module>plugins-dev-sdk</module>
         <module>platform-web</module>
         <module>plugin-demo</module>
-        <module>plugin-fort-gateway</module>
     </modules>
     <packaging>pom</packaging>
     <properties>
