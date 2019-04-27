@@ -5,14 +5,19 @@ cd ..
 DEPLOY_DIR=`pwd`
 CONF_DIR=$DEPLOY_DIR/conf
 
-SERVER_NAME=`sed '/dubbo.application.name/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
-SERVER_PROTOCOL=`sed '/dubbo.protocol.name/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
-SERVER_PORT=`sed '/dubbo.protocol.port/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
-LOGS_FILE=`sed '/dubbo.log4j.file/!d;s/.*=//' conf/dubbo.properties | tr -d '\r'`
+SERVER_NAME=`sed '/spring.application.name/!d;s/.*=//' conf/application-*.properties | tr -d '\r'`
+SERVER_PORT=`sed '/server.port/!d;s/.*=//' conf/application-*.properties | tr -d '\r'`
+LOGS_FILE=`sed '/logging.file/!d;s/.*=//' conf/application-*.properties | tr -d '\r'`
+
 
 if [ -z "$SERVER_NAME" ]; then
     SERVER_NAME=`hostname`
 fi
+
+if [ -z "$SERVER_PORT" ]; then
+    SERVER_PORT=9000
+fi
+
 
 PIDS=`ps -f | grep java | grep "$CONF_DIR" |awk '{print $2}'`
 if [ -n "$PIDS" ]; then
@@ -40,8 +45,10 @@ if [ ! -d $LOGS_DIR ]; then
 fi
 STDOUT_FILE=$LOGS_DIR/stdout.log
 
+
 LIB_DIR=$DEPLOY_DIR/lib
 LIB_JARS=`ls $LIB_DIR|grep .jar|awk '{print "'$LIB_DIR'/"$0}'|tr "\n" ":"`
+
 
 JAVA_OPTS=" -Djava.awt.headless=true -Djava.net.preferIPv4Stack=true "
 JAVA_DEBUG_OPTS=""
@@ -61,18 +68,14 @@ else
 fi
 
 echo -e "Starting the $SERVER_NAME ...\c"
-nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS com.alibaba.dubbo.container.Main > $STDOUT_FILE 2>&1 &
+nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS com.dliyun.platform.StartServer > $STDOUT_FILE 2>&1 &
 
 COUNT=0
 while [ $COUNT -lt 1 ]; do
     echo -e ".\c"
     sleep 1
     if [ -n "$SERVER_PORT" ]; then
-        if [ "$SERVER_PROTOCOL" == "dubbo" ]; then
-    	    COUNT=`echo status | nc -i 1 127.0.0.1 $SERVER_PORT | grep -c OK`
-        else
-            COUNT=`netstat -an | grep $SERVER_PORT | wc -l`
-        fi
+        COUNT=`netstat -an | grep $SERVER_PORT | wc -l`
     else
     	COUNT=`ps -f | grep java | grep "$DEPLOY_DIR" | awk '{print $2}' | wc -l`
     fi
