@@ -35,6 +35,11 @@
             <artifactId>spring-boot-starter-freemarker</artifactId>
             <version>${spring-boot.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.flywaydb</groupId>
+            <artifactId>flyway-core</artifactId>
+            <version>5.2.0</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
