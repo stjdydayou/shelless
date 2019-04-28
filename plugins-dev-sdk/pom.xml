@@ -5,23 +5,11 @@
     <parent>
         <groupId>com.dliyun</groupId>
         <artifactId>fastweb-platform</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>plugins-dev-sdk</artifactId>
-
-    <distributionManagement>
-        <repository>
-            <id>dliyunNexus</id>
-            <url>http://mvn.dev.dliyun.com/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>dliyunNexus</id>
-            <url>http://mvn.dev.dliyun.com/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
 
     <dependencies>
         <dependency>

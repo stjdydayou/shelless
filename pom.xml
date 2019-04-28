@@ -6,7 +6,7 @@
 
     <groupId>com.dliyun</groupId>
     <artifactId>fastweb-platform</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <modules>
         <module>plugins-dev-sdk</module>
         <module>platform-web</module>
@@ -35,6 +35,18 @@
         <mybatis-spring.version>2.0.1</mybatis-spring.version>
         <flyway.version>5.2.4</flyway.version>
     </properties>
+
+
+    <distributionManagement>
+        <repository>
+            <id>dliyunNexus</id>
+            <url>http://mvn.dev.dliyun.com/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>dliyunNexus</id>
+            <url>http://mvn.dev.dliyun.com/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
     <build>
         <plugins>
