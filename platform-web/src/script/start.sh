@@ -9,6 +9,11 @@ SERVER_NAME=`sed '/spring.application.name/!d;s/.*=//' conf/application-*.proper
 SERVER_PORT=`sed '/server.port/!d;s/.*=//' conf/application-*.properties | tr -d '\r'`
 LOGS_FILE=`sed '/logging.file/!d;s/.*=//' conf/application-*.properties | tr -d '\r'`
 
+read -p "input spring.profiles.active, eg dev/prod/alpha, default dev > " RUN_ACTIVE
+
+if [ -z $RUN_ACTIVE ]; then
+    RUN_ACTIVE='dev';
+fi
 
 if [ -z "$SERVER_NAME" ]; then
     SERVER_NAME=`hostname`
@@ -68,7 +73,12 @@ else
 fi
 
 echo -e "Starting the $SERVER_NAME ...\c"
-nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS com.dliyun.platform.StartServer > $STDOUT_FILE 2>&1 &
+
+MAIN_CLASS="com.dliyun.platform.StartServer"
+PROFILES_ACTIVE="--spring.profiles.active=$RUN_ACTIVE"
+
+
+nohup java $JAVA_OPTS $JAVA_MEM_OPTS $JAVA_DEBUG_OPTS $JAVA_JMX_OPTS -classpath $CONF_DIR:$LIB_JARS $MAIN_CLASS $PROFILES_ACTIVE > $STDOUT_FILE 2>&1 &
 
 COUNT=0
 while [ $COUNT -lt 1 ]; do
