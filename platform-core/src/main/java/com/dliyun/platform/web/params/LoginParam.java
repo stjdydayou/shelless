@@ -1,5 +1,7 @@
 package com.dliyun.platform.web.params;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -21,7 +23,7 @@ public class LoginParam {
     private String captcha;
 
     public String getCaptcha() {
-        return captcha;
+        return StringUtils.isBlank(captcha) ? null : captcha.toLowerCase().trim();
     }
 
     public void setCaptcha(String captcha) {
@@ -37,7 +39,7 @@ public class LoginParam {
     }
 
     public String getLoginAccount() {
-        return loginAccount;
+        return StringUtils.isBlank(loginAccount) ? null : loginAccount.toLowerCase().trim();
     }
 
     public void setLoginAccount(String loginAccount) {
