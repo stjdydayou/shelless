@@ -173,6 +173,8 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
 
         //注册配置
         settingModuleInfo.add(new PluginConfig("title", "平台名称", PluginConfig.ConfigType.string));
+        settingModuleInfo.add(new PluginConfig("keywords", "平台关键词", PluginConfig.ConfigType.string));
+        settingModuleInfo.add(new PluginConfig("description", "平台关描述", PluginConfig.ConfigType.string));
         settingModuleInfo.add(new PluginConfig("logo_url", "Logo地址", PluginConfig.ConfigType.string));
 
         PluginInfo pluginInfo = new PluginInfo();
