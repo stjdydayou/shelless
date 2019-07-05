@@ -203,7 +203,7 @@ KindEditor.plugin('multiimage', function(K) {
 		imageSizeLimit = K.undef(self.imageSizeLimit, '1MB'),
 		imageFileTypes = K.undef(self.imageFileTypes, '*.jpg;*.gif;*.png'),
 		imageUploadLimit = K.undef(self.imageUploadLimit, 20),
-		filePostName = K.undef(self.filePostName, 'imgFile'),
+		filePostName = K.undef(self.filePostName, 'fileData'),
 		lang = self.lang(name + '.');
 
 	self.plugin.multiImageDialog = function(options) {
@@ -244,8 +244,8 @@ KindEditor.plugin('multiimage', function(K) {
 
 		var swfupload = K.swfupload({
 			container : K('.swfupload', div),
-			buttonImageUrl : imgPath + (self.langType == 'zh_CN' ? 'select-files-zh_CN.png' : 'select-files-en.png'),
-			buttonWidth : self.langType == 'zh_CN' ? 72 : 88,
+			buttonImageUrl : imgPath + (self.langType == 'zh-CN' ? 'select-files-zh-CN.png' : 'select-files-en.png'),
+			buttonWidth : self.langType == 'zh-CN' ? 72 : 88,
 			buttonHeight : 23,
 			fileIconUrl : imgPath + 'image.png',
 			uploadDesc : uploadDesc,

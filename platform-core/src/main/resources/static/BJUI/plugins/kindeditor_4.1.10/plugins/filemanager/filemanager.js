@@ -79,9 +79,7 @@ KindEditor.plugin('filemanager', function(K) {
 		}
 		var elList = [];
 		function bindEvent(el, result, data, createFunc) {
-			//var fileUrl = K.formatUrl(result.current_url + data.filename, 'absolute'),
-			/*xiao 修改图片url地址为相对路径(后台传回路径)*/
-			var fileUrl = result.current_url + data.filename,
+			var fileUrl = K.formatUrl(result.current_url + data.filename, 'absolute'),
 				dirPath = encodeURIComponent(result.current_dir_path + data.filename + '/');
 			if (data.is_dir) {
 				el.click(function(e) {
