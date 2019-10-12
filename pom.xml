@@ -8,6 +8,7 @@
     <artifactId>fastweb-platform</artifactId>
     <version>1.1-SNAPSHOT</version>
     <modules>
+        <module>plugin-fort-gateway</module>
         <module>plugins-dev-sdk</module>
         <module>platform-web</module>
         <module>plugin-demo</module>
