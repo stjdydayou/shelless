@@ -30,9 +30,6 @@ public class CacheManagerConfig {
                         RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
                 );
 
-        return RedisCacheManager.builder(factory)
-                .cacheDefaults(redisCacheConfiguration)
-                .transactionAware()
-                .build();
+        return RedisCacheManager.builder(factory).cacheDefaults(redisCacheConfiguration).transactionAware().build();
     }
 }
