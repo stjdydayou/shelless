@@ -1,9 +1,9 @@
 package com.dliyun.fort.gateway;
 
 
-import com.dliyun.platform.common.plugin.*;
 import com.dliyun.fort.gateway.ssh.ShellHandshakeInterceptor;
 import com.dliyun.fort.gateway.ssh.ShellWebSocketHandler;
+import com.dliyun.platform.common.plugin.*;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
@@ -39,6 +39,13 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
         listPluginModules.add(buildHostModuleInfo());
 
         return listPluginModules;
+    }
+
+    @Override
+    public List<UpgradeSqlInfo> getListUpgradeSqls() {
+        List<UpgradeSqlInfo> listUpgradeSqls = new ArrayList<>();
+        listUpgradeSqls.add(new UpgradeSqlInfo("V1__init"));
+        return listUpgradeSqls;
     }
 
     private PluginModuleInfo buildHostModuleInfo() {

@@ -1,7 +1,6 @@
 package com.dliyun.plugin.demo;
 
 import com.dliyun.platform.common.plugin.*;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +20,11 @@ public class Config implements RegisterPlugin {
         listPluginModules.add(buildDemoModule2Info());
 
         return listPluginModules;
+    }
+
+    @Override
+    public List<UpgradeSqlInfo> getListUpgradeSqls() {
+        return null;
     }
 
     private PluginModuleInfo buildDemoModule1Info() {

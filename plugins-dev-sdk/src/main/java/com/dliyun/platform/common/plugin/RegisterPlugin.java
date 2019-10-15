@@ -15,4 +15,11 @@ public interface RegisterPlugin {
      * @return
      */
     List<PluginModuleInfo> registerModule();
+
+    /**
+     * 注册升级SQL
+     *
+     * @return
+     */
+    List<UpgradeSqlInfo> getListUpgradeSqls();
 }

@@ -56,11 +56,11 @@ import java.util.concurrent.ThreadPoolExecutor;
 @MapperScan(basePackages = "com.dliyun.platform.core.mappers")
 public class Config implements WebMvcConfigurer, ApplicationContextAware {
 
-    public static final String HOST_INFO = "__host_info__";
-
-    public static final String ACCESS_TOKEN = "__access_token__";
-
     public static final String VERSION = "__version__";
+
+    private static final String HOST_INFO = "__host_info__";
+
+    private static final String ACCESS_TOKEN = "__access_token__";
 
     private static String runVersion;
 
@@ -81,6 +81,7 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
     private OauthInterceptor oauthInterceptor;
 
     private ApplicationContext applicationContext;
+
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 
@@ -101,7 +102,9 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
             if (o instanceof RegisterPlugin) {
                 Plugin pluginAnnotation = AnnotationUtils.findAnnotation(o.getClass(), Plugin.class);
                 if (pluginAnnotation != null) {
-                    List<PluginModuleInfo> listModules = ((RegisterPlugin) o).registerModule();
+                    RegisterPlugin registerPlugin = ((RegisterPlugin) o);
+
+                    List<PluginModuleInfo> listModules = registerPlugin.registerModule();
 
                     PluginInfo pluginInfo = new PluginInfo();
                     pluginInfo.setKey(pluginAnnotation.key());
@@ -116,6 +119,14 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
                     PluginInfo.REGISTERED_PLUGINS.put(pluginAnnotation.key(), pluginInfo);
 
                     log.info(String.format("注册插件[%s,%s]成功", pluginAnnotation.name(), pluginName));
+
+                    List<UpgradeSqlInfo> listUpgradeSqls = registerPlugin.getListUpgradeSqls();
+                    if (listUpgradeSqls != null && listUpgradeSqls.size() > 0) {
+                        log.info(String.format("升级[%s,%s]数据", pluginAnnotation.name(), pluginName));
+                        for (UpgradeSqlInfo upgradeSqlInfo : listUpgradeSqls) {
+                            log.info(upgradeSqlInfo.getSql());
+                        }
+                    }
                 }
 
             } else {
