@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Plugin(key = "system", name = "系统设置", faicon = "cogs")
-public class CoreConfig implements RegisterPlugin {
+public class CorePluginConfig implements RegisterPlugin {
     @Override
     public List<PluginModuleInfo> registerModule() {
 
