@@ -7,7 +7,10 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.freemarker.FreemarkerComponent;
-import com.dliyun.platform.common.plugin.*;
+import com.dliyun.platform.common.plugin.Plugin;
+import com.dliyun.platform.common.plugin.PluginModuleInfo;
+import com.dliyun.platform.common.plugin.RegisterPlugin;
+import com.dliyun.platform.common.plugin.UpgradeSqlInfo;
 import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.common.utils.HostInfoUtil;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
@@ -100,8 +103,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
 
     @PostConstruct
     public void registerPlugins() throws Exception {
-        //注册系统配置模块
-        this.registerSystemPlugins();
 
         //注册用户插件
         Map<String, Object> pluginsMap = applicationContext.getBeansWithAnnotation(Plugin.class);
@@ -157,58 +158,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
             configuration.setSharedVariable(key, freemarkersMap.get(key));
         }
         this.freeMarkerConfigurer.setConfiguration(configuration);
-
-    }
-
-    private void registerSystemPlugins() {
-
-        /*--------用户管理模块----------*/
-        PluginModuleInfo userModuleInfo = new PluginModuleInfo("oauth", "用户管理", "users");
-
-        //注册菜单
-        userModuleInfo.add(new PluginMenu("user", "用户管理", "/system/oauth/user/index.htm", "user.find"));
-        userModuleInfo.add(new PluginMenu("role", "角色管理", "/system/oauth/role/index.htm", "role.find"));
-
-        //注册权限
-        userModuleInfo.add(new PluginAuthority("user.find", "查询用户"));
-        userModuleInfo.add(new PluginAuthority("user.add", "添加用户"));
-        userModuleInfo.add(new PluginAuthority("user.enable", "启用用户"));
-        userModuleInfo.add(new PluginAuthority("user.disable", "禁用用户"));
-        userModuleInfo.add(new PluginAuthority("user.resetPassword", "重置用户密码"));
-        userModuleInfo.add(new PluginAuthority("user.roles", "设置用户角色"));
-        userModuleInfo.add(new PluginAuthority("role.find", "查询角色"));
-        userModuleInfo.add(new PluginAuthority("role.add", "添加角色"));
-        userModuleInfo.add(new PluginAuthority("role.edit", "编辑角色"));
-        userModuleInfo.add(new PluginAuthority("role.delete", "删除角色"));
-        userModuleInfo.add(new PluginAuthority("role.authority", "设置角色权限"));
-
-        //注册配置
-        userModuleInfo.add(new PluginConfig("default_password", "系统用户默认登录密码（用于添加用户与重置用户登录密码）", PluginConfig.ConfigType.string));
-
-
-
-        /*--------系统设置模块----------*/
-        PluginModuleInfo settingModuleInfo = new PluginModuleInfo("setting", "系统设置", "cog");
-
-        //注册菜单
-        settingModuleInfo.add(new PluginMenu("config", "参数配置", "/system/config/index.htm", "config.find"));
-
-        //注册权限
-        settingModuleInfo.add(new PluginAuthority("config.find", "查询系统参数"));
-        settingModuleInfo.add(new PluginAuthority("config.edit", "编辑系统参数"));
-
-        //注册配置
-        settingModuleInfo.add(new PluginConfig("title", "平台名称", PluginConfig.ConfigType.string));
-        settingModuleInfo.add(new PluginConfig("keywords", "平台关键词", PluginConfig.ConfigType.string));
-        settingModuleInfo.add(new PluginConfig("description", "平台关描述", PluginConfig.ConfigType.bstring));
-        settingModuleInfo.add(new PluginConfig("logo_url", "Logo地址", PluginConfig.ConfigType.string));
-
-        PluginInfo pluginInfo = new PluginInfo();
-        pluginInfo.setKey("system");
-        pluginInfo.setFaicon("cogs");
-        pluginInfo.setName("系统设置");
-        pluginInfo.addModule(userModuleInfo).addModule(settingModuleInfo);
-        PluginInfo.REGISTERED_PLUGINS.put(pluginInfo.getKey(), pluginInfo);
 
     }
 
