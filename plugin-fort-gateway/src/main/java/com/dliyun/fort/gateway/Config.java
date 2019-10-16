@@ -44,7 +44,7 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
     @Override
     public List<UpgradeSqlInfo> getListUpgradeSqls() {
         List<UpgradeSqlInfo> listUpgradeSqls = new ArrayList<>();
-        listUpgradeSqls.add(new UpgradeSqlInfo("V1__init"));
+        listUpgradeSqls.add(new UpgradeSqlInfo("init_plugin_db"));
         return listUpgradeSqls;
     }
 

@@ -1,17 +1,20 @@
 package com.dliyun.platform.common.plugin;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 public class UpgradeSqlInfo {
 
     private String fileName;
     private String checksum;
-    private String sql;
+    private List<String> sqls = new ArrayList<>();
 
     public UpgradeSqlInfo(String fileName) {
         try {
@@ -21,18 +24,37 @@ public class UpgradeSqlInfo {
             if (is != null) {
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader in = new BufferedReader(isr);
-                StringBuilder buffer = new StringBuilder();
-                String line = "";
-                while ((line = in.readLine()) != null) {
-                    buffer.append("\n").append(line);
+                String tempString = null;
+                int flag = 0;
+
+                StringBuilder sb = new StringBuilder();
+                while ((tempString = in.readLine()) != null) {
+                    if (StringUtils.isBlank(tempString) || tempString.startsWith("--")) {
+                        continue;
+                    }
+                    if (";".equals(tempString.substring(tempString.length() - 1))) {
+                        if (flag == 1) {
+                            sb.append(tempString);
+                            sqls.add(sb.toString());
+                            sb.delete(0, sb.length());
+                            flag = 0;
+                        } else {
+                            sqls.add(tempString);
+                        }
+                    } else {
+                        flag = 1;
+                        sb.append(tempString);
+                    }
                 }
-                this.sql = buffer.toString();
             }
         } catch (Exception e) {
             log.error("build upgrade sql info error", e);
         }
     }
 
+    public List<String> getSqls() {
+        return sqls;
+    }
 
     public String getChecksum() {
         return checksum;
@@ -54,11 +76,4 @@ public class UpgradeSqlInfo {
         this.fileName = fileName;
     }
 
-    public String getSql() {
-        return sql;
-    }
-
-    public void setSql(String sql) {
-        this.sql = sql;
-    }
 }

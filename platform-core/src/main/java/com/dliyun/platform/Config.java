@@ -28,7 +28,9 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -85,6 +87,12 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private TransactionTemplate transactionTemplate;
+
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -122,9 +130,16 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
 
                     List<UpgradeSqlInfo> listUpgradeSqls = registerPlugin.getListUpgradeSqls();
                     if (listUpgradeSqls != null && listUpgradeSqls.size() > 0) {
-                        log.info(String.format("升级[%s,%s]数据", pluginAnnotation.name(), pluginName));
                         for (UpgradeSqlInfo upgradeSqlInfo : listUpgradeSqls) {
-                            log.info(upgradeSqlInfo.getSql());
+                            log.info(String.format("执行[%s,%s,%s]升级SQL", pluginAnnotation.name(), pluginName, upgradeSqlInfo.getFileName()));
+                            try {
+                                for (String sql : upgradeSqlInfo.getSqls()) {
+                                    jdbcTemplate.execute(sql);
+                                    log.info(String.format("执行[ %s ]成功", sql));
+                                }
+                            } catch (Exception e) {
+                                log.error("SQL 执行失败", e);
+                            }
                         }
                     }
                 }
