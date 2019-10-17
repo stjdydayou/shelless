@@ -1,6 +1,7 @@
 package com.dliyun.platform.common.plugin;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.BufferedReader;
@@ -12,23 +13,31 @@ import java.util.List;
 @Slf4j
 public class UpgradeSqlInfo {
 
-    private String fileName;
-    private String checksum;
+    private String version;
+    private String script;
+    private String fileMd5;
     private List<String> sqls = new ArrayList<>();
 
     public UpgradeSqlInfo(String fileName) {
         try {
-            this.fileName = fileName;
+            this.script = fileName;
 
-            InputStream is = this.getClass().getClassLoader().getResourceAsStream(String.format("db.sql/%s.sql", this.fileName));
+            String[] array = this.script.split("__");
+            this.version = array[0].replace("V", "");
+
+
+            InputStream is = this.getClass().getClassLoader().getResourceAsStream(String.format("db.sql/%s.sql", this.script));
             if (is != null) {
                 InputStreamReader isr = new InputStreamReader(is);
                 BufferedReader in = new BufferedReader(isr);
                 String tempString = null;
                 int flag = 0;
 
+                StringBuilder fullString = new StringBuilder();
+
                 StringBuilder sb = new StringBuilder();
                 while ((tempString = in.readLine()) != null) {
+                    fullString.append(tempString);
                     if (StringUtils.isBlank(tempString) || tempString.startsWith("--")) {
                         continue;
                     }
@@ -46,34 +55,28 @@ public class UpgradeSqlInfo {
                         sb.append(tempString);
                     }
                 }
+                in.close();
+                isr.close();
+                this.fileMd5 = DigestUtils.md5Hex(fullString.toString());
             }
         } catch (Exception e) {
             log.error("build upgrade sql info error", e);
         }
     }
 
+    public String getScript() {
+        return script;
+    }
+
     public List<String> getSqls() {
         return sqls;
     }
 
-    public String getChecksum() {
-        return checksum;
+    public String getVersion() {
+        return version;
     }
 
-    public void setChecksum(String checksum) {
-        this.checksum = checksum;
+    public String getFileMd5() {
+        return fileMd5;
     }
-
-    public boolean equals(UpgradeSqlInfo obj) {
-        return (this.checksum == obj.checksum);
-    }
-
-    public String getFileName() {
-        return fileName;
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
-    }
-
 }

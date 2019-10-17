@@ -7,10 +7,6 @@ import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
 import com.dliyun.platform.common.ServletContext;
 import com.dliyun.platform.common.freemarker.FreemarkerComponent;
-import com.dliyun.platform.common.plugin.Plugin;
-import com.dliyun.platform.common.plugin.PluginModuleInfo;
-import com.dliyun.platform.common.plugin.RegisterPlugin;
-import com.dliyun.platform.common.plugin.UpgradeSqlInfo;
 import com.dliyun.platform.common.utils.DateUtil;
 import com.dliyun.platform.common.utils.HostInfoUtil;
 import com.dliyun.platform.core.model.SystemOauthUserBaseInfo;
@@ -27,13 +23,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -90,67 +83,14 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
     @Autowired
     private FreeMarkerConfigurer freeMarkerConfigurer;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private TransactionTemplate transactionTemplate;
-
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
     @PostConstruct
-    public void registerPlugins() throws Exception {
-
-        //注册用户插件
-        Map<String, Object> pluginsMap = applicationContext.getBeansWithAnnotation(Plugin.class);
-        for (String pluginName : pluginsMap.keySet()) {
-            Object o = pluginsMap.get(pluginName);
-            if (o instanceof RegisterPlugin) {
-                Plugin pluginAnnotation = AnnotationUtils.findAnnotation(o.getClass(), Plugin.class);
-                if (pluginAnnotation != null) {
-                    RegisterPlugin registerPlugin = ((RegisterPlugin) o);
-
-                    List<PluginModuleInfo> listModules = registerPlugin.registerModule();
-
-                    PluginInfo pluginInfo = new PluginInfo();
-                    pluginInfo.setKey(pluginAnnotation.key());
-                    pluginInfo.setFaicon(pluginAnnotation.faicon());
-                    pluginInfo.setName(pluginAnnotation.name());
-                    pluginInfo.addModules(listModules);
-
-                    if (PluginInfo.REGISTERED_PLUGINS.containsKey(pluginInfo.getKey())) {
-                        log.warn(String.format("注册插件[%s,%s]失败，插件{PluginInfo.key}在系统中必需唯一", pluginAnnotation.name(), pluginName));
-                        continue;
-                    }
-                    PluginInfo.REGISTERED_PLUGINS.put(pluginAnnotation.key(), pluginInfo);
-
-                    log.info(String.format("注册插件[%s,%s]成功", pluginAnnotation.name(), pluginName));
-
-                    List<UpgradeSqlInfo> listUpgradeSqls = registerPlugin.getListUpgradeSqls();
-                    if (listUpgradeSqls != null && listUpgradeSqls.size() > 0) {
-                        for (UpgradeSqlInfo upgradeSqlInfo : listUpgradeSqls) {
-                            log.info(String.format("执行[%s,%s,%s]升级SQL", pluginAnnotation.name(), pluginName, upgradeSqlInfo.getFileName()));
-                            try {
-                                for (String sql : upgradeSqlInfo.getSqls()) {
-                                    jdbcTemplate.execute(sql);
-                                    log.info(String.format("执行[ %s ]成功", sql));
-                                }
-                            } catch (Exception e) {
-                                log.error("SQL 执行失败", e);
-                            }
-                        }
-                    }
-                }
-
-            } else {
-                log.warn(String.format("%s 插件注册失败，@Plugin注解必要实现com.dliyun.platform.common.plugin.RegisterPlugin", pluginName));
-            }
-        }
-
-
+    public void registerFreemarkerComponent() throws Exception {
+        log.info("注册FreemarkerComponent");
         //注册Freemark自定义方法
         Map<String, Object> freemarkersMap = applicationContext.getBeansWithAnnotation(FreemarkerComponent.class);
         freemarker.template.Configuration configuration = this.freeMarkerConfigurer.getConfiguration();
@@ -231,5 +171,6 @@ public class Config implements WebMvcConfigurer, ApplicationContextAware {
         fastJsonHttpMessageConverter.setFastJsonConfig(config);
         converters.add(fastJsonHttpMessageConverter);
     }
+
 }
 

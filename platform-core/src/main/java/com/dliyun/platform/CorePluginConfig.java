@@ -63,7 +63,7 @@ public class CorePluginConfig implements RegisterPlugin {
     @Override
     public List<UpgradeSqlInfo> getListUpgradeSqls() {
         List<UpgradeSqlInfo> listUpgradeSqls = new ArrayList<>();
-        listUpgradeSqls.add(new UpgradeSqlInfo("init"));
+        listUpgradeSqls.add(new UpgradeSqlInfo("V1.0__init"));
         return listUpgradeSqls;
     }
 }

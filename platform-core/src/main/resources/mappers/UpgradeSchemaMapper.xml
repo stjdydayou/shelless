@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dliyun.platform.core.mappers.UpgradeSchemaMapper">
+    <resultMap id="BaseResultMap" type="com.dliyun.platform.core.model.UpgradeSchema">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="plugin_key" property="pluginKey" jdbcType="VARCHAR"/>
+        <result column="version" property="version" jdbcType="VARCHAR"/>
+        <result column="script" property="script" jdbcType="VARCHAR"/>
+        <result column="file_md5" property="fileMd5" jdbcType="VARCHAR"/>
+        <result column="execute_time" property="executeTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
+    <sql id="Base_Column_List">
+        `id`, `plugin_key`, `version`, `script`, `file_md5`, `execute_time`
+    </sql>
+
+    <insert id="insertUpgradeSchema" parameterType="com.dliyun.platform.core.model.UpgradeSchema">
+        insert into upgrade_schema_history(`plugin_key`,`version`,`script`,`file_md5`,`execute_time`)
+        values(#{pluginKey}, #{version}, #{script}, #{fileMd5}, #{executeTime})
+    </insert>
+
+    <select id="findLikeUpgradeSchemaTables" resultType="java.lang.String">
+        show tables like 'upgrade_schema_history'
+    </select>
+
+    <update id="createdTable">
+        CREATE TABLE `upgrade_schema_history` (
+        `id` bigint(20) NOT NULL AUTO_INCREMENT,
+        `plugin_key` varchar(100) NOT NULL,
+        `version` varchar(100) NOT NULL,
+        `script` varchar(100) NOT NULL,
+        `file_md5` varchar(32) NOT NULL,
+        `execute_time` datetime NOT NULL,
+        UNIQUE KEY `plugin_version_unique` (`plugin_key`,`version`),
+        PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+    </update>
+    <update id="executeSql">
+        ${sql}
+    </update>
+    <select id="findUpgradeSchema" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from upgrade_schema_history where `plugin_key`=#{pluginKey} and `version`=#{version}
+    </select>
+
+</mapper>
