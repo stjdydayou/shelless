@@ -1,3 +1,7 @@
+.project
+.classpath
+.settings
+.factorypath
 # ---> macOS
 .DS_Store
 .AppleDouble
