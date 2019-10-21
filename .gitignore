@@ -2,6 +2,7 @@
 .classpath
 .settings
 .factorypath
+.vscode
 # ---> macOS
 .DS_Store
 .AppleDouble
