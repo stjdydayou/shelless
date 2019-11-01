@@ -5,10 +5,10 @@ cd ..
 DEPLOY_DIR=`pwd`
 CONF_DIR=$DEPLOY_DIR/conf
 
-read -p "input spring.profiles.active, eg dev/prod/alpha, default dev > " RUN_ACTIVE
+read -p "input spring.profiles.active, eg dev/prod/alpha, default prod > " RUN_ACTIVE
 
 if [ -z $RUN_ACTIVE ]; then
-    RUN_ACTIVE='dev';
+    RUN_ACTIVE='prod';
 fi
 
 SERVER_NAME=`sed '/spring.application.name/!d;s/.*=//' conf/application-$RUN_ACTIVE.properties | tr -d '\r'`

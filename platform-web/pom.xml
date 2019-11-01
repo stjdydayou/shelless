@@ -17,11 +17,11 @@
             <artifactId>platform-core</artifactId>
             <version>${parent.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.dliyun</groupId>
-            <artifactId>plugin-demo</artifactId>
-            <version>${parent.version}</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.dliyun</groupId>-->
+<!--            <artifactId>plugin-demo</artifactId>-->
+<!--            <version>${parent.version}</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.dliyun</groupId>
             <artifactId>plugin-fort-gateway</artifactId>
