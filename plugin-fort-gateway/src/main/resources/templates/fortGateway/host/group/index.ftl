@@ -24,8 +24,8 @@
             <th width="26">
                 <input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck">
             </th>
+            <th width="30">编号</th>
             <th width="150">操作</th>
-            <th>编号</th>
             <th>名称</th>
             <th>修建时间</th>
             <th>备注说明</th>
@@ -38,6 +38,7 @@
             <td>
                 <input type="checkbox" name="ids" data-toggle="icheck" value="${row.id}">
             </td>
+            <td>${row.id}</td>
             <td>
                 <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="group.edit">
                     <a href="/fortGateway/group/edit.htm?id=${row.id}"
@@ -54,7 +55,6 @@
                     </a>
                 </@s.oauth>
             </td>
-            <td>${row.id}</td>
             <td>${row.name}</td>
             <td>${row.createdTime?datetime}</td>
             <td>${row.remark!''}</td>

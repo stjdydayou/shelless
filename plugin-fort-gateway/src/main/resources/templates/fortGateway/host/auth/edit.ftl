@@ -35,7 +35,7 @@
             <tr <#if hostAuth.authType.code==0>style="display: none"</#if> class="authType authType-sshkey">
                 <td>
                     <label class="control-label x85">SSH私钥：</label>
-                    <textarea name="privateKey" rows="2" style="width: 450px;">${privateKey!''}</textarea>
+                    <textarea name="privateKey" rows="5" style="width: 450px;">${privateKey!''}</textarea>
 
                 </td>
             </tr>

@@ -50,7 +50,8 @@
             <th width="26">
                 <input type="checkbox" class="checkboxCtrl" data-group="ids" data-toggle="icheck">
             </th>
-            <th>编号</th>
+            <th width="30">编号</th>
+            <th width="150">操作</th>
             <th>主机名</th>
             <th>分组</th>
             <th>认证密钥</th>
@@ -58,7 +59,6 @@
             <th>端口</th>
             <th>操作系统</th>
             <th>备注说明</th>
-            <th width="150">操作</th>
         </tr>
         </thead>
         <tbody>
@@ -68,13 +68,6 @@
                 <input type="checkbox" name="ids" data-toggle="icheck" value="${row.id}">
             </td>
             <td>${row.id}</td>
-            <td>${row.name}</td>
-            <td><#if row.hostGroup??>${row.hostGroup.name}<#else>-</#if></td>
-            <td><#if row.hostAuth??>${row.hostAuth.name}<#else>-</#if></td>
-            <td>${row.hostAddress}</td>
-            <td>${row.portNumber}</td>
-            <td>${row.os}</td>
-            <td>${row.remark!''}</td>
             <td>
                 <@s.oauth pluginKey="fortGateway" moduleKey="hostManager" authorities="host.edit">
                     <a href="/fortGateway/hostInfo/edit.htm?id=${row.id}"
@@ -90,6 +83,13 @@
                 </a>
                 </@s.oauth>
             </td>
+            <td>${row.name}</td>
+            <td><#if row.hostGroup??>${row.hostGroup.name}<#else>-</#if></td>
+            <td><#if row.hostAuth??>${row.hostAuth.name}<#else>-</#if></td>
+            <td>${row.hostAddress}</td>
+            <td>${row.portNumber}</td>
+            <td>${row.os}</td>
+            <td>${row.remark!''}</td>
         </tr>
         </#list>
         </tbody>
