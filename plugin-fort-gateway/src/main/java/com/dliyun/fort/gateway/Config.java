@@ -1,14 +1,11 @@
 package com.dliyun.fort.gateway;
 
 
-import com.dliyun.fort.gateway.ssh.ShellHandshakeInterceptor;
-import com.dliyun.fort.gateway.ssh.ShellWebSocketHandler;
 import com.dliyun.platform.common.plugin.*;
 import org.mybatis.spring.annotation.MapperScan;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
-import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
+import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,15 +18,12 @@ import java.util.List;
 @EnableWebSocket
 @MapperScan(basePackages = "com.dliyun.fort.gateway.core.mappers")
 @Plugin(key = "fortGateway", name = "WEB跳板机", faicon = "server")
-public class Config implements RegisterPlugin, WebSocketConfigurer {
+public class Config implements RegisterPlugin {
 
-
-    @Autowired
-    private ShellHandshakeInterceptor shellHandshakeInterceptor;
-
-    @Autowired
-    private ShellWebSocketHandler shellWebSocketHandler;
-
+    @Bean
+    public ServerEndpointExporter serverEndpointExporter() {
+        return new ServerEndpointExporter();
+    }
 
     @Override
     public List<PluginModuleInfo> registerModule() {
@@ -79,13 +73,6 @@ public class Config implements RegisterPlugin, WebSocketConfigurer {
         moduleInfo.add(new PluginConfig("des_key", "服务器密码加密KEY", PluginConfig.ConfigType.string));
 
         return moduleInfo;
-    }
-
-    @Override
-    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(shellWebSocketHandler, "/terminal/socket")
-                .setAllowedOrigins("*")
-                .addInterceptors(shellHandshakeInterceptor);
     }
 }
 

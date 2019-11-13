@@ -19,15 +19,18 @@ var ShellClient = {
         _this.clearTerminal();
 
         var queryString = [];
-        queryString.push("accessToken=" + _this.accessToken);
-        queryString.push("hostId=" + _this.hostId);
-        queryString.push("cols=" + this.terminal.cols);
-        queryString.push("rows=" + this.terminal.rows);
+        queryString.push(_this.accessToken);
+        queryString.push(_this.hostId);
+        queryString.push(this.terminal.cols);
+        queryString.push(this.terminal.rows);
 
-        var sockUrl = "ws://" + window.location.host + "/terminal/socket?" + queryString.join("&");
+        var sockUrl = "ws://";
+
         if (window.location.protocol === "https:") {
-            sockUrl = "wss://" + window.location.host + "/terminal/socket?" + queryString.join("&");
+            sockUrl = "wss://";
         }
+        sockUrl += window.location.host + "/ws/terminal/" + queryString.join("/");
+
 
         _this.socket = new WebSocket(sockUrl);
 

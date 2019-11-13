@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import javax.websocket.Session;
+
 /**
  * @author jtoms.shen
  * @version 1.0
@@ -11,10 +13,10 @@ import org.springframework.web.socket.WebSocketSession;
  */
 @Slf4j
 public class ShellOutPutTask extends Thread {
-    private final WebSocketSession session;
+    private final Session session;
     private String charset;
 
-    public ShellOutPutTask(WebSocketSession session, String charset) {
+    public ShellOutPutTask(Session session, String charset) {
         this.session = session;
         this.charset = charset;
     }
@@ -37,8 +39,7 @@ public class ShellOutPutTask extends Thread {
                 String charset = this.getCharset();
                 String data = new String(buffer, 0, length, charset);
 
-                MessageResponse response = MessageResponse.instance(MessageResponse.Code.xterm, data);
-                this.session.sendMessage(new TextMessage(response.toString()));
+                SessionStorage.sendMessage(session, MessageResponse.Code.xterm, data);
             }
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -42,7 +42,7 @@ public class HostGroupController {
             group.setHostCount(this.hostGroupService.findHostCount(group.getId()));
         }
         modelMap.addAttribute("listData", listData);
-        return "fortGateway/host/group/index";
+        return "fortGateway/group/index";
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.edit"})
@@ -56,7 +56,7 @@ public class HostGroupController {
             throw new NoFoundException();
         }
         modelMap.addAttribute("hostGroup", hostGroup);
-        return "fortGateway/host/group/edit";
+        return "fortGateway/group/edit";
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.authority"})
@@ -71,7 +71,7 @@ public class HostGroupController {
 
         modelMap.addAttribute("hostGroup", hostGroup);
         modelMap.addAttribute("userIds", userIds);
-        return "fortGateway/host/group/authority";
+        return "fortGateway/group/authority";
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.edit"})

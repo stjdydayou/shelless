@@ -73,7 +73,7 @@ public class HostInfoController {
         modelMap.addAttribute("listAuths", listAuths);
         List<HostGroup> listGroups = this.hostGroupService.findAll();
         modelMap.addAttribute("listGroups", listGroups);
-        return "fortGateway/host/info/index";
+        return "fortGateway/info/index";
     }
 
 
@@ -94,7 +94,7 @@ public class HostInfoController {
         List<HostGroup> listGroups = this.hostGroupService.findAll();
         modelMap.addAttribute("listGroups", listGroups);
 
-        return "fortGateway/host/info/edit";
+        return "fortGateway/info/edit";
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"host.add", "host.edit"})
@@ -132,7 +132,7 @@ public class HostInfoController {
     @RequestMapping("/terminal/{hostId:[0-9]+}.htm")
     public String terminal(@PathVariable Long hostId, ModelMap modelMap) throws NoLoginException, NoFoundException {
         modelMap.addAttribute("hostId", hostId);
-        return "fortGateway/host/info/terminal";
+        return "fortGateway/info/terminal";
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = "host.terminal")
@@ -145,6 +145,6 @@ public class HostInfoController {
         modelMap.addAttribute("hostId", hostId);
         modelMap.addAttribute("accessToken", ServletContext.getAccessToken());
         modelMap.addAttribute("hostInfo", hostInfo);
-        return "fortGateway/host/info/terminal_iframe";
+        return "fortGateway/info/terminal_iframe";
     }
 }

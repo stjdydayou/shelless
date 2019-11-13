@@ -1,5 +1,7 @@
 package com.dliyun.fort.gateway.ssh;
 
+import javax.websocket.Session;
+import java.io.IOException;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -27,4 +29,7 @@ public class SessionStorage {
         return ONLINE_USERS.get(sessionId);
     }
 
+    public static void sendMessage(Session session, MessageResponse.Code code, String data) throws IOException {
+        session.getBasicRemote().sendText(MessageResponse.instance(code, data).toString());
+    }
 }

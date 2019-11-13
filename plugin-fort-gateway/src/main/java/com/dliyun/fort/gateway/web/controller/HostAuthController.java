@@ -46,7 +46,7 @@ public class HostAuthController {
     public String index(ModelMap modelMap) {
         List<HostAuth> listData = hostAuthService.findAll();
         modelMap.addAttribute("listData", listData);
-        return "fortGateway/host/auth/index";
+        return "fortGateway/auth/index";
     }
 
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"auth.add", "auth.edit"})
@@ -84,7 +84,7 @@ public class HostAuthController {
         }
 
         modelMap.addAttribute("hostAuth", hostAuth);
-        return "fortGateway/host/auth/edit";
+        return "fortGateway/auth/edit";
     }
 
 

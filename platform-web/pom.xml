@@ -27,6 +27,11 @@
             <artifactId>plugin-fort-gateway</artifactId>
             <version>${parent.version}</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.dliyun</groupId>-->
+<!--            <artifactId>plugin-filemanager</artifactId>-->
+<!--            <version>${parent.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
     <build>
         <plugins>
