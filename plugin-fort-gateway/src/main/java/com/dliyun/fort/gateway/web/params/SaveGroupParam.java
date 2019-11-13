@@ -7,7 +7,7 @@ import javax.validation.constraints.NotBlank;
  * @version 1.0
  * @date 2019/3/21 23:15
  */
-public class SaveHostGroupParam {
+public class SaveGroupParam {
 
     @NotBlank(message = "名称不能为空")
     private String name;

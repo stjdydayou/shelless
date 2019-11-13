@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.dliyun.fort.gateway.core.model.HostAuth;
 import com.dliyun.fort.gateway.core.service.HostAuthService;
 import com.dliyun.fort.gateway.ssh.CryptoDESUtil;
-import com.dliyun.fort.gateway.web.params.SaveHostAuthParam;
+import com.dliyun.fort.gateway.web.params.SaveAuthParam;
 import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.exception.NoFoundException;
 import com.dliyun.platform.common.exception.ServiceException;
@@ -91,7 +91,7 @@ public class HostAuthController {
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"auth.add", "auth.edit"})
     @ResponseBody
     @PostMapping("/insertOrUpdate.ajax")
-    public DwzJSON insertOrUpdate(Long id, SaveHostAuthParam param) throws ServiceException {
+    public DwzJSON insertOrUpdate(Long id, SaveAuthParam param) throws ServiceException {
         String desKey = this.sysConfigService.getStringValue("fortGateway", "hostManager", "des_key");
 
         HostAuth hostAuth = new HostAuth();

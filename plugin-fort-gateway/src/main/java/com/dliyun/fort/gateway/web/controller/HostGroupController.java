@@ -2,7 +2,7 @@ package com.dliyun.fort.gateway.web.controller;
 
 import com.dliyun.fort.gateway.core.model.HostGroup;
 import com.dliyun.fort.gateway.core.service.HostGroupService;
-import com.dliyun.fort.gateway.web.params.SaveHostGroupParam;
+import com.dliyun.fort.gateway.web.params.SaveGroupParam;
 import com.dliyun.platform.common.DwzJSON;
 import com.dliyun.platform.common.exception.NoFoundException;
 import com.dliyun.platform.common.exception.ServiceException;
@@ -101,7 +101,7 @@ public class HostGroupController {
     @Permission(pluginKey = "fortGateway", moduleKey = "hostManager", authority = {"group.add", "group.edit"})
     @ResponseBody
     @PostMapping("/insertOrUpdate.ajax")
-    public DwzJSON insertOrUpdate(Long id, @Valid SaveHostGroupParam param) {
+    public DwzJSON insertOrUpdate(Long id, @Valid SaveGroupParam param) {
 
         HostGroup hostGroup = new HostGroup();
         if (id != null && id.compareTo(0L) > 0) {

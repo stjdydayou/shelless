@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
  * @version 1.0
  * @date 2018/12/4 16:09
  */
-public class SaveHostAuthParam {
+public class SaveAuthParam {
 
     @NotBlank(message = "名称不能为空")
     private String name;
