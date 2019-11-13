@@ -17,7 +17,6 @@ public class Config implements RegisterPlugin {
         List<PluginModuleInfo> listPluginModules = new ArrayList<>();
 
         listPluginModules.add(buildDemoModule1Info());
-        listPluginModules.add(buildDemoModule2Info());
 
         return listPluginModules;
     }
@@ -28,39 +27,17 @@ public class Config implements RegisterPlugin {
     }
 
     private PluginModuleInfo buildDemoModule1Info() {
-        PluginModuleInfo moduleInfo = new PluginModuleInfo("demoModule1", "测试模块1", "globe");
+        PluginModuleInfo moduleInfo = new PluginModuleInfo("filemanager", "文件管理", "globe");
 
         //注册菜单
         //带权限控制的菜单
-        moduleInfo.add(new PluginMenu("demo-menu1", "测试菜单1", "/host/group/index.htm", "demo.menu1.find"));
-
-        //只要登录就可以访问的菜单
-        moduleInfo.add(new PluginMenu("demo-menu2", "测试菜单2", "/host/auth/index.htm"));
+        moduleInfo.add(new PluginMenu("filemanager", "文件管理", "/filemanager/index.htm", "file.manager.find"));
 
         //注册权限
-        moduleInfo.add(new PluginAuthority("demo.menu1.find", "测试权限1"));
+        moduleInfo.add(new PluginAuthority("file.manager.find", "文件查询"));
 
         //注册配置项
-        moduleInfo.add(new PluginConfig("file.manager.root", "文件根目录", PluginConfig.ConfigType.string));
-
-        return moduleInfo;
-    }
-
-    private PluginModuleInfo buildDemoModule2Info() {
-        PluginModuleInfo moduleInfo = new PluginModuleInfo("demoModule2", "测试模块2", "globe");
-
-        //注册菜单
-        //带权限控制的菜单
-        moduleInfo.add(new PluginMenu("demo-menu21", "测试菜单21", "/host/group/index.htm", "demo.menu21.find"));
-        //只要登录就可以访问的菜单
-        moduleInfo.add(new PluginMenu("demo-menu22", "测试菜单22", "/host/auth/index.htm"));
-
-        //注册权限
-        moduleInfo.add(new PluginAuthority("demo.menu21.find", "测试权限21"));
-
-
-        //注册配置项
-        moduleInfo.add(new PluginConfig("demo.config21", "测试配置项目21", PluginConfig.ConfigType.string));
+        moduleInfo.add(new PluginConfig("file.root", "文件根目录", PluginConfig.ConfigType.string));
 
         return moduleInfo;
     }

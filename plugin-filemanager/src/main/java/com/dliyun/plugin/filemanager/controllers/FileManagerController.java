@@ -2,7 +2,11 @@ package com.dliyun.plugin.filemanager.controllers;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.dliyun.platform.common.service.SysConfigService;
+import com.dliyun.platform.common.utils.DateUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,31 +43,35 @@ import static com.dliyun.plugin.filemanager.utils.ZipUtils.zipFiles;
 /**
  * @author shaofan
  */
+@Slf4j
 @RestController
-@RequestMapping(value = "fileManager")
+@RequestMapping(value = "/fileManager")
 public class FileManagerController {
-    /**
-     * 文件管理器目录
-     */
-    private String fileRoot;
+
+    @Autowired
+    private SysConfigService sysConfigService;
+
+    private String getFileRoot() {
+        String fileRoot = this.sysConfigService.getStringValue("filemanager", "filemanager", "file.root");
+
+        log.debug(fileRoot);
+        return fileRoot;
+    }
 
     /**
      * 展示文件列表
      */
-    @RequestMapping("list")
-    public Object list(@RequestBody JSONObject json) throws ServletException {
+    @RequestMapping("/list.htm")
+    public Object list(String path) throws ServletException {
 
         try {
-            // 需要显示的目录路径
-            String path = json.getString("path");
-
             // 返回的结果集
             List<JSONObject> fileItems = new ArrayList<>();
 
-            try (DirectoryStream<Path> directoryStream = Files.newDirectoryStream(Paths.get(root, path))) {
-
-                String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-                SimpleDateFormat dt = new SimpleDateFormat(DATE_FORMAT);
+            try {
+                Path path1 = Paths.get(this.getFileRoot(), path);
+                log.info(path1.toString());
+                DirectoryStream<Path> directoryStream = Files.newDirectoryStream(path1);
                 for (Path pathObj : directoryStream) {
                     // 获取文件基本属性
                     BasicFileAttributes attrs = Files.readAttributes(pathObj, BasicFileAttributes.class);
@@ -75,7 +83,7 @@ public class FileManagerController {
                     // windows 下这句话会影响权限导致无法读取文件？ 待验证 目前先注释掉
 //                    fileItem.put("rights", org.shaofan.utils.FileUtils.getPermissions(pathObj)); // 文件权限
 
-                    fileItem.put("date", dt.format(new Date(attrs.lastModifiedTime().toMillis())));
+                    fileItem.put("date", DateUtil.format("yyyy-MM-dd HH:mm:ss", new Date(attrs.lastModifiedTime().toMillis())));
                     fileItem.put("size", attrs.size());
                     fileItem.put("type", attrs.isDirectory() ? "dir" : "file");
                     fileItems.add(fileItem);
@@ -87,6 +95,7 @@ public class FileManagerController {
             jsonObject.put("result", fileItems);
             return jsonObject;
         } catch (Exception e) {
+            log.error("", e);
             return error(e.getMessage());
         }
     }
@@ -103,7 +112,7 @@ public class FileManagerController {
 
             for (Part part : parts) {
                 if (part.getContentType() != null) {  // 忽略路径字段,只处理文件类型
-                    String path = root + destination;
+                    String path = this.getFileRoot() + destination;
 
                     File f = new File(path, com.dliyun.plugin.filemanager.utils.FileUtils.getFileName(part.getHeader("content-disposition")));
                     if (!com.dliyun.plugin.filemanager.utils.FileUtils.write(part.getInputStream(), f)) {
@@ -123,7 +132,7 @@ public class FileManagerController {
     @RequestMapping("preview")
     public void preview(HttpServletResponse response, String path) throws IOException {
 
-        File file = new File(root, path);
+        File file = new File(this.getFileRoot(), path);
         if (!file.exists()) {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Resource Not Found");
             return;
@@ -153,7 +162,7 @@ public class FileManagerController {
     public Object createFolder(@RequestBody JSONObject json) {
         try {
             String newPath = json.getString("newPath");
-            File newDir = new File(root + newPath);
+            File newDir = new File(this.getFileRoot() + newPath);
             if (!newDir.mkdir()) {
                 throw new Exception("不能创建目录: " + newPath);
             }
@@ -176,7 +185,7 @@ public class FileManagerController {
             JSONArray items = json.getJSONArray("items");
             for (int i = 0; i < items.size(); i++) {
                 String path = items.getString(i);
-                File f = new File(root, path);
+                File f = new File(this.getFileRoot(), path);
                 com.dliyun.plugin.filemanager.utils.FileUtils.setPermissions(f, perms, recursive); // 设置权限
             }
             return success();
@@ -197,8 +206,8 @@ public class FileManagerController {
             for (int i = 0; i < items.size(); i++) {
                 String path = items.getString(i);
 
-                File srcFile = new File(root, path);
-                File destFile = new File(root + newpath, srcFile.getName());
+                File srcFile = new File(this.getFileRoot(), path);
+                File destFile = new File(this.getFileRoot() + newpath, srcFile.getName());
 
                 FileCopyUtils.copy(srcFile, destFile);
             }
@@ -220,8 +229,8 @@ public class FileManagerController {
             for (int i = 0; i < items.size(); i++) {
                 String path = items.getString(i);
 
-                File srcFile = new File(root, path);
-                File destFile = new File(root + newpath, srcFile.getName());
+                File srcFile = new File(this.getFileRoot(), path);
+                File destFile = new File(this.getFileRoot() + newpath, srcFile.getName());
 
                 if (srcFile.isFile()) {
                     FileUtils.moveFile(srcFile, destFile);
@@ -244,7 +253,7 @@ public class FileManagerController {
             JSONArray items = json.getJSONArray("items");
             for (int i = 0; i < items.size(); i++) {
                 String path = items.getString(i);
-                File srcFile = new File(root, path);
+                File srcFile = new File(this.getFileRoot(), path);
                 if (!FileUtils.deleteQuietly(srcFile)) {
                     throw new Exception("删除失败: " + srcFile.getAbsolutePath());
                 }
@@ -264,8 +273,8 @@ public class FileManagerController {
             String path = json.getString("item");
             String newPath = json.getString("newItemPath");
 
-            File srcFile = new File(root, path);
-            File destFile = new File(root, newPath);
+            File srcFile = new File(this.getFileRoot(), path);
+            File destFile = new File(this.getFileRoot(), newPath);
             if (srcFile.isFile()) {
                 FileUtils.moveFile(srcFile, destFile);
             } else {
@@ -284,7 +293,7 @@ public class FileManagerController {
     public Object getContent(@RequestBody JSONObject json) {
         try {
             String path = json.getString("item");
-            File srcFile = new File(root, path);
+            File srcFile = new File(this.getFileRoot(), path);
 
             String content = FileUtils.readFileToString(srcFile);
 
@@ -305,7 +314,7 @@ public class FileManagerController {
             String path = json.getString("item");
             String content = json.getString("content");
 
-            File srcFile = new File(root, path);
+            File srcFile = new File(this.getFileRoot(), path);
             FileUtils.writeStringToFile(srcFile, content);
 
             return success();
@@ -325,11 +334,11 @@ public class FileManagerController {
             JSONArray items = json.getJSONArray("items");
             List<File> files = new ArrayList<>();
             for (int i = 0; i < items.size(); i++) {
-                File f = new File(root, items.getString(i));
+                File f = new File(this.getFileRoot(), items.getString(i));
                 files.add(f);
             }
 
-            File zip = new File(root + destination, compressedFilename);
+            File zip = new File(this.getFileRoot() + destination, compressedFilename);
 
             try (ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zip))) {
                 zipFiles(out, "", files.toArray(new File[files.size()]));
@@ -349,18 +358,18 @@ public class FileManagerController {
             String destination = json.getString("destination");
             String zipName = json.getString("item");
             String folderName = json.getString("folderName");
-            File file = new File(root, zipName);
+            File file = new File(this.getFileRoot(), zipName);
 
             String extension = com.dliyun.plugin.filemanager.utils.FileUtils.getExtension(zipName);
             switch (extension) {
                 case ".zip":
-                    unZipFiles(file, root + destination);
+                    unZipFiles(file, this.getFileRoot() + destination);
                     break;
                 case ".gz":
-                    unTargzFile(file, root + destination);
+                    unTargzFile(file, this.getFileRoot() + destination);
                     break;
                 case ".rar":
-                    unRarFile(file, root + destination);
+                    unRarFile(file, this.getFileRoot() + destination);
             }
             return success();
         } catch (Exception e) {
